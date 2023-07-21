@@ -6,6 +6,14 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
+      "CryptoClient/1.0.0": {
+        "dependencies": {
+          "CommunityToolkit.Mvvm": "8.2.1"
+        },
+        "runtime": {
+          "CryptoClient.dll": {}
+        }
+      },
       "CommunityToolkit.Mvvm/8.2.1": {
         "runtime": {
           "lib/net6.0/CommunityToolkit.Mvvm.dll": {
@@ -17,6 +25,11 @@
     }
   },
   "libraries": {
+    "CryptoClient/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "CommunityToolkit.Mvvm/8.2.1": {
       "type": "package",
       "serviceable": true,

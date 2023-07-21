@@ -1,5 +1,5 @@
 ﻿CryptoClient
-1.0.0.0
+
 
 winexe
 C#
@@ -12,9 +12,9 @@ TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\777\Desktop\CryptoClient\CryptoClient\App.xaml
 21693469969
 
-8132249507
+6-596625949
 195-96746714
 MainWindow.xaml;Views\CryptoClientView.xaml;
 
-True
+False
 

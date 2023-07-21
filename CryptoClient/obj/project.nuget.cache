@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "O+t436dKeF2eHoSRig54Tzz8UlsEcYIoaPTgem6iXA64Hum9Df7KEVHDVbAmxGN82GvzFp6Bgme9hRa2cVyF5Q==",
+  "dgSpecHash": "g/EdR4Z1JnOATAakmygLbrRSgfvWngOU/apt7GPor0c6RtXYQyYzgRWouV8gfXFUpZFKf0l2W9lgOYYH290Dig==",
   "success": true,
   "projectFilePath": "C:\\Users\\777\\Desktop\\CryptoClient\\CryptoClient\\CryptoClient.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\777\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.1\\communitytoolkit.mvvm.8.2.1.nupkg.sha512"
+  ],
   "logs": []
 }
