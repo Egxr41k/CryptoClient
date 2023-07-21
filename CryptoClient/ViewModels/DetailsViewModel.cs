@@ -10,11 +10,27 @@ namespace CryptoClient.ViewModels
 {
     internal class DetailsViewModel : ObservableObject
     {
-        private SelectedModelStore selectedListAppModelStore;
+        private readonly SelectedModelStore _selectedModelStore;
 
-        public DetailsViewModel(SelectedModelStore selectedListAppModelStore)
+        private string title = "Home Page";
+        public string Title
         {
-            this.selectedListAppModelStore = selectedListAppModelStore;
+            get => title;
+            set => SetProperty(ref title, value);
+        }
+
+
+        public DetailsViewModel(SelectedModelStore selectedModelStore)
+        {
+            Title = "Home Page";
+            _selectedModelStore = selectedModelStore;
+            _selectedModelStore.SelectedModelChanged +=
+            _selectedModelStore_SelectedModelChanged;
+        }
+
+        private void _selectedModelStore_SelectedModelChanged()
+        {
+            Title = _selectedModelStore.SelectedModel?.Name ?? "SelectedModel is null";
         }
     }
 }

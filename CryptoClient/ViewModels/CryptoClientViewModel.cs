@@ -12,7 +12,7 @@ namespace CryptoClient.ViewModels
 {
     internal class CryptoClientViewModel : ObservableObject
     {
-        public string AppName = "CryptoClient";
+        public string AppName { get; set; } = "CryptoClient";
         public DetailsViewModel DetailsViewModel { get; }
         public ListingViewModel ListingViewModel { get; }
         //public ICommand AddListItemCommand { get; }

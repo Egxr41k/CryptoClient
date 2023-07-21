@@ -21,18 +21,18 @@ namespace CryptoClient.ViewModels
         public IEnumerable<ListingItemViewModel> CryptoList => cryptoList;
         private readonly ObservableCollection<ListingItemViewModel> cryptoList;
 
-        private ListingItemViewModel _selectedlistingItem;
+        private ListingItemViewModel _selectedListingItemViewModel;
 
-        public ListingItemViewModel SelectedListingItem
+        public ListingItemViewModel SelectedListingItemViewModel
         {
-            get { return _selectedlistingItem; }
+            get { return _selectedListingItemViewModel; }
             set
             {
-                _selectedlistingItem = value;
-                OnPropertyChanged();
-                //_selectedModelStore.SelectedModel = _selectedListingItemViewModel?.SharpTorrentModel;
+                SetProperty(ref _selectedListingItemViewModel, value);
+                _selectedModelStore.SelectedModel = SelectedListingItemViewModel?.CurrencyModel;
             }
         }
+        public string AppName = "CryptoClient";
 
         private async void CryptoListInitAsync()
         {
@@ -46,7 +46,7 @@ namespace CryptoClient.ViewModels
             string[] cryptoName = new string[10];
             for (int i = 0; i < 10; i++)
             {
-                cryptoName[i] = jarr[i].ToString();
+                cryptoName[i] = jarr[i].name.ToString();
                 AddListItem(new CurrencyModel(cryptoName[i]));
             }
             //string? name = jarr[0].name;
@@ -60,22 +60,25 @@ namespace CryptoClient.ViewModels
             //Console.WriteLine(jobj.symbol);
         }
 
-        public ListingViewModel(CryptoClientStore _cryptoClientStore, SelectedModelStore _selectedModelStore)
+        public ListingViewModel(CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore)
         {
-            this._cryptoClientStore = _cryptoClientStore;
-            this._selectedModelStore = _selectedModelStore;
+            _cryptoClientStore = cryptoClientStore;
+            _selectedModelStore = selectedModelStore;
 
 
             cryptoList = new ObservableCollection<ListingItemViewModel>();
+
+            _cryptoClientStore.CurrencyUpdated += _CryptoClient_CurrencyUpdated;
+            _cryptoClientStore.CurrencyAdded += _CryptoClient_CurrencyAdded;
             CryptoListInitAsync();
         }
-        private void _sharpTorrentStore_TorrentUpdated(CurrencyModel model)
+        private void _CryptoClient_CurrencyUpdated(CurrencyModel model)
         {
             ListingItemViewModel? listingItemViewModel =
                 cryptoList.FirstOrDefault(y => y.CurrencyModel.Id == model.Id);
         }
 
-        private void _sharpTorrentStore_TorrentAdded(CurrencyModel model)
+        private void _CryptoClient_CurrencyAdded(CurrencyModel model)
         {
             AddListItem(model);
         }
