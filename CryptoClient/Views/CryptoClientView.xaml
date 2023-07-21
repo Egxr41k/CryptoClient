@@ -21,8 +21,7 @@
 
         <StackPanel
             Grid.Column="0"
-            Grid.RowSpan="2"
-            >
+            Grid.RowSpan="2">
             <TextBlock
                 Text="{Binding AppName}"
                 Margin="5"
@@ -47,8 +46,7 @@
 
         <v:DetailsView
             DataContext="{Binding DetailsViewModel}"
-            Grid.Row="1"
             Grid.Column="1"
-            Grid.RowSpan="2"/>
+            Grid.RowSpan="3"/>
     </Grid>
 </UserControl>

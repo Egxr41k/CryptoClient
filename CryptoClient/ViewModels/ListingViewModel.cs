@@ -49,6 +49,7 @@ namespace CryptoClient.ViewModels
                 cryptoName[i] = jarr[i].name.ToString();
                 AddListItem(new CurrencyModel(cryptoName[i]));
             }
+
             //string? name = jarr[0].name;
             ////Console.WriteLine(name);
 
