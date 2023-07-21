@@ -24,3 +24,8 @@ C:\Users\777\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\refint\C
 C:\Users\777\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\CryptoClient.pdb
 C:\Users\777\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\CryptoClient.genruntimeconfig.cache
 C:\Users\777\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\ref\CryptoClient.dll
+C:\Users\777\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\ListingView.g.cs
+C:\Users\777\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\ListingView.baml
+C:\Users\777\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\DetailsView.g.cs
+C:\Users\777\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\DetailsView.baml
+C:\Users\777\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\Newtonsoft.Json.dll

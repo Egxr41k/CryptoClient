@@ -12,6 +12,6 @@
         <v:CryptoClientView
                 MaxWidth="1000"
                 Margin="25"
-                DataContext="{Binding ListAppViewModel}" />
+                DataContext="{Binding CryptoClientViewModel}" />
     </Grid>
 </Window>
