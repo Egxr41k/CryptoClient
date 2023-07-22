@@ -9,8 +9,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="300"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel>
             <TextBlock Text="{Binding Title}" FontSize="36"/>
@@ -18,7 +18,7 @@
         <!--<ScrollViewer Grid.Row="1">
             <TextBox Text="{Binding Text}"/>
         </ScrollViewer>-->
-        <syncfusion:SfChart Header="Chart" Height="300" Grid.Row="1" Width="500">
+        <syncfusion:SfChart Header="Chart" Grid.Row="1">
             <!--Initialize the horizontal axis for SfChart-->
             <syncfusion:SfChart.PrimaryAxis>
                 <syncfusion:CategoryAxis Header="time" FontSize="14"/>
@@ -35,12 +35,20 @@
             </syncfusion:SfChart.Legend>
 
             <!--Initialize the series for SfChart-->
-            <syncfusion:ColumnSeries Label="Heights" ItemsSource="{Binding ChartData}" XBindingPath="Keys" YBindingPath="Values" ShowTooltip="True" >
+            <!--<syncfusion:ColumnSeries syncfusion:ChartSeriesBase.Spacing="0.9" Label="Heights" ItemsSource="{Binding ChartData}" XBindingPath="Key" YBindingPath="Value" ShowTooltip="True" >
                 <syncfusion:ColumnSeries.AdornmentsInfo>
-                    <syncfusion:ChartAdornmentInfo ShowLabel="True" >
-                    </syncfusion:ChartAdornmentInfo>
+                    <syncfusion:ChartAdornmentInfo ShowLabel="True"/>
                 </syncfusion:ColumnSeries.AdornmentsInfo>
-            </syncfusion:ColumnSeries>
+            </syncfusion:ColumnSeries>-->
+
+            <syncfusion:ColumnSeries
+                syncfusion:ChartSeriesBase.Spacing="0.9"
+                Label="Heights"
+                ItemsSource="{Binding ChartData}"
+                XBindingPath="Key"
+                YBindingPath="Value"
+                ShowTooltip="True" />
+
 
         </syncfusion:SfChart>
 

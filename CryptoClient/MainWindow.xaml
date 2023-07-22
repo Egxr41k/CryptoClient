@@ -6,11 +6,10 @@
         xmlns:local="clr-namespace:CryptoClient"
         xmlns:v="clr-namespace:CryptoClient.Views"
         xmlns:vm="clr-namespace:CryptoClient.ViewModels"
-        mc:Ignorable="d"
+        mc:Ignorable="d" WindowState="Maximized"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <v:CryptoClientView
-                MaxWidth="1000"
                 Margin="25"
                 DataContext="{Binding CryptoClientViewModel}" />
     </Grid>
