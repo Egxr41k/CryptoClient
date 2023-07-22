@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CryptoClient.Views"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             xmlns:syncfusion="clr-namespace:Syncfusion.UI.Xaml.Charts;assembly=Syncfusion.SfChart.WPF"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -14,8 +15,34 @@
         <StackPanel>
             <TextBlock Text="{Binding Title}" FontSize="36"/>
         </StackPanel>
-        <ScrollViewer Grid.Row="1">
+        <!--<ScrollViewer Grid.Row="1">
             <TextBox Text="{Binding Text}"/>
-        </ScrollViewer>
+        </ScrollViewer>-->
+        <syncfusion:SfChart Header="Chart" Height="300" Grid.Row="1" Width="500">
+            <!--Initialize the horizontal axis for SfChart-->
+            <syncfusion:SfChart.PrimaryAxis>
+                <syncfusion:CategoryAxis Header="time" FontSize="14"/>
+            </syncfusion:SfChart.PrimaryAxis>
+
+            <!--Initialize the vertical axis for SfChart-->
+            <syncfusion:SfChart.SecondaryAxis>
+                <syncfusion:NumericalAxis Header="price" FontSize="14"/>
+            </syncfusion:SfChart.SecondaryAxis>
+
+            <!--Adding Legend to the SfChart-->
+            <syncfusion:SfChart.Legend>
+                <syncfusion:ChartLegend/>
+            </syncfusion:SfChart.Legend>
+
+            <!--Initialize the series for SfChart-->
+            <syncfusion:ColumnSeries Label="Heights" ItemsSource="{Binding ChartData}" XBindingPath="Keys" YBindingPath="Values" ShowTooltip="True" >
+                <syncfusion:ColumnSeries.AdornmentsInfo>
+                    <syncfusion:ChartAdornmentInfo ShowLabel="True" >
+                    </syncfusion:ChartAdornmentInfo>
+                </syncfusion:ColumnSeries.AdornmentsInfo>
+            </syncfusion:ColumnSeries>
+
+        </syncfusion:SfChart>
+
     </Grid>
 </UserControl>

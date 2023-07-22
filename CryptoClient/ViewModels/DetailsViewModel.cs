@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CryptoClient.Stores;
 using Newtonsoft.Json.Linq;
+using Syncfusion.UI.Xaml.Charts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,15 @@ namespace CryptoClient.ViewModels
             get => title;
             set => SetProperty(ref title, value);
         }
+        public Dictionary<DateTime, int> ChartData
+        {
+            get => chartData;
+            set => SetProperty(ref chartData, value);
+
+        }
+        private Dictionary<DateTime, int> chartData;
+
+            
         public string Text
         {
             get => text;
@@ -36,12 +46,9 @@ namespace CryptoClient.ViewModels
 
         private void _selectedModelStore_SelectedModelChanged()
         {
-            Title = _selectedModelStore.SelectedModel?.Name ?? "SelectedModel is null";
-            var request = App.httpClient.GetAsync(
-              $"https://api.coingecko.com/api/v3/coins/{Title.ToLower()}").Result;
-            string responce = request.Content.ReadAsStringAsync().Result;
-
-            Text = JObject.Parse(responce).ToString();
+            Text = string.Empty;
+            Title = _selectedModelStore.SelectedModel.Name;
+            ChartData = _selectedModelStore.SelectedModel.History;
             
         }
     }

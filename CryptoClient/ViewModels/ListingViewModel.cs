@@ -40,25 +40,14 @@ namespace CryptoClient.ViewModels
               "https://api.coincap.io/v2/assets").Result;
             string responce = await request.Content.ReadAsStringAsync();
 
-            //JSON? restoredPerson = System.Text.Json.JsonSerializer.Deserialize<JSON>(responce);
             dynamic jobj = JObject.Parse(responce);
             dynamic jarr = (JArray)jobj.data;
-            string[] cryptoName = new string[10];
+            string cryptoName;
             for (int i = 0; i < 10; i++)
             {
-                cryptoName[i] = jarr[i].name.ToString();
-                AddListItem(new CurrencyModel(cryptoName[i]));
+                cryptoName = jarr[i].name.ToString();
+                AddListItem(new CurrencyModel(cryptoName));
             }
-
-            //string? name = jarr[0].name;
-            ////Console.WriteLine(name);
-
-            //request = App.httpClient.GetAsync(
-            //  $"https://api.coingecko.com/api/v3/coins/{name.ToLower()}").Result;
-            //responce = request.Content.ReadAsStringAsync().Result;
-
-            //jobj = JObject.Parse(responce);
-            //Console.WriteLine(jobj.symbol);
         }
 
         public ListingViewModel(CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore)
