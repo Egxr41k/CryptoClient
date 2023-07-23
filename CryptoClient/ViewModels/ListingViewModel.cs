@@ -4,12 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using Newtonsoft.Json.Linq;
 using CryptoClient.Models;
+using System.Globalization;
+using System.Text.Json;
 
 namespace CryptoClient.ViewModels
 {
@@ -22,7 +20,6 @@ namespace CryptoClient.ViewModels
         private readonly ObservableCollection<ListingItemViewModel> cryptoList;
 
         private ListingItemViewModel _selectedListingItemViewModel;
-
         public ListingItemViewModel SelectedListingItemViewModel
         {
             get { return _selectedListingItemViewModel; }
@@ -32,23 +29,43 @@ namespace CryptoClient.ViewModels
                 _selectedModelStore.SelectedModel = SelectedListingItemViewModel?.CurrencyModel;
             }
         }
-        public string AppName = "CryptoClient";
 
         private async void CryptoListInitAsync()
         {
-            var request = App.httpClient.GetAsync(
-              "https://api.coincap.io/v2/assets").Result;
-            string responce = await request.Content.ReadAsStringAsync();
-
-            dynamic jobj = JObject.Parse(responce);
-            dynamic jarr = (JArray)jobj.data;
-            string cryptoName;
-            for (int i = 0; i < 10; i++)
+            var models = GetTopCurrenciesAsync().Result;
+            for (int i = 0; CryptoList.Count() < 10; i++)
             {
-                cryptoName = jarr[i].name.ToString();
-                AddListItem(new CurrencyModel(cryptoName));
+                if (i != 2 && i != 1)
+                {
+                    models[i].GetHistoryAsync().Wait();
+                    if (models[i].History != null) AddListItem(models[i]);
+                }
             }
         }
+
+        private async Task<List<CurrencyModel>> GetTopCurrenciesAsync()
+        {
+            var response = await App.httpClient.GetAsync(App.BASE_URL);
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<JsonElement>(json);
+
+            var cryptoCurrencies = new List<CurrencyModel>();
+
+            foreach (var data in result.GetProperty("data").EnumerateArray())
+            {
+                string sdouble = data.GetProperty("priceUsd").GetString() ?? string.Empty;
+                cryptoCurrencies.Add(new CurrencyModel(Guid.NewGuid())
+                {
+                    Name = data.GetProperty("id").GetString() ?? string.Empty,
+                    Symbol = data.GetProperty("symbol").GetString() ?? string.Empty,
+                    Link = data.GetProperty("explorer").GetString() ?? string.Empty,
+                    Price = double.Parse(sdouble, CultureInfo.InvariantCulture)
+                });
+                
+            }
+            return cryptoCurrencies.OrderByDescending(c => c.Price).ToList();
+        }
+
 
         public ListingViewModel(CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore)
         {
@@ -58,24 +75,26 @@ namespace CryptoClient.ViewModels
 
             cryptoList = new ObservableCollection<ListingItemViewModel>();
 
-            _cryptoClientStore.CurrencyUpdated += _CryptoClient_CurrencyUpdated;
-            _cryptoClientStore.CurrencyAdded += _CryptoClient_CurrencyAdded;
+            _cryptoClientStore.CurrencyUpdated +=
+             CryptoClientStore_CurrencyUpdated;
+            _cryptoClientStore.CurrencyAdded +=
+             CryptoClientStore_CurrencyAdded;
+
             CryptoListInitAsync();
         }
-        private void _CryptoClient_CurrencyUpdated(CurrencyModel model)
+        private void CryptoClientStore_CurrencyUpdated(CurrencyModel model)
         {
             ListingItemViewModel? listingItemViewModel =
                 cryptoList.FirstOrDefault(y => y.CurrencyModel.Id == model.Id);
         }
 
-        private void _CryptoClient_CurrencyAdded(CurrencyModel model)
+        private void CryptoClientStore_CurrencyAdded(CurrencyModel model)
         {
             AddListItem(model);
         }
 
         private void AddListItem(CurrencyModel model)
         {
-            //ICommand editCommand = new OpenEditListItemCommand(model, _modalNavigationStore);
             cryptoList.Add(
                 new ListingItemViewModel(model, _cryptoClientStore));
         }

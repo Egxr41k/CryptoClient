@@ -17,6 +17,7 @@ namespace CryptoClient
     public partial class App : Application
     {
         public static HttpClient httpClient = new();
+        public const string BASE_URL = "https://api.coincap.io/v2/assets/";
         private readonly SelectedModelStore _selectedModelStore;
         private readonly CryptoClientStore _cryptoClientStore;
         private readonly CryptoClientViewModel _cryptoClientViewModel;

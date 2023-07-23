@@ -15,12 +15,7 @@ namespace CryptoClient.ViewModels
 
         public CurrencyModel CurrencyModel { get; private set; }
 
-        public string CurrencyName => CurrencyModel.Name;
-
-
-        //public int 
-
-        
+        public string CurrencyName => CurrencyModel.Symbol;
 
         public ListingItemViewModel(CurrencyModel model, CryptoClientStore cryptoClientStore)
         {

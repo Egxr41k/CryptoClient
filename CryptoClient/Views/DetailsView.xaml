@@ -18,7 +18,7 @@
         <!--<ScrollViewer Grid.Row="1">
             <TextBox Text="{Binding Text}"/>
         </ScrollViewer>-->
-        <syncfusion:SfChart Header="Chart" Grid.Row="1">
+        <syncfusion:SfChart Header="Coast increase per year" Grid.Row="1" Foreground="Black">
             <!--Initialize the horizontal axis for SfChart-->
             <syncfusion:SfChart.PrimaryAxis>
                 <syncfusion:CategoryAxis Header="time" FontSize="14"/>
@@ -29,27 +29,12 @@
                 <syncfusion:NumericalAxis Header="price" FontSize="14"/>
             </syncfusion:SfChart.SecondaryAxis>
 
-            <!--Adding Legend to the SfChart-->
-            <syncfusion:SfChart.Legend>
-                <syncfusion:ChartLegend/>
-            </syncfusion:SfChart.Legend>
-
-            <!--Initialize the series for SfChart-->
-            <!--<syncfusion:ColumnSeries syncfusion:ChartSeriesBase.Spacing="0.9" Label="Heights" ItemsSource="{Binding ChartData}" XBindingPath="Key" YBindingPath="Value" ShowTooltip="True" >
-                <syncfusion:ColumnSeries.AdornmentsInfo>
-                    <syncfusion:ChartAdornmentInfo ShowLabel="True"/>
-                </syncfusion:ColumnSeries.AdornmentsInfo>
-            </syncfusion:ColumnSeries>-->
-
             <syncfusion:ColumnSeries
-                syncfusion:ChartSeriesBase.Spacing="0.9"
-                Label="Heights"
+                syncfusion:ChartSeriesBase.Spacing="0.6"
                 ItemsSource="{Binding ChartData}"
                 XBindingPath="Key"
                 YBindingPath="Value"
                 ShowTooltip="True" />
-
-
         </syncfusion:SfChart>
 
     </Grid>

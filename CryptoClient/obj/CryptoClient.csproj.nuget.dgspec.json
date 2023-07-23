@@ -50,10 +50,6 @@
               "target": "Package",
               "version": "[8.2.1, )"
             },
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.3, )"
-            },
             "Syncfusion.SfChart.WPF": {
               "target": "Package",
               "version": "[22.1.39, )"

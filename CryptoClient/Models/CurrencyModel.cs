@@ -1,61 +1,41 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Globalization;
+using System.Text.Json;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace CryptoClient.Models
 {
     internal class CurrencyModel
     {
         public Guid Id { get; private set; }
-        public string Name { get; set; } = "Currrency";
-        public string Description { get; set; } = string.Empty;
-        public int Price { get; set; } = 0;
-        public string Link { get; set; } = string.Empty;
+        public string Symbol { get; set; }
+        public string Name { get; set; }
+        //public string Description { get; set; } = string.Empty;
+        public double Price { get; set; }
+        public string Link { get; set; }
 
-        public Dictionary<DateTime, int> History { get; set; }
+        public Dictionary<DateTime, double> History { get; set; }
 
-        public List<int> Prices = new();
-        public List<DateTime> Dates = new();
+        public CurrencyModel(Guid id) { Id = id; }
 
-        public CurrencyModel(string name)
+        public async Task GetHistoryAsync()
         {
-            Id = Guid.NewGuid();
-            Name = name;
-            GetCurrencyHistory();
-        }
+            var response = await App.httpClient.GetAsync(App.BASE_URL + Name + "/history?interval=d1");
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<JsonElement>(json);
 
-        private void GetCurrencyHistory()
-        {
-            var request = App.httpClient.GetAsync(
-              $"https://api.coincap.io/v2/assets/{Name.ToLower()}/history?interval=d1").Result;
-            string responce = request.Content.ReadAsStringAsync().Result;
-
-            dynamic jobj = JObject.Parse(responce);
-            dynamic jarr = (JArray)jobj.data;
-            if (jarr == null){ return; }
-
-            Prices = new();
-            Dates = new();
-            History = new Dictionary<DateTime, int>();
-
-            for (int i = 0; i < jarr.Count; i++)
+            History = new Dictionary<DateTime, double>();
+            foreach (JsonElement data in result.GetProperty("data").EnumerateArray())
             {
-                string string1 = jarr[i].priceUsd.ToString();
-                int price = Convert.ToInt32(string1.Split(".")[0]);
-                
-                string string2 = jarr[i].time.ToString();
-                long unixTime = long.Parse(string2);
+                long unixTime = data.GetProperty("time").GetInt64();
 
-                DateTime dateTime = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                dateTime = dateTime.AddMilliseconds(unixTime).ToLocalTime();
+                DateTime date = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                date = date.AddMilliseconds(unixTime).ToLocalTime();
 
-                Prices.Add(price);
-                Dates.Add(dateTime);
-                History.Add(dateTime, price);
+                string sdouble = data.GetProperty("priceUsd").GetString()[..5] ?? string.Empty;
+                double value = double.Parse(sdouble, CultureInfo.InvariantCulture);
+                History.Add(date, value);
             }
         }
     }

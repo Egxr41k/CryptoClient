@@ -1,12 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CryptoClient.Stores;
-using Newtonsoft.Json.Linq;
-using Syncfusion.UI.Xaml.Charts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CryptoClient.ViewModels
 {
@@ -20,13 +15,13 @@ namespace CryptoClient.ViewModels
             get => title;
             set => SetProperty(ref title, value);
         }
-        public Dictionary<DateTime, int> ChartData
+        public Dictionary<DateTime, double> ChartData
         {
             get => chartData;
             set => SetProperty(ref chartData, value);
 
         }
-        private Dictionary<DateTime, int> chartData;
+        private Dictionary<DateTime, double> chartData;
 
             
         public string Text
