@@ -50,6 +50,10 @@
               "target": "Package",
               "version": "[8.2.1, )"
             },
+            "ModernWpfUI": {
+              "target": "Package",
+              "version": "[0.9.6, )"
+            },
             "Syncfusion.SfChart.WPF": {
               "target": "Package",
               "version": "[22.1.39, )"

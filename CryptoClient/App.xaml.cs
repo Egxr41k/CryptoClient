@@ -28,9 +28,6 @@ namespace CryptoClient
 
             _cryptoClientViewModel = new CryptoClientViewModel(
                 _cryptoClientStore, _selectedModelStore);
-            //_listAppStore = new ListAppStore();
-            //_modalNavigationStore = new ModalNavigationStore();
-            //_selectedListAppModelStore = new SelectedListAppModelStore(_listAppStore);
         }
         protected override void OnStartup(StartupEventArgs e)
         {

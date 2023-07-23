@@ -7,21 +7,42 @@
              xmlns:v="clr-namespace:CryptoClient.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Style.Setters>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Foreground" Value="#000"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Height" Value="50"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter
+                                    Content="{TemplateBinding Content}"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Margin="20, 0, 0, 0"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="150" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="228" />
+            <ColumnDefinition Width="200" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <StackPanel
-            Grid.Column="0"
-            Grid.RowSpan="2">
+        <StackPanel>
             <TextBlock
                 Text="{Binding AppName}"
                 Margin="5"
@@ -35,15 +56,19 @@
                 Style="{DynamicResource DarkText}"/>
         </StackPanel>
 
-        <v:ListingView
-            DataContext="{Binding ListingViewModel}"
-            Grid.Row="2"/>
-
-        <!--<local:CustomTitleBar
-            Grid.Row="0"
-            Grid.Column="1"/>-->
-
-
+        <StackPanel Grid.Row="1">
+            <Button Content="Home" />
+            <Button Content="Search"/>
+            <Button Content="Convert"/>
+        </StackPanel>
+        
+        <!--<ScrollViewer
+            Grid.Row="2"
+            CanContentScroll="True">
+            <v:ListingView Grid.Row="2" DataContext="{Binding ListingViewModel}"/>
+        </ScrollViewer>-->
+        
+        <v:ListingView Grid.Row="2" DataContext="{Binding ListingViewModel}"/>
         <v:DetailsView
             DataContext="{Binding DetailsViewModel}"
             Grid.Column="1"

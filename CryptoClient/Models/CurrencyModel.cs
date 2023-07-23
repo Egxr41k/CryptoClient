@@ -33,8 +33,8 @@ namespace CryptoClient.Models
                 DateTime date = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 date = date.AddMilliseconds(unixTime).ToLocalTime();
 
-                string sdouble = data.GetProperty("priceUsd").GetString()[..5] ?? string.Empty;
-                double value = double.Parse(sdouble, CultureInfo.InvariantCulture);
+                string sdouble = data.GetProperty("priceUsd").GetString() ?? string.Empty;
+                double value = Math.Round(double.Parse(sdouble, CultureInfo.InvariantCulture), 2);
                 History.Add(date, value);
             }
         }

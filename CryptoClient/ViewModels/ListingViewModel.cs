@@ -37,7 +37,7 @@ namespace CryptoClient.ViewModels
             {
                 if (i != 2 && i != 1)
                 {
-                    models[i].GetHistoryAsync().Wait();
+                     models[i].GetHistoryAsync().Wait();
                     if (models[i].History != null) AddListItem(models[i]);
                 }
             }

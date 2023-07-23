@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "YaqCUPSq7UVye8CvKjBTiBQ2aNnOygnoPFfjJ/IHkLMSCSlTJSJieKSqf8JWm/HREku+QxYO9VNCFNj8jl0S+w==",
+  "dgSpecHash": "mJ944kSGXIvZDLU7xFT0edvnMHtLLg4464czKkqos0zgUlnYNpNO4oJreFFTPMh5TBRYj9cAkw5TobJKvr6oAg==",
   "success": true,
   "projectFilePath": "C:\\Users\\777\\Desktop\\CryptoClient\\CryptoClient\\CryptoClient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\777\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.1\\communitytoolkit.mvvm.8.2.1.nupkg.sha512",
+    "C:\\Users\\777\\.nuget\\packages\\modernwpfui\\0.9.6\\modernwpfui.0.9.6.nupkg.sha512",
     "C:\\Users\\777\\.nuget\\packages\\syncfusion.licensing\\22.1.39\\syncfusion.licensing.22.1.39.nupkg.sha512",
     "C:\\Users\\777\\.nuget\\packages\\syncfusion.sfchart.wpf\\22.1.39\\syncfusion.sfchart.wpf.22.1.39.nupkg.sha512"
   ],
