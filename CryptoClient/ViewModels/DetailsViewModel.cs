@@ -7,7 +7,7 @@ namespace CryptoClient.ViewModels
 {
     internal class DetailsViewModel : ObservableObject
     {
-        private readonly SelectedModelStore _selectedModelStore;
+        //private readonly SelectedModelStore _selectedModelStore;
 
         private string title = "Home Page";
         public string Title
@@ -31,20 +31,23 @@ namespace CryptoClient.ViewModels
         }
         private string text;
 
-        public DetailsViewModel(SelectedModelStore selectedModelStore)
+        public DetailsViewModel(/*SelectedModelStore selectedModelStore*/)
         {
             Title = "Home Page";
-            _selectedModelStore = selectedModelStore;
-            _selectedModelStore.SelectedModelChanged +=
+            //_selectedModelStore = selectedModelStore;
+            //_selectedModelStore.SelectedModelChanged +=
+            SelectedModelStore.SelectedModelChanged +=
             _selectedModelStore_SelectedModelChanged;
         }
 
         private void _selectedModelStore_SelectedModelChanged()
         {
             Text = string.Empty;
-            Title = _selectedModelStore.SelectedModel.Name;
-            ChartData = _selectedModelStore.SelectedModel.History;
-            
+            //Title = _selectedModelStore.SelectedModel.Name;
+            //ChartData = _selectedModelStore.SelectedModel.History;
+            ChartData = SelectedModelStore.SelectedModel.History;
+            Title = SelectedModelStore.SelectedModel.Name;
+
         }
     }
 }

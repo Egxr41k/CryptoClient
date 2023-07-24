@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace CryptoClient.Stores
 {
-    internal class CryptoClientStore
+    internal static class CryptoClientStore
     {
-        public event Action<CurrencyModel>? CurrencyAdded;
-        public void Add(CurrencyModel model)
+        public static event Action<CurrencyModel>? CurrencyAdded;
+        public static void Add(CurrencyModel model)
         {
             CurrencyAdded?.Invoke(model);
         }
 
-        public event Action<CurrencyModel>? CurrencyUpdated;
-        public void Update(CurrencyModel model)
+        public static event Action<CurrencyModel>? CurrencyUpdated;
+        public static void Update(CurrencyModel model)
         {
             CurrencyUpdated?.Invoke(model);
         }

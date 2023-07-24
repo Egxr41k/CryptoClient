@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\777\Desktop\CryptoClient\CryptoClient\App.xaml
-41229843721
+5363983561
 
-16-40757802
+181700430132
 1991819583382
-MainWindow.xaml;Views\CryptoClientView.xaml;Views\DetailsView.xaml;Views\ListingView.xaml;
+MainWindow.xaml;Views\CryptoClientView.xaml;Views\DetailsView.xaml;Views\HomeView.xaml;Views\ListingView.xaml;
 
 True
 

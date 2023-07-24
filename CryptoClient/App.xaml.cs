@@ -18,16 +18,20 @@ namespace CryptoClient
     {
         public static HttpClient httpClient = new();
         public const string BASE_URL = "https://api.coincap.io/v2/assets/";
-        private readonly SelectedModelStore _selectedModelStore;
-        private readonly CryptoClientStore _cryptoClientStore;
+        //private readonly SelectedModelStore _selectedModelStore;
+        //private readonly CryptoClientStore _cryptoClientStore;
         private readonly CryptoClientViewModel _cryptoClientViewModel;
+        public static HomeViewModel HomeVM;
+        //public static DetailsViewModel 
         public App()
         {
-            _cryptoClientStore = new CryptoClientStore();
-            _selectedModelStore = new SelectedModelStore(_cryptoClientStore);
+            HomeVM = new();
+            CryptoClientStore.CurrencyUpdated += 
+                SelectedModelStore._cryptoClientStore_CurrencyUpdated;
+            //_cryptoClientStore = new CryptoClientStore();
+            //_selectedModelStore = new SelectedModelStore(_cryptoClientStore);
 
-            _cryptoClientViewModel = new CryptoClientViewModel(
-                _cryptoClientStore, _selectedModelStore);
+            _cryptoClientViewModel = new CryptoClientViewModel();
         }
         protected override void OnStartup(StartupEventArgs e)
         {

@@ -11,13 +11,13 @@ namespace CryptoClient.ViewModels
 {
     internal class ListingItemViewModel : ObservableObject
     {
-        private CryptoClientStore cryptoClientStore;
+        //private CryptoClientStore cryptoClientStore;
 
         public CurrencyModel CurrencyModel { get; private set; }
 
         public string CurrencyName => CurrencyModel.Symbol;
 
-        public ListingItemViewModel(CurrencyModel model, CryptoClientStore cryptoClientStore)
+        public ListingItemViewModel(CurrencyModel model /*, CryptoClientStore cryptoClientStore*/)
         {
             CurrencyModel = model;
         }

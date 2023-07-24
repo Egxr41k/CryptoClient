@@ -8,14 +8,16 @@ using System.Threading.Tasks;
 using CryptoClient.Models;
 using System.Globalization;
 using System.Text.Json;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace CryptoClient.ViewModels
 {
     internal class ListingViewModel : ObservableObject
     {
-        private CryptoClientStore _cryptoClientStore; //_selectedlistingItem
-        private SelectedModelStore _selectedModelStore;
-
+        //private CryptoClientStore _cryptoClientStore;
+        //private SelectedModelStore _selectedModelStore;
+        public RelayCommand DetailsViewCommand;
         public IEnumerable<ListingItemViewModel> CryptoList => cryptoList;
         private readonly ObservableCollection<ListingItemViewModel> cryptoList;
 
@@ -26,7 +28,9 @@ namespace CryptoClient.ViewModels
             set
             {
                 SetProperty(ref _selectedListingItemViewModel, value);
-                _selectedModelStore.SelectedModel = SelectedListingItemViewModel?.CurrencyModel;
+                //_selectedModelStore.SelectedModel = SelectedListingItemViewModel?.CurrencyModel;
+                SelectedModelStore.SelectedModel = SelectedListingItemViewModel?.CurrencyModel;
+                DetailsViewCommand.Execute(this);
             }
         }
 
@@ -67,18 +71,24 @@ namespace CryptoClient.ViewModels
         }
 
 
-        public ListingViewModel(CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore)
+        public ListingViewModel(/*CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore*/)
         {
-            _cryptoClientStore = cryptoClientStore;
-            _selectedModelStore = selectedModelStore;
+            //_cryptoClientStore = cryptoClientStore;
+            //_selectedModelStore = selectedModelStore;
 
 
             cryptoList = new ObservableCollection<ListingItemViewModel>();
 
-            _cryptoClientStore.CurrencyUpdated +=
-             CryptoClientStore_CurrencyUpdated;
-            _cryptoClientStore.CurrencyAdded +=
-             CryptoClientStore_CurrencyAdded;
+            //_cryptoClientStore.CurrencyUpdated +=
+            // CryptoClientStore_CurrencyUpdated;
+            //_cryptoClientStore.CurrencyAdded +=
+            // CryptoClientStore_CurrencyAdded;
+
+            CryptoClientStore.CurrencyUpdated +=
+            CryptoClientStore_CurrencyUpdated;
+            CryptoClientStore.CurrencyAdded += 
+            CryptoClientStore_CurrencyAdded;
+
 
             CryptoListInitAsync();
         }
@@ -96,7 +106,7 @@ namespace CryptoClient.ViewModels
         private void AddListItem(CurrencyModel model)
         {
             cryptoList.Add(
-                new ListingItemViewModel(model, _cryptoClientStore));
+                new ListingItemViewModel(model/*, _cryptoClientStore*/));
         }
     }
 }
