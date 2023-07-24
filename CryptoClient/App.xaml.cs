@@ -22,10 +22,14 @@ namespace CryptoClient
         //private readonly CryptoClientStore _cryptoClientStore;
         private readonly CryptoClientViewModel _cryptoClientViewModel;
         public static HomeViewModel HomeVM;
+        public static SearchViewModel SearchVM;
+        public static ConvertViewModel ConvertVM;
         //public static DetailsViewModel 
         public App()
         {
             HomeVM = new();
+            SearchVM = new();
+            ConvertVM = new();
             CryptoClientStore.CurrencyUpdated += 
                 SelectedModelStore._cryptoClientStore_CurrencyUpdated;
             //_cryptoClientStore = new CryptoClientStore();

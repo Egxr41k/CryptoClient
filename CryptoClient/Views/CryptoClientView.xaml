@@ -32,17 +32,17 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="150" />
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="150"/>
             <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="220" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <StackPanel>
+        <StackPanel Background="LightGray" >
             <TextBlock
                 Text="{Binding AppName}"
                 Margin="5"
@@ -51,15 +51,15 @@
                 Style="{DynamicResource DarkText}"/>
             <TextBlock
                 Text="Egxr41k software"
-                FontSize="12" Opacity="0.6"
+                FontSize="12"
                 HorizontalAlignment="Center"
                 Style="{DynamicResource DarkText}"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="1">
+        <StackPanel Background="LightGray" Grid.Row="1">
             <Button Content="Home" Command="{Binding HomeViewCommand}"/>
-            <Button Content="Search"/>
-            <Button Content="Convert"/>
+            <Button Content="Search" Command="{Binding SearchViewCommand}"/>
+            <Button Content="Convert" Command="{Binding ConvertViewCommand}"/>
         </StackPanel>
         
         <!--<ScrollViewer

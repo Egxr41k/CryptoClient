@@ -16,6 +16,8 @@ namespace CryptoClient.ViewModels
         public string AppName { get; set; } = "CryptoClient";
         public DetailsViewModel DetailsViewModel { get; }
         public ICommand HomeViewCommand { get; private set; }
+        public ICommand SearchViewCommand { get; private set; }
+        public ICommand ConvertViewCommand { get; private set; }
         public ListingViewModel ListingViewModel { get; }
         private object currentView;
         public object CurrentView
@@ -41,6 +43,16 @@ namespace CryptoClient.ViewModels
             HomeViewCommand = new RelayCommand(() =>
             {
                 CurrentView = App.HomeVM;
+            });
+
+            SearchViewCommand = new RelayCommand(() =>
+            {
+                CurrentView = App.SearchVM;
+            });
+
+            ConvertViewCommand = new RelayCommand(() =>
+            {
+                CurrentView = App.ConvertVM;
             });
 
         }
