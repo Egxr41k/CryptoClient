@@ -16,15 +16,12 @@ namespace CryptoClient
     /// </summary>
     public partial class App : Application
     {
-        public static HttpClient httpClient = new();
-        public const string BASE_URL = "https://api.coincap.io/v2/assets/";
         //private readonly SelectedModelStore _selectedModelStore;
         //private readonly CryptoClientStore _cryptoClientStore;
         private readonly CryptoClientViewModel _cryptoClientViewModel;
-        public static HomeViewModel HomeVM;
-        public static SearchViewModel SearchVM;
-        public static ConvertViewModel ConvertVM;
-        //public static DetailsViewModel 
+        HomeViewModel HomeVM;
+        SearchViewModel SearchVM;
+        ConvertViewModel ConvertVM;
         public App()
         {
             HomeVM = new();

@@ -6,7 +6,24 @@
              xmlns:local="clr-namespace:CryptoClient.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding SearchCommand}"/>
+    </UserControl.InputBindings>
     <Grid>
-        <TextBlock Text="{Binding Text}" FontSize="49"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBox Text="{Binding TextBoxContent, Mode=TwoWay}"
+                 FontSize="49"
+                 ToolTip="Input crypto currency name or code">
+        </TextBox>
+        <!--<TextBlock Text="Recent searching results:" FontSize="32" Grid.Column="1"/>-->
+
+        <Button Grid.Column="1" Content="Serach" Command="{Binding SearchCommand}"/>
     </Grid>
 </UserControl>

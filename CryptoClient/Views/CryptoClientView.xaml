@@ -67,9 +67,9 @@
             CanContentScroll="True">
             <v:ListingView Grid.Row="2" DataContext="{Binding ListingViewModel}"/>
         </ScrollViewer>-->
-        
-        
-        <v:ListingView Grid.Row="2" DataContext="{Binding ListingViewModel}"/>
+
+
+        <v:ListingView Grid.Row="2" DataContext="{Binding ListingVM}"/>
         
         <ContentControl
             Grid.Column="1"

@@ -14,47 +14,58 @@ namespace CryptoClient.ViewModels
     internal class CryptoClientViewModel : ObservableObject
     {
         public string AppName { get; set; } = "CryptoClient";
-        public DetailsViewModel DetailsViewModel { get; }
+        
         public ICommand HomeViewCommand { get; private set; }
         public ICommand SearchViewCommand { get; private set; }
         public ICommand ConvertViewCommand { get; private set; }
-        public ListingViewModel ListingViewModel { get; }
+        
+        public HomeViewModel HomeVM { get; }
+        public SearchViewModel SearchVM { get; }
+        public ConvertViewModel ConvertVM { get; }
+        public ListingViewModel ListingVM { get; }
+        public DetailsViewModel DetailsVM { get; }
+
         private object currentView;
         public object CurrentView
         {
             get => currentView;
             set => SetProperty(ref currentView, value);
         }
-        //public ICommand AddListItemCommand { get; }
+
         public CryptoClientViewModel(/*CryptoClientStore CryptoClientStore, SelectedModelStore selectedModelStore*/)
         {
-            CurrentView = App.HomeVM;
+            
 
-            ListingViewModel = new ListingViewModel(/*CryptoClientStore, selectedModelStore*/);
-            DetailsViewModel = new DetailsViewModel(/*selectedModelStore*/);
+            ListingVM = new ListingViewModel(/*CryptoClientStore, selectedModelStore*/);
+            DetailsVM = new DetailsViewModel(/*selectedModelStore*/);
+            HomeVM = new HomeViewModel();
+            SearchVM = new SearchViewModel();
+            ConvertVM = new ConvertViewModel();
+
 
             //AddListItemCommand = new OpenAddListItemCommand(listAppStore, modalNavigationStore);
 
-            ListingViewModel.DetailsViewCommand = new RelayCommand(() =>
+            ListingVM.DetailsViewCommand = new RelayCommand(() =>
             {
-                CurrentView = DetailsViewModel;
+                CurrentView = DetailsVM;
             });
 
             HomeViewCommand = new RelayCommand(() =>
             {
-                CurrentView = App.HomeVM;
+                CurrentView = HomeVM;
             });
 
             SearchViewCommand = new RelayCommand(() =>
             {
-                CurrentView = App.SearchVM;
+                CurrentView = SearchVM;
             });
 
             ConvertViewCommand = new RelayCommand(() =>
             {
-                CurrentView = App.ConvertVM;
+                CurrentView = ConvertVM;
             });
 
+            CurrentView = HomeVM;
         }
     }
 }

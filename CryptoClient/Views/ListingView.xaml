@@ -28,7 +28,6 @@
                         <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
-                        
                         FontSize="12" Height="50"
                         Text="{Binding CurrencyName}"/>
                     </StackPanel>

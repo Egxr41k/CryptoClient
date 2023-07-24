@@ -36,40 +36,17 @@ namespace CryptoClient.ViewModels
 
         private async void CryptoListInitAsync()
         {
-            var models = GetTopCurrenciesAsync().Result;
+            var models = JsonService.GetTopCurrenciesAsync().Result;
             for (int i = 0; CryptoList.Count() < 10; i++)
             {
                 if (i != 2 && i != 1)
                 {
-                     models[i].GetHistoryAsync().Wait();
+                     models[i].History =
+                     JsonService.GetHistoryAsync(models[i].Name).Result;
                     if (models[i].History != null) AddListItem(models[i]);
                 }
             }
         }
-
-        private async Task<List<CurrencyModel>> GetTopCurrenciesAsync()
-        {
-            var response = await App.httpClient.GetAsync(App.BASE_URL);
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<JsonElement>(json);
-
-            var cryptoCurrencies = new List<CurrencyModel>();
-
-            foreach (var data in result.GetProperty("data").EnumerateArray())
-            {
-                string sdouble = data.GetProperty("priceUsd").GetString() ?? string.Empty;
-                cryptoCurrencies.Add(new CurrencyModel(Guid.NewGuid())
-                {
-                    Name = data.GetProperty("id").GetString() ?? string.Empty,
-                    Symbol = data.GetProperty("symbol").GetString() ?? string.Empty,
-                    Link = data.GetProperty("explorer").GetString() ?? string.Empty,
-                    Price = double.Parse(sdouble, CultureInfo.InvariantCulture)
-                });
-                
-            }
-            return cryptoCurrencies.OrderByDescending(c => c.Price).ToList();
-        }
-
 
         public ListingViewModel(/*CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore*/)
         {
