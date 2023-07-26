@@ -1,13 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CryptoClient.Models;
 using CryptoClient.Stores;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace CryptoClient.ViewModels
 {
     internal class DetailsViewModel : ObservableObject
     {
-        //private readonly SelectedModelStore _selectedModelStore;
+        public ICommand SearchCommand { get; set; }
 
         private string title = "Home Page";
         public string Title
@@ -15,6 +19,7 @@ namespace CryptoClient.ViewModels
             get => title;
             set => SetProperty(ref title, value);
         }
+
         public Dictionary<DateTime, double> ChartData
         {
             get => chartData;
@@ -23,31 +28,50 @@ namespace CryptoClient.ViewModels
         }
         private Dictionary<DateTime, double> chartData;
 
-            
-        public string Text
-        {
-            get => text;
-            set => SetProperty(ref text, value);
-        }
-        private string text;
+        //public string Text
+        //{
+        //    get => text;
+        //    set => SetProperty(ref text, value);
+        //}
+        //private string text;
 
-        public DetailsViewModel(/*SelectedModelStore selectedModelStore*/)
+        public string TextBoxContent
+        {
+            get => _textBoxContent;
+            set => SetProperty(ref _textBoxContent, value);
+        }
+
+        private string _textBoxContent;
+
+        public DetailsViewModel()
         {
             Title = "Home Page";
-            //_selectedModelStore = selectedModelStore;
-            //_selectedModelStore.SelectedModelChanged +=
             SelectedModelStore.SelectedModelChanged +=
-            _selectedModelStore_SelectedModelChanged;
+            SelectedModelStore_SelectedModelChanged;
+
+            SearchCommand = new RelayCommand(async () =>
+            {
+                await DisplayCurrencyAsync(await JsonService.SearchAsync(TextBoxContent));
+            });
         }
 
-        private void _selectedModelStore_SelectedModelChanged()
+        private async Task DisplayCurrencyAsync(CurrencyModel? model)
         {
-            Text = string.Empty;
-            //Title = _selectedModelStore.SelectedModel.Name;
-            //ChartData = _selectedModelStore.SelectedModel.History;
+            if (model != null)
+            {
+                model.History = await JsonService.GetHistoryAsync(model.Name);
+                SelectedModelStore.SelectedModel = model;//show model details
+            }
+            else
+            {
+                // no results found
+            }
+        }
+
+        private void SelectedModelStore_SelectedModelChanged()
+        {
             ChartData = SelectedModelStore.SelectedModel.History;
             Title = SelectedModelStore.SelectedModel.Name;
-
         }
     }
 }

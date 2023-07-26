@@ -12,13 +12,29 @@
             <RowDefinition Height="auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel>
-            <TextBlock Text="{Binding Title}" FontSize="36"/>
-        </StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="{Binding Title}" FontSize="36" />
+        <TextBox
+            Text="{Binding TextBoxContent, Mode=TwoWay}"
+            FontSize="36"
+            Grid.Column="1"
+                 ToolTip="Input crypto currency name or code"/>
+        <Button
+            Grid.Column="2"
+            Content="Serach"
+            Command="{Binding SearchCommand}"
+            Background="LightGray"/>
         <!--<ScrollViewer Grid.Row="1">
             <TextBox Text="{Binding Text}"/>
         </ScrollViewer>-->
-        <syncfusion:SfChart Header="Coast increase per year" Grid.Row="1" Foreground="Black">
+        <syncfusion:SfChart
+            Header="Coast increase per year"
+            Grid.Row="1"
+            Grid.ColumnSpan="3">
             <!--Initialize the horizontal axis for SfChart-->
             <syncfusion:SfChart.PrimaryAxis>
                 <syncfusion:CategoryAxis Header="time" FontSize="14"/>

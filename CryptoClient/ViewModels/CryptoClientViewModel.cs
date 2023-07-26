@@ -16,11 +16,9 @@ namespace CryptoClient.ViewModels
         public string AppName { get; set; } = "CryptoClient";
         
         public ICommand HomeViewCommand { get; private set; }
-        public ICommand SearchViewCommand { get; private set; }
         public ICommand ConvertViewCommand { get; private set; }
         
         public HomeViewModel HomeVM { get; }
-        public SearchViewModel SearchVM { get; }
         public ConvertViewModel ConvertVM { get; }
         public ListingViewModel ListingVM { get; }
         public DetailsViewModel DetailsVM { get; }
@@ -39,7 +37,6 @@ namespace CryptoClient.ViewModels
             ListingVM = new ListingViewModel(/*CryptoClientStore, selectedModelStore*/);
             DetailsVM = new DetailsViewModel(/*selectedModelStore*/);
             HomeVM = new HomeViewModel();
-            SearchVM = new SearchViewModel();
             ConvertVM = new ConvertViewModel();
 
 
@@ -53,11 +50,6 @@ namespace CryptoClient.ViewModels
             HomeViewCommand = new RelayCommand(() =>
             {
                 CurrentView = HomeVM;
-            });
-
-            SearchViewCommand = new RelayCommand(() =>
-            {
-                CurrentView = SearchVM;
             });
 
             ConvertViewCommand = new RelayCommand(() =>

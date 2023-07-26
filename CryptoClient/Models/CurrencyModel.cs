@@ -12,12 +12,10 @@ namespace CryptoClient.Models
         public Guid Id { get; private set; }
         public string Symbol { get; set; }
         public string Name { get; set; }
-        //public string Description { get; set; } = string.Empty;
         public double Price { get; set; }
+        public double ChangePercent { get; set; }
         public string Link { get; set; }
-
         public Dictionary<DateTime, double> History { get; set; }
-
         public CurrencyModel(Guid id) { Id = id; }
 
      

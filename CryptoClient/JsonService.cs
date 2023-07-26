@@ -1,6 +1,7 @@
 ﻿using CryptoClient.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -42,18 +43,8 @@ namespace CryptoClient
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var result = JsonSerializer.Deserialize<JsonElement>(json);
-
-                var data = result.GetProperty("data");
-                string sdouble = data.GetProperty("priceUsd").GetString() ?? string.Empty;
-                return new CurrencyModel(Guid.NewGuid())
-                {
-                    Name = data.GetProperty("id").GetString() ?? string.Empty,
-                    Symbol = data.GetProperty("symbol").GetString() ?? string.Empty,
-                    Link = data.GetProperty("explorer").GetString() ?? string.Empty,
-                    Price = double.Parse(sdouble, CultureInfo.InvariantCulture)
-                };
-            }
-            else return null;
+                return GetModel(result.GetProperty("data"));
+            } else return null;
         }
 
         public static async Task<List<CurrencyModel>> GetTopCurrenciesAsync()
@@ -66,17 +57,24 @@ namespace CryptoClient
 
             foreach (var data in result.GetProperty("data").EnumerateArray())
             {
-                string sdouble = data.GetProperty("priceUsd").GetString() ?? string.Empty;
-                cryptoCurrencies.Add(new CurrencyModel(Guid.NewGuid())
-                {
-                    Name = data.GetProperty("id").GetString() ?? string.Empty,
-                    Symbol = data.GetProperty("symbol").GetString() ?? string.Empty,
-                    Link = data.GetProperty("explorer").GetString() ?? string.Empty,
-                    Price = double.Parse(sdouble, CultureInfo.InvariantCulture)
-                });
-
+                cryptoCurrencies.Add(GetModel(data));
             }
             return cryptoCurrencies.OrderByDescending(c => c.Price).ToList();
+        }
+
+        private static CurrencyModel GetModel(JsonElement data)
+        {
+            string price = data.GetProperty("priceUsd").GetString() ?? string.Empty;
+            string changePercent = data.GetProperty("changePercent24Hr").GetString() ?? string.Empty;
+
+            return new CurrencyModel(Guid.NewGuid())
+            {
+                Name = data.GetProperty("id").GetString() ?? string.Empty,
+                Symbol = data.GetProperty("symbol").GetString() ?? string.Empty,
+                Link = data.GetProperty("explorer").GetString() ?? string.Empty,
+                Price = double.Parse(price, CultureInfo.InvariantCulture),
+                ChangePercent = Math.Round(double.Parse(changePercent, CultureInfo.InvariantCulture), 2)
+            };
         }
     }
 }

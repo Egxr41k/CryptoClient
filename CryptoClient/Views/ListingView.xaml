@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <TextBlock
-            Text="List of most expensive crypocurrencies:"
+            Text="List of most expensive crypo currencies:"
             FontSize="12"
             Margin="0, 10"/>
         </StackPanel>
@@ -24,14 +24,19 @@
             SelectedItem="{Binding SelectedListingItemViewModel}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel VerticalAlignment="Center">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Height="50">
+                        <TextBlock Width="30"
+                            VerticalAlignment="Center"
+                            FontSize="12" Margin="0,0,100,0"
+                            Text="{Binding CurrencyName}"/>
                         <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        FontSize="12" Height="50"
-                        Text="{Binding CurrencyName}"/>
+                            VerticalAlignment="Center"
+                            FontSize="12" 
+                            Text="{Binding CurrencyPercent}"
+                            Foreground="{Binding Color}"/>
                     </StackPanel>
-                    
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
