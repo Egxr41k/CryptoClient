@@ -7,6 +7,70 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Text="{Binding Text}" FontSize="49"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBox
+                Text="{Binding Text, Mode=TwoWay}"
+                Background="Transparent"
+                BorderThickness="0"
+                Width="100" 
+                FontSize="12"/>
+            <ComboBox
+                Width="100"
+                SelectedItem="{Binding FirstCurrency}"
+                ItemsSource="{Binding AllowedCurrencies}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            Height="50">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="12" Margin="0,0,100,0"
+                                Text="{Binding Path=Name}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
+            <TextBlock
+                Text="{Binding Result}"
+                FontSize="12"
+                Width="100"/>
+            <ComboBox
+                Width="100"
+                SelectedItem="{Binding SecondCurrency}" 
+                ItemsSource="{Binding AllowedCurrencies}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            Height="50">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="12" Margin="0,0,100,0"
+                                Text="{Binding Path=Name}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+        
+        <Button Grid.Column="1" Grid.Row="2" Height="50" VerticalAlignment="Top" Margin="0,20,0,0" Content="Convert" Command="{Binding ConvertCommand}"/>
+        
+        
     </Grid>
 </UserControl>
