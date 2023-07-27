@@ -14,12 +14,12 @@ namespace CryptoClient.ViewModels
     {
         public ICommand ConvertCommand { get; set; }
 
-        public string Text
+        public string Count
         {
-            get => text;
-            set => SetProperty(ref text, value);
+            get => count;
+            set => SetProperty(ref count, value);
         }
-        private string text = "1";
+        private string count = "1";
 
         public string Result
         {
@@ -27,6 +27,15 @@ namespace CryptoClient.ViewModels
             set => SetProperty(ref result, value);
         }
         private string result;
+
+        private string errorMsg;
+
+        public string ErrorMsg
+        {
+            get => errorMsg;
+            set => SetProperty(ref errorMsg, value);
+        }
+
 
         private CurrencyModel _firstCurrency;
         public CurrencyModel FirstCurrency
@@ -50,7 +59,27 @@ namespace CryptoClient.ViewModels
 
             ConvertCommand = new RelayCommand(() =>
             {
-                Result = Math.Round(FirstCurrency.Price / SecondCurrency.Price * Convert.ToInt32(Text), 2).ToString();
+                try
+                {
+                    var count = Convert.ToInt32(Count);
+                    var fcurrency = FirstCurrency.Price;
+                    var scurrency = SecondCurrency.Price;
+
+                    Result = Math.Round(fcurrency / scurrency * count, 2).ToString();
+
+                }
+                catch(Exception ex)
+                {
+                    if(ex.Message == "Object reference not set to an instance of an object.")
+                    {
+                        ErrorMsg = "Currency isn`t selected";
+                    }
+                    else if(ex.Message == "Input string was not in a correct format.")
+                    {
+                        ErrorMsg = "Incorrect input";
+                    }
+                }
+
             });
         }
 

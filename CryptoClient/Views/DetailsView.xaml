@@ -27,7 +27,7 @@
             Grid.Column="2"
             Content="Serach"
             Command="{Binding SearchCommand}"
-            Background="LightGray"/>
+            Background="LightGray" Margin="0"/>
         <!--<ScrollViewer Grid.Row="1">
             <TextBox Text="{Binding Text}"/>
         </ScrollViewer>-->
