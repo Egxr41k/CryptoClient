@@ -29,7 +29,6 @@ namespace CryptoClient.ViewModels
         private string result;
 
         private string errorMsg;
-
         public string ErrorMsg
         {
             get => errorMsg;
@@ -66,6 +65,7 @@ namespace CryptoClient.ViewModels
                     var scurrency = SecondCurrency.Price;
 
                     Result = Math.Round(fcurrency / scurrency * count, 2).ToString();
+                    ErrorMsg = string.Empty;
 
                 }
                 catch(Exception ex)

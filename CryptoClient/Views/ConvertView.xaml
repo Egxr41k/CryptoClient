@@ -48,7 +48,6 @@
                 Width="100"
                 FontSize="20"
                 BorderBrush="Black"
-  
                 VerticalAlignment="Center"/>
             <ComboBox
                 BorderThickness="0"
@@ -101,7 +100,7 @@
             </ComboBox>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="2">
-            <TextBlock FontSize="20" Text="{Binding ErrorMsg}" TextWrapping="Wrap" Foreground="Red" Margin="0,20,0,0"/>
+            <TextBlock FontSize="16" Text="{Binding ErrorMsg}" TextWrapping="Wrap" Foreground="Red" Margin="0,20,0,0"/>
             <Button Height="50" VerticalAlignment="Top" Margin="0,20,0,0" Content="Convert" Command="{Binding ConvertCommand}"/>
         </StackPanel>
         

@@ -4,8 +4,10 @@ using CryptoClient.Models;
 using CryptoClient.Stores;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace CryptoClient.ViewModels
 {
@@ -13,7 +15,7 @@ namespace CryptoClient.ViewModels
     {
         public ICommand SearchCommand { get; set; }
 
-        private string title = "Home Page";
+        private string title;
         public string Title
         {
             get => title;
@@ -28,12 +30,12 @@ namespace CryptoClient.ViewModels
         }
         private Dictionary<DateTime, double> chartData;
 
-        //public string Text
-        //{
-        //    get => text;
-        //    set => SetProperty(ref text, value);
-        //}
-        //private string text;
+        private string errorMsg;
+        public string ErrorMsg
+        {
+            get => errorMsg;
+            set => SetProperty(ref errorMsg, value);
+        }
 
         public string TextBoxContent
         {
@@ -42,6 +44,31 @@ namespace CryptoClient.ViewModels
         }
 
         private string _textBoxContent;
+
+        private string price;
+        public string Price
+        {
+            get { return price; }
+            set => SetProperty(ref price, value);
+        }
+
+        private string changePercent;
+        public string ChangePercent
+        {
+            get { return changePercent; }
+            set => SetProperty(ref changePercent, value);
+        }
+
+        private string link;
+        public string Link
+        {
+            get { return link; }
+            set => SetProperty(ref link, value);
+        }
+
+        public SolidColorBrush Color => ChangePercent[0] == '-' ?
+            new SolidColorBrush(Colors.Red) :
+            new SolidColorBrush(Colors.Green);
 
         public DetailsViewModel()
         {
@@ -60,18 +87,20 @@ namespace CryptoClient.ViewModels
             if (model != null)
             {
                 model.History = await JsonService.GetHistoryAsync(model.Name);
-                SelectedModelStore.SelectedModel = model;//show model details
+                SelectedModelStore.SelectedModel = model;
+                ErrorMsg = string.Empty;
             }
-            else
-            {
-                // no results found
-            }
+            else ErrorMsg = "no results found";
         }
 
         private void SelectedModelStore_SelectedModelChanged()
         {
             ChartData = SelectedModelStore.SelectedModel.History;
             Title = SelectedModelStore.SelectedModel.Name;
+            Price = Math.Round(SelectedModelStore.SelectedModel.Price, 2).ToString() + " $";
+            ChangePercent = SelectedModelStore.SelectedModel.ChangePercent.ToString() + "%";
+            Link = /*"https://" + */SelectedModelStore.SelectedModel.Link;
+
         }
     }
 }
