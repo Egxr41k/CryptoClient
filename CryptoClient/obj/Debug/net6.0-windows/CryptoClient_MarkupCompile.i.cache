@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\777\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\
+C:\code\Egxr41k\C#_Dev\desctop applications\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\
 CryptoClient
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
-C:\Users\777\Desktop\CryptoClient\CryptoClient\App.xaml
+C:\code\Egxr41k\C#_Dev\desctop applications\CryptoClient\CryptoClient\App.xaml
 61909826352
 
 21-1213803378
-1991819583382
+1991998247353
 MainWindow.xaml;Views\ConvertView.xaml;Views\CryptoClientView.xaml;Views\DetailsView.xaml;Views\HomeView.xaml;Views\ListingView.xaml;
 
-False
+True
 

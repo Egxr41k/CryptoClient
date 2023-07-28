@@ -1095,28 +1095,27 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\777\\.nuget\\packages\\": {},
+    "C:\\Users\\Egxr41k\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Syncfusion\\Essential Studio\\WPF\\22.1.34\\ToolboxNuGetPackages": {}
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\777\\Desktop\\CryptoClient\\CryptoClient\\CryptoClient.csproj",
+      "projectUniqueName": "C:\\code\\Egxr41k\\C#_Dev\\desctop applications\\CryptoClient\\CryptoClient\\CryptoClient.csproj",
       "projectName": "CryptoClient",
-      "projectPath": "C:\\Users\\777\\Desktop\\CryptoClient\\CryptoClient\\CryptoClient.csproj",
-      "packagesPath": "C:\\Users\\777\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\777\\Desktop\\CryptoClient\\CryptoClient\\obj\\",
+      "projectPath": "C:\\code\\Egxr41k\\C#_Dev\\desctop applications\\CryptoClient\\CryptoClient\\CryptoClient.csproj",
+      "packagesPath": "C:\\Users\\Egxr41k\\.nuget\\packages\\",
+      "outputPath": "C:\\code\\Egxr41k\\C#_Dev\\desctop applications\\CryptoClient\\CryptoClient\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Syncfusion\\Essential Studio\\WPF\\22.1.34\\ToolboxNuGetPackages"
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\777\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Egxr41k\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Syncfusion Toolbox for WPF.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0-windows"
@@ -1173,7 +1172,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.300-preview.23179.2\\RuntimeIdentifierGraph.json"
       }
     }
   }

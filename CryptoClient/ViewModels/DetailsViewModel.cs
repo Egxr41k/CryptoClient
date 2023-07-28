@@ -26,9 +26,14 @@ namespace CryptoClient.ViewModels
         {
             get => chartData;
             set => SetProperty(ref chartData, value);
-
         }
         private Dictionary<DateTime, double> chartData;
+        private Dictionary<string, double> markets;
+        public Dictionary<string, double> Markets
+        {
+            get => markets;
+            set => SetProperty(ref markets, value);
+        }
 
         private string errorMsg;
         public string ErrorMsg
@@ -87,6 +92,8 @@ namespace CryptoClient.ViewModels
             if (model != null)
             {
                 model.History = await JsonService.GetHistoryAsync(model.Name);
+                model.Markets = await JsonService.GetMarketsAsync(model.Name);
+
                 SelectedModelStore.SelectedModel = model;
                 ErrorMsg = string.Empty;
             }
@@ -96,10 +103,11 @@ namespace CryptoClient.ViewModels
         private void SelectedModelStore_SelectedModelChanged()
         {
             ChartData = SelectedModelStore.SelectedModel.History;
+            Markets = SelectedModelStore.SelectedModel.Markets;
             Title = SelectedModelStore.SelectedModel.Name;
-            Price = Math.Round(SelectedModelStore.SelectedModel.Price, 2).ToString() + " $";
+            Price = SelectedModelStore.SelectedModel.Price.ToString() + " $";
             ChangePercent = SelectedModelStore.SelectedModel.ChangePercent.ToString() + "%";
-            Link = /*"https://" + */SelectedModelStore.SelectedModel.Link;
+            Link = SelectedModelStore.SelectedModel.Link;
 
         }
     }

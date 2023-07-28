@@ -16,6 +16,7 @@ namespace CryptoClient.Models
         public double ChangePercent { get; set; }
         public string Link { get; set; }
         public Dictionary<DateTime, double> History { get; set; }
+        public Dictionary<string, double> Markets { get; set; }
         public CurrencyModel(Guid id) { Id = id; }
 
      

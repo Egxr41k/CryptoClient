@@ -36,6 +36,29 @@ namespace CryptoClient
             return History;
         }
 
+        public static async Task<Dictionary<string, double>> GetMarketsAsync(string name)
+        {
+            var response = await httpClient.GetAsync(BASE_URL + name + "/markets");
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<JsonElement>(json);
+
+            var markets = new Dictionary<string, double>();
+            foreach (JsonElement data in result.GetProperty("data").EnumerateArray())
+            {
+                string sprice = data.GetProperty("priceUsd").GetString();
+                double value = Math.Round(double.Parse(sprice, CultureInfo.InvariantCulture), 2);
+                string key = data.GetProperty("exchangeId").GetString();
+
+                if (!markets.Keys.Contains(key)) markets.Add(data.GetProperty("exchangeId").GetString(), value);
+                //catch (Exception) { }
+            }
+
+            return markets
+                .OrderByDescending(market => market.Value)
+                .Take(5)
+                .ToDictionary(x => x.Key, x=> x.Value);
+        }
+
         public static async Task<CurrencyModel?> SearchAsync(string name)
         {
             var response = await httpClient.GetAsync(BASE_URL + name + "/");
@@ -72,7 +95,7 @@ namespace CryptoClient
                 Name = data.GetProperty("id").GetString() ?? string.Empty,
                 Symbol = data.GetProperty("symbol").GetString() ?? string.Empty,
                 Link = data.GetProperty("explorer").GetString() ?? string.Empty,
-                Price = double.Parse(price, CultureInfo.InvariantCulture),
+                Price = Math.Round(double.Parse(price, CultureInfo.InvariantCulture), 2),
                 ChangePercent = Math.Round(double.Parse(changePercent, CultureInfo.InvariantCulture), 2)
             };
         }

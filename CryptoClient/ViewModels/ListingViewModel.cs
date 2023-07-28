@@ -42,7 +42,9 @@ namespace CryptoClient.ViewModels
                 if (i != 2 && i != 1)
                 {
                      models[i].History =
-                     JsonService.GetHistoryAsync(models[i].Name).Result;
+                        await JsonService.GetHistoryAsync(models[i].Name);
+                     models[i].Markets =
+                        await JsonService.GetMarketsAsync(models[i].Name);
                     if (models[i].History != null) AddListItem(models[i]);
                 }
             }

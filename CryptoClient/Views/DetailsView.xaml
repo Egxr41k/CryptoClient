@@ -53,10 +53,19 @@
 
         <StackPanel Grid.Row="1">
             <TextBlock FontSize="24" Text="{Binding Price}" Margin="10"/>
-            <TextBlock FontSize="24" Text="{Binding ChangePercent}" Margin="10"/>
+            <TextBlock FontSize="24" Text="{Binding ChangePercent}" Margin="10" Foreground="{Binding Color}"/>
             <TextBlock FontSize="12" Text="{Binding Link}" Margin="10">
                 <Hyperlink NavigateUri="{Binding Link}"/>
             </TextBlock>
+
+
+            <DataGrid ItemsSource="{Binding Markets}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Market" Binding="{Binding Key}" />
+                    <DataGridTextColumn Header="Price" Binding="{Binding Value}" />
+                </DataGrid.Columns>
+            </DataGrid>
+
         </StackPanel>
         
         <Button
@@ -64,9 +73,7 @@
             Content="Serach"
             Command="{Binding SearchCommand}"
             Background="Transparent" Margin="20,0"/>
-        <!--<ScrollViewer Grid.Row="1">
-            <TextBox Text="{Binding Text}"/>
-        </ScrollViewer>-->
+
         <syncfusion:SfChart
             Header="Coast increase per year"
             Grid.Row="1"
