@@ -12,7 +12,7 @@ namespace CryptoClient.ViewModels
 {
     internal class ListingItemViewModel : ObservableObject
     {
-        //private CryptoClientStore cryptoClientStore;
+        private CryptoClientStore cryptoClientStore;
 
         public CurrencyModel CurrencyModel { get; private set; }
 
@@ -22,7 +22,7 @@ namespace CryptoClient.ViewModels
         public string CurrencyName => CurrencyModel.Symbol;
         public string CurrencyPercent => CurrencyModel.ChangePercent.ToString() +"%";
 
-        public ListingItemViewModel(CurrencyModel model /*, CryptoClientStore cryptoClientStore*/)
+        public ListingItemViewModel(CurrencyModel model, CryptoClientStore cryptoClientStore)
         {
             CurrencyModel = model;
         }

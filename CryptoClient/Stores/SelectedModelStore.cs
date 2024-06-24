@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 
 namespace CryptoClient.Stores
 {
-    internal static class SelectedModelStore
+    internal class SelectedModelStore
     {
-        //private readonly CryptoClientStore _cryptoClientStore;
+        private readonly CryptoClientStore _cryptoClientStore;
 
-        private static CurrencyModel _selectedModel;
-        public static CurrencyModel SelectedModel
+        public Action SelectedModelChanged;
+
+
+        private CurrencyModel _selectedModel;
+        public CurrencyModel SelectedModel
         {
             get => _selectedModel;
             set
@@ -22,16 +25,13 @@ namespace CryptoClient.Stores
             }
         }
 
+        public SelectedModelStore(CryptoClientStore cryptoClientStore)
+        {
+            _cryptoClientStore = cryptoClientStore;
+            _cryptoClientStore.CurrencyUpdated += _cryptoClientStore_CurrencyUpdated;
+        }
 
-        public static Action SelectedModelChanged;
-
-
-        //public SelectedModelStore(CryptoClientStore cryptoClientStore)
-        //{
-        //    _cryptoClientStore = cryptoClientStore;
-        //    CryptoClientStore.CurrencyUpdated += _cryptoClientStore_CurrencyUpdated;
-        //}
-        public static void _cryptoClientStore_CurrencyUpdated(CurrencyModel model)
+        public void _cryptoClientStore_CurrencyUpdated(CurrencyModel model)
         {
             if (model.Id == SelectedModel?.Id)
             {

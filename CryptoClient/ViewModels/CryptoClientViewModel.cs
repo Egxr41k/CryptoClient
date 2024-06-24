@@ -30,15 +30,12 @@ namespace CryptoClient.ViewModels
             set => SetProperty(ref currentView, value);
         }
 
-        public CryptoClientViewModel(/*CryptoClientStore CryptoClientStore, SelectedModelStore selectedModelStore*/)
+        public CryptoClientViewModel(CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore, JsonService jsonService)
         {
-            
-
-            ListingVM = new ListingViewModel(/*CryptoClientStore, selectedModelStore*/);
-            DetailsVM = new DetailsViewModel(/*selectedModelStore*/);
+            ListingVM = new ListingViewModel(cryptoClientStore, selectedModelStore, jsonService);
+            DetailsVM = new DetailsViewModel(selectedModelStore, jsonService);
             HomeVM = new HomeViewModel();
-            ConvertVM = new ConvertViewModel();
-
+            ConvertVM = new ConvertViewModel(jsonService);
 
             //AddListItemCommand = new OpenAddListItemCommand(listAppStore, modalNavigationStore);
 

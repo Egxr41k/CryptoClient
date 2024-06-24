@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AffqmZLYDFmgDRhoAZX8pOyxymYxvwPpLsexDdAR0/BLf+M5LgA0Wx5q6ILjed8Ls0+aX2/6Qi9pJ+45m7sO2Q==",
+  "dgSpecHash": "M/GlEC9zDtc=",
   "success": true,
-  "projectFilePath": "C:\\code\\Egxr41k\\C#_Dev\\desctop applications\\CryptoClient\\CryptoClient\\CryptoClient.csproj",
+  "projectFilePath": "C:\\Users\\Egxr41k\\Desktop\\CryptoClient\\CryptoClient\\CryptoClient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Egxr41k\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.1\\communitytoolkit.mvvm.8.2.1.nupkg.sha512",
     "C:\\Users\\Egxr41k\\.nuget\\packages\\modernwpfui\\0.9.6\\modernwpfui.0.9.6.nupkg.sha512",

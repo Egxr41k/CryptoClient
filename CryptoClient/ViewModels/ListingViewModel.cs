@@ -15,8 +15,10 @@ namespace CryptoClient.ViewModels
 {
     internal class ListingViewModel : ObservableObject
     {
-        //private CryptoClientStore _cryptoClientStore;
-        //private SelectedModelStore _selectedModelStore;
+        private CryptoClientStore _cryptoClientStore;
+        private SelectedModelStore _selectedModelStore;
+        private JsonService _jsonService;
+
         public RelayCommand DetailsViewCommand;
         public IEnumerable<ListingItemViewModel> CryptoList => cryptoList;
         private readonly ObservableCollection<ListingItemViewModel> cryptoList;
@@ -28,48 +30,39 @@ namespace CryptoClient.ViewModels
             set
             {
                 SetProperty(ref _selectedListingItemViewModel, value);
-                //_selectedModelStore.SelectedModel = SelectedListingItemViewModel?.CurrencyModel;
-                SelectedModelStore.SelectedModel = SelectedListingItemViewModel?.CurrencyModel;
+                _selectedModelStore.SelectedModel = SelectedListingItemViewModel?.CurrencyModel;
                 DetailsViewCommand.Execute(this);
             }
         }
 
-        private async void CryptoListInitAsync()
+        private async Task CryptoListInitAsync()
         {
-            var models = JsonService.GetTopCurrenciesAsync().Result;
+            var models = await _jsonService.GetTopCurrenciesAsync();
             for (int i = 0; CryptoList.Count() < 10; i++)
             {
-                if (i != 2 && i != 1)
+                if (true)
                 {
-                     models[i].History =
-                        await JsonService.GetHistoryAsync(models[i].Name);
-                     models[i].Markets =
-                        await JsonService.GetMarketsAsync(models[i].Name);
+                    models[i].History = await _jsonService.GetHistoryAsync(models[i].Id);
+                    models[i].Markets = await _jsonService.GetMarketsAsync(models[i].Id);
                     if (models[i].History != null) AddListItem(models[i]);
                 }
             }
         }
 
-        public ListingViewModel(/*CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore*/)
+        public ListingViewModel(CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore, JsonService jsonService)
         {
-            //_cryptoClientStore = cryptoClientStore;
-            //_selectedModelStore = selectedModelStore;
-
+            _cryptoClientStore = cryptoClientStore;
+            _selectedModelStore = selectedModelStore;
+            _jsonService = jsonService;
 
             cryptoList = new ObservableCollection<ListingItemViewModel>();
 
-            //_cryptoClientStore.CurrencyUpdated +=
-            // CryptoClientStore_CurrencyUpdated;
-            //_cryptoClientStore.CurrencyAdded +=
-            // CryptoClientStore_CurrencyAdded;
+            _cryptoClientStore.CurrencyUpdated +=
+             CryptoClientStore_CurrencyUpdated;
+            _cryptoClientStore.CurrencyAdded +=
+             CryptoClientStore_CurrencyAdded;
 
-            CryptoClientStore.CurrencyUpdated +=
-            CryptoClientStore_CurrencyUpdated;
-            CryptoClientStore.CurrencyAdded += 
-            CryptoClientStore_CurrencyAdded;
-
-
-            CryptoListInitAsync();
+            CryptoListInitAsync().GetAwaiter().GetResult();
         }
         private void CryptoClientStore_CurrencyUpdated(CurrencyModel model)
         {

@@ -16,21 +16,20 @@ namespace CryptoClient
     /// </summary>
     public partial class App : Application
     {
-        //private readonly SelectedModelStore _selectedModelStore;
-        //private readonly CryptoClientStore _cryptoClientStore;
+        private readonly SelectedModelStore _selectedModelStore;
+        private readonly CryptoClientStore _cryptoClientStore;
         private readonly CryptoClientViewModel _cryptoClientViewModel;
-        HomeViewModel HomeVM;
-        ConvertViewModel ConvertVM;
+        private readonly JsonService _jsonService;
+
         public App()
         {
-            HomeVM = new();
-            ConvertVM = new();
-            CryptoClientStore.CurrencyUpdated += 
-                SelectedModelStore._cryptoClientStore_CurrencyUpdated;
-            //_cryptoClientStore = new CryptoClientStore();
-            //_selectedModelStore = new SelectedModelStore(_cryptoClientStore);
+            _cryptoClientStore = new CryptoClientStore();
+            _selectedModelStore = new SelectedModelStore(_cryptoClientStore);
+            _cryptoClientStore.CurrencyUpdated +=
+                _selectedModelStore._cryptoClientStore_CurrencyUpdated;
+            _jsonService = new JsonService();
 
-            _cryptoClientViewModel = new CryptoClientViewModel();
+            _cryptoClientViewModel = new CryptoClientViewModel(_cryptoClientStore, _selectedModelStore, _jsonService);
         }
         protected override void OnStartup(StartupEventArgs e)
         {

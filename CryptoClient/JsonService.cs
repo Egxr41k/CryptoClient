@@ -11,17 +11,24 @@ using System.Threading.Tasks;
 
 namespace CryptoClient
 {
-    public static class JsonService
+    public class JsonService
     {
-        private static HttpClient httpClient = new();
-        private const string BASE_URL = "https://api.coincap.io/v2/assets/";
-        public static async Task<Dictionary<DateTime, double>> GetHistoryAsync(string name)
+        private HttpClient _httpClient;
+        private string _baseUrl;
+
+        public JsonService(string baseUrl = "https://api.coincap.io/v2/assets/")
         {
-            var response = await httpClient.GetAsync(BASE_URL + name + "/history?interval=d1");
+            _httpClient = new HttpClient();
+            _baseUrl = baseUrl;
+        }
+
+        public async Task<Dictionary<DateTime, double>> GetHistoryAsync(string name)
+        {
+            var response = await _httpClient.GetAsync(_baseUrl + name + "/history?interval=d1");
             var json = await response.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<JsonElement>(json);
 
-            var History = new Dictionary<DateTime, double>();
+            var history = new Dictionary<DateTime, double>();
             foreach (JsonElement data in result.GetProperty("data").EnumerateArray())
             {
                 long unixTime = data.GetProperty("time").GetInt64();
@@ -31,14 +38,14 @@ namespace CryptoClient
 
                 string sdouble = data.GetProperty("priceUsd").GetString() ?? string.Empty;
                 double value = Math.Round(double.Parse(sdouble, CultureInfo.InvariantCulture), 2);
-                History.Add(date, value);
+                history.Add(date, value);
             }
-            return History;
+            return history;
         }
 
-        public static async Task<Dictionary<string, double>> GetMarketsAsync(string name)
+        public async Task<Dictionary<string, double>> GetMarketsAsync(string name)
         {
-            var response = await httpClient.GetAsync(BASE_URL + name + "/markets");
+            var response = await _httpClient.GetAsync(_baseUrl + name + "/markets");
             var json = await response.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<JsonElement>(json);
 
@@ -50,7 +57,6 @@ namespace CryptoClient
                 string key = data.GetProperty("exchangeId").GetString();
 
                 if (!markets.Keys.Contains(key)) markets.Add(data.GetProperty("exchangeId").GetString(), value);
-                //catch (Exception) { }
             }
 
             return markets
@@ -59,9 +65,9 @@ namespace CryptoClient
                 .ToDictionary(x => x.Key, x=> x.Value);
         }
 
-        public static async Task<CurrencyModel?> SearchAsync(string name)
+        public async Task<CurrencyModel?> SearchAsync(string name)
         {
-            var response = await httpClient.GetAsync(BASE_URL + name + "/");
+            var response = await _httpClient.GetAsync(_baseUrl + name + "/");
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
@@ -70,9 +76,9 @@ namespace CryptoClient
             } else return null;
         }
 
-        public static async Task<List<CurrencyModel>> GetTopCurrenciesAsync()
+        public async Task<List<CurrencyModel>> GetTopCurrenciesAsync()
         {
-            var response = await httpClient.GetAsync(BASE_URL);
+            var response = await _httpClient.GetAsync(_baseUrl);
             var json = await response.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<JsonElement>(json);
 
@@ -85,14 +91,15 @@ namespace CryptoClient
             return cryptoCurrencies.OrderByDescending(c => c.Price).ToList();
         }
 
-        private static CurrencyModel GetModel(JsonElement data)
+        private CurrencyModel GetModel(JsonElement data)
         {
             string price = data.GetProperty("priceUsd").GetString() ?? string.Empty;
             string changePercent = data.GetProperty("changePercent24Hr").GetString() ?? string.Empty;
 
-            return new CurrencyModel(Guid.NewGuid())
+            return new CurrencyModel()
             {
-                Name = data.GetProperty("id").GetString() ?? string.Empty,
+                Id = data.GetProperty("id").GetString() ?? string.Empty,
+                Name = data.GetProperty("name").GetString() ?? string.Empty,
                 Symbol = data.GetProperty("symbol").GetString() ?? string.Empty,
                 Link = data.GetProperty("explorer").GetString() ?? string.Empty,
                 Price = Math.Round(double.Parse(price, CultureInfo.InvariantCulture), 2),

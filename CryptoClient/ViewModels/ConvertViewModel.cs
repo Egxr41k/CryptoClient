@@ -52,9 +52,9 @@ namespace CryptoClient.ViewModels
 
         public List<CurrencyModel> AllowedCurrencies { get; set; }
 
-        public ConvertViewModel()
+        public ConvertViewModel(JsonService jsonService)
         {
-            AllowedCurrencies = JsonService.GetTopCurrenciesAsync().Result;
+            AllowedCurrencies = jsonService.GetTopCurrenciesAsync().GetAwaiter().GetResult();
 
             ConvertCommand = new RelayCommand(() =>
             {

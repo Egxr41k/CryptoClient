@@ -9,7 +9,7 @@ namespace CryptoClient.Models
 {
     public class CurrencyModel
     {
-        public Guid Id { get; private set; }
+        public string Id { get; set; }
         public string Symbol { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
@@ -17,8 +17,5 @@ namespace CryptoClient.Models
         public string Link { get; set; }
         public Dictionary<DateTime, double> History { get; set; }
         public Dictionary<string, double> Markets { get; set; }
-        public CurrencyModel(Guid id) { Id = id; }
-
-     
     }
 }
