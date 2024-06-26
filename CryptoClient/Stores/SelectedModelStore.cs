@@ -28,7 +28,8 @@ namespace CryptoClient.Stores
         public SelectedModelStore(CryptoClientStore cryptoClientStore)
         {
             _cryptoClientStore = cryptoClientStore;
-            _cryptoClientStore.CurrencyUpdated += _cryptoClientStore_CurrencyUpdated;
+            _cryptoClientStore.CurrencyUpdated +=
+                _cryptoClientStore_CurrencyUpdated;
         }
 
         public void _cryptoClientStore_CurrencyUpdated(CurrencyModel model)

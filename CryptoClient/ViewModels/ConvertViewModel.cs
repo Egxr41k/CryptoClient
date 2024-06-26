@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CryptoClient.Contracts;
 using CryptoClient.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +12,7 @@ using System.Windows.Input;
 
 namespace CryptoClient.ViewModels
 {
-    public class ConvertViewModel : ObservableObject
+    internal class ConvertViewModel : ObservableObject
     {
         public ICommand ConvertCommand { get; set; }
 
@@ -36,33 +38,33 @@ namespace CryptoClient.ViewModels
         }
 
 
-        private CurrencyModel _firstCurrency;
-        public CurrencyModel FirstCurrency
+        private string _firstCurrency;
+        public string FirstCurrency
         {
             get => _firstCurrency;
             set => SetProperty(ref _firstCurrency, value);
         }
 
-        private CurrencyModel _secondCurrency;
-        public CurrencyModel SecondCurrency
+        private string _secondCurrency;
+        public string SecondCurrency
         {
             get => _secondCurrency;
             set => SetProperty(ref _secondCurrency, value);
         }
 
-        public List<CurrencyModel> AllowedCurrencies { get; set; }
+        public Dictionary<string, double> AllowedCurrencies { get; set; }
 
         public ConvertViewModel(JsonService jsonService)
         {
-            AllowedCurrencies = jsonService.GetTopCurrenciesAsync().GetAwaiter().GetResult();
+            AllowedCurrencies = jsonService.GetCurrenciesCoasts().GetAwaiter().GetResult();
 
             ConvertCommand = new RelayCommand(() =>
             {
                 try
                 {
                     var count = Convert.ToInt32(Count);
-                    var fcurrency = FirstCurrency.Price;
-                    var scurrency = SecondCurrency.Price;
+                    var fcurrency = AllowedCurrencies[FirstCurrency];
+                    var scurrency = AllowedCurrencies[SecondCurrency];
 
                     Result = Math.Round(fcurrency / scurrency * count, 2).ToString();
                     ErrorMsg = string.Empty;

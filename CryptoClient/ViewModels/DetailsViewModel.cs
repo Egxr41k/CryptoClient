@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CryptoClient.Contracts;
 using CryptoClient.Models;
 using CryptoClient.Stores;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -14,6 +16,7 @@ namespace CryptoClient.ViewModels
     internal class DetailsViewModel : ObservableObject
     {
         private SelectedModelStore _selectedModelStore;
+        private JsonService _jsonService;
         public ICommand SearchCommand { get; set; }
 
         private string title;
@@ -79,22 +82,22 @@ namespace CryptoClient.ViewModels
         public DetailsViewModel(SelectedModelStore selectedModelStore, JsonService jsonService)
         {
             _selectedModelStore = selectedModelStore;
-            Title = "Home Page";
+            _jsonService = jsonService;
+
             selectedModelStore.SelectedModelChanged +=
             SelectedModelStore_SelectedModelChanged;
 
             SearchCommand = new RelayCommand(async () =>
             {
-                CurrencyModel? model = await jsonService.SearchAsync(TextBoxContent);
-
-                if (model != null)
+                try
                 {
-                    model.History = await jsonService.GetHistoryAsync(model.Id);
-                    model.Markets = await jsonService.GetMarketsAsync(model.Id);
-
+                    CurrencyModel model =  await jsonService.SearchAsync(TextBoxContent);
                     selectedModelStore.SelectedModel = model;
                 }
-                else ErrorMsg = "no results found";
+                catch
+                {
+                    ErrorMsg = "no results found";
+                }
             });
         }
 

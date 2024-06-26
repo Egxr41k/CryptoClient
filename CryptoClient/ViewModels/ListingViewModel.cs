@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using CryptoClient.Models;
+using CryptoClient.Contracts;
 using System.Globalization;
 using System.Text.Json;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using CryptoClient.Models;
 
 namespace CryptoClient.ViewModels
 {
@@ -30,23 +31,16 @@ namespace CryptoClient.ViewModels
             set
             {
                 SetProperty(ref _selectedListingItemViewModel, value);
-                _selectedModelStore.SelectedModel = SelectedListingItemViewModel?.CurrencyModel;
+                _selectedModelStore.SelectedModel = 
+                    SelectedListingItemViewModel?.CurrencyModel;
                 DetailsViewCommand.Execute(this);
             }
         }
 
         private async Task CryptoListInitAsync()
         {
-            var models = await _jsonService.GetTopCurrenciesAsync();
-            for (int i = 0; CryptoList.Count() < 10; i++)
-            {
-                if (true)
-                {
-                    models[i].History = await _jsonService.GetHistoryAsync(models[i].Id);
-                    models[i].Markets = await _jsonService.GetMarketsAsync(models[i].Id);
-                    if (models[i].History != null) AddListItem(models[i]);
-                }
-            }
+            var models = await _jsonService.GetFullCurrenciesInfoAsync();
+            models.ForEach(item => AddListItem(item));
         }
 
         public ListingViewModel(CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore, JsonService jsonService)
@@ -64,6 +58,7 @@ namespace CryptoClient.ViewModels
 
             CryptoListInitAsync().GetAwaiter().GetResult();
         }
+
         private void CryptoClientStore_CurrencyUpdated(CurrencyModel model)
         {
             ListingItemViewModel? listingItemViewModel =
@@ -78,7 +73,7 @@ namespace CryptoClient.ViewModels
         private void AddListItem(CurrencyModel model)
         {
             cryptoList.Add(
-                new ListingItemViewModel(model/*, _cryptoClientStore*/));
+                new ListingItemViewModel(model, _cryptoClientStore));
         }
     }
 }

@@ -1,109 +1,140 @@
-﻿using CryptoClient.Models;
+﻿using CryptoClient.Contracts;
+using CryptoClient.Models;
+using ModernWpf.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CryptoClient
 {
     public class JsonService
     {
-        private HttpClient _httpClient;
-        private string _baseUrl;
+        private readonly HttpClient _httpClient;
+        private readonly string _baseUrl;
 
-        public JsonService(string baseUrl = "https://api.coincap.io/v2/assets/")
+        public async Task<List<CurrencyModel>> GetFullCurrenciesInfoAsync()
         {
-            _httpClient = new HttpClient();
+            var currencies = await GetTopCurrenciesAsync();
+            var result = new List<CurrencyModel>();
+
+            var tasks = currencies.Select(async currencyDto =>
+            {
+                return await GetModel(currencyDto);
+            });
+
+            var completedModels = await Task.WhenAll(tasks);
+            result.AddRange(completedModels);
+
+            return result;
+        }
+
+        public JsonService(HttpClient httpClient, string baseUrl = "https://api.coincap.io/v2/assets/")
+        {
+            _httpClient = httpClient;
             _baseUrl = baseUrl;
         }
 
         public async Task<Dictionary<DateTime, double>> GetHistoryAsync(string name)
         {
-            var response = await _httpClient.GetAsync(_baseUrl + name + "/history?interval=d1");
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<JsonElement>(json);
+            var response = await _httpClient.GetFromJsonAsync<HistoryResponse>($"{_baseUrl}{name}/history?interval=d1");
+            if (response?.Data == null) throw new Exception("No data received from history endpoint.");
 
-            var history = new Dictionary<DateTime, double>();
-            foreach (JsonElement data in result.GetProperty("data").EnumerateArray())
-            {
-                long unixTime = data.GetProperty("time").GetInt64();
+            return FormatHistoryData(response.Data);
+        }
 
-                DateTime date = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                date = date.AddMilliseconds(unixTime).ToLocalTime();
-
-                string sdouble = data.GetProperty("priceUsd").GetString() ?? string.Empty;
-                double value = Math.Round(double.Parse(sdouble, CultureInfo.InvariantCulture), 2);
-                history.Add(date, value);
-            }
-            return history;
+        private static Dictionary<DateTime, double> FormatHistoryData(DayDTO[] history)
+        {
+            return history
+                .ToDictionary(
+                    data => DateTimeOffset.FromUnixTimeMilliseconds(data.Time).DateTime,
+                    data => Math.Round(double.Parse(data.PriceUsd, CultureInfo.InvariantCulture), 2)
+                );
         }
 
         public async Task<Dictionary<string, double>> GetMarketsAsync(string name)
         {
-            var response = await _httpClient.GetAsync(_baseUrl + name + "/markets");
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<JsonElement>(json);
+            var response = await _httpClient.GetFromJsonAsync<MarketListResponse>($"{_baseUrl}{name}/markets");
+            if (response?.Data == null) throw new Exception("No data received from markets endpoint.");
 
-            var markets = new Dictionary<string, double>();
-            foreach (JsonElement data in result.GetProperty("data").EnumerateArray())
-            {
-                string sprice = data.GetProperty("priceUsd").GetString();
-                double value = Math.Round(double.Parse(sprice, CultureInfo.InvariantCulture), 2);
-                string key = data.GetProperty("exchangeId").GetString();
+            return FormatMarketsData(response.Data);
+        }
 
-                if (!markets.Keys.Contains(key)) markets.Add(data.GetProperty("exchangeId").GetString(), value);
-            }
-
+        private static Dictionary<string, double> FormatMarketsData(MarketDTO[] markets)
+        {
             return markets
-                .OrderByDescending(market => market.Value)
+                .GroupBy(market => market.ExchangeId)
+                .Select(group => group.First()) // Take the first market for each unique ExchangeId
+                .OrderByDescending(market => double.Parse(market.PriceUsd, CultureInfo.InvariantCulture))
                 .Take(5)
-                .ToDictionary(x => x.Key, x=> x.Value);
+                .ToDictionary(
+                    market => market.ExchangeId,
+                    market => Math.Round(double.Parse(market.PriceUsd, CultureInfo.InvariantCulture), 2)
+                );
         }
 
-        public async Task<CurrencyModel?> SearchAsync(string name)
+        public async Task<CurrencyModel> SearchAsync(string name)
         {
-            var response = await _httpClient.GetAsync(_baseUrl + name + "/");
-            if (response.IsSuccessStatusCode)
-            {
-                var json = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<JsonElement>(json);
-                return GetModel(result.GetProperty("data"));
-            } else return null;
+            var response = await _httpClient.GetFromJsonAsync<CurrencyResponse>($"{_baseUrl}{name}/");
+
+            if (response?.Data == null) throw new Exception("Object not nound");
+
+            return await GetModel(response.Data);
         }
 
-        public async Task<List<CurrencyModel>> GetTopCurrenciesAsync()
+        public async Task<List<CurrencyDTO>> GetTopCurrenciesAsync()
         {
-            var response = await _httpClient.GetAsync(_baseUrl);
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<JsonElement>(json);
+            var response = await _httpClient.GetFromJsonAsync<CurrencyListResponse>(_baseUrl);
+            if (response?.Data == null) throw new Exception("No data received from currencies endpoint.");
 
-            var cryptoCurrencies = new List<CurrencyModel>();
-
-            foreach (var data in result.GetProperty("data").EnumerateArray())
-            {
-                cryptoCurrencies.Add(GetModel(data));
-            }
-            return cryptoCurrencies.OrderByDescending(c => c.Price).ToList();
+            return FormatCurrenciesData(response.Data);
         }
 
-        private CurrencyModel GetModel(JsonElement data)
+        public async Task<Dictionary<string, double>> GetCurrenciesCoasts()
         {
-            string price = data.GetProperty("priceUsd").GetString() ?? string.Empty;
-            string changePercent = data.GetProperty("changePercent24Hr").GetString() ?? string.Empty;
+            var response = await _httpClient.GetFromJsonAsync<CurrencyListResponse>(_baseUrl);
+            if (response?.Data == null) throw new Exception("No data received from currencies endpoint.");
 
+            return FormatCurrenciesCoast(response.Data);
+        }
+
+        private Dictionary<string, double> FormatCurrenciesCoast(CurrencyDTO[] currencies)
+        {
+            return currencies
+                .OrderByDescending(currency => double.Parse(currency.PriceUsd, CultureInfo.InvariantCulture))
+                .ToDictionary(
+                    currency => currency.Id,
+                    currency => Math.Round(double.Parse(currency.PriceUsd, CultureInfo.InvariantCulture), 2)
+                );
+        }
+
+        private static List<CurrencyDTO> FormatCurrenciesData(CurrencyDTO[] currencies)
+        {
+            return currencies
+                .OrderByDescending(currency => double.Parse(currency.PriceUsd, CultureInfo.InvariantCulture))
+                .Take(10)
+                .ToList();
+        }
+
+        private async Task<CurrencyModel> GetModel(CurrencyDTO currencyDto)
+        {
             return new CurrencyModel()
             {
-                Id = data.GetProperty("id").GetString() ?? string.Empty,
-                Name = data.GetProperty("name").GetString() ?? string.Empty,
-                Symbol = data.GetProperty("symbol").GetString() ?? string.Empty,
-                Link = data.GetProperty("explorer").GetString() ?? string.Empty,
-                Price = Math.Round(double.Parse(price, CultureInfo.InvariantCulture), 2),
-                ChangePercent = Math.Round(double.Parse(changePercent, CultureInfo.InvariantCulture), 2)
+                Id = currencyDto.Id,
+                Symbol = currencyDto.Symbol,
+                Name = currencyDto.Name,
+                Price = Math.Round(double.Parse(currencyDto.PriceUsd, CultureInfo.InvariantCulture), 2),
+                ChangePercent = Math.Round(double.Parse(currencyDto.ChangePercent24Hr, CultureInfo.InvariantCulture), 2),
+                Link = currencyDto.Explorer,
+                History = await GetHistoryAsync(currencyDto.Id),
+                Markets = await GetMarketsAsync(currencyDto.Id),
             };
         }
     }

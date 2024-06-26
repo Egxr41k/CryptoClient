@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CryptoClient.Contracts;
 using CryptoClient.Models;
 using CryptoClient.Stores;
 using System;
@@ -22,7 +23,9 @@ namespace CryptoClient.ViewModels
         public string CurrencyName => CurrencyModel.Symbol;
         public string CurrencyPercent => CurrencyModel.ChangePercent.ToString() +"%";
 
-        public ListingItemViewModel(CurrencyModel model, CryptoClientStore cryptoClientStore)
+        public ListingItemViewModel(
+            CurrencyModel model, 
+            CryptoClientStore cryptoClientStore)
         {
             CurrencyModel = model;
         }
