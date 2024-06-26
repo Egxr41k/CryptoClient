@@ -20,51 +20,68 @@ namespace CryptoClient
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
 
-        public async Task<List<CurrencyModel>> GetFullCurrenciesInfoAsync()
-        {
-            var currencies = await GetTopCurrenciesAsync();
-            var result = new List<CurrencyModel>();
-
-            var tasks = currencies.Select(async currencyDto =>
-            {
-                return await GetModel(currencyDto);
-            });
-
-            var completedModels = await Task.WhenAll(tasks);
-            result.AddRange(completedModels);
-
-            return result;
-        }
-
         public JsonService(HttpClient httpClient, string baseUrl = "https://api.coincap.io/v2/assets/")
         {
             _httpClient = httpClient;
             _baseUrl = baseUrl;
         }
 
-        public async Task<Dictionary<DateTime, double>> GetHistoryAsync(string name)
+        public async Task<CurrencyModel[]> GetFullCurrenciesInfoAsync()
         {
-            var response = await _httpClient.GetFromJsonAsync<HistoryResponse>($"{_baseUrl}{name}/history?interval=d1");
-            if (response?.Data == null) throw new Exception("No data received from history endpoint.");
-
-            return FormatHistoryData(response.Data);
+            var currencies = await GetTopCurrenciesAsync();
+            var tasks = currencies.Select(GetModel);
+            return (await Task.WhenAll(tasks));
         }
 
-        private static Dictionary<DateTime, double> FormatHistoryData(DayDTO[] history)
+        public async Task<Dictionary<DateTime, double>> GetHistoryAsync(string name)
         {
-            return history
-                .ToDictionary(
-                    data => DateTimeOffset.FromUnixTimeMilliseconds(data.Time).DateTime,
-                    data => Math.Round(double.Parse(data.PriceUsd, CultureInfo.InvariantCulture), 2)
-                );
+            var response = await FetchDataAsync<HistoryResponse>($"{_baseUrl}{name}/history?interval=d1");
+            return FormatHistoryData(response.Data);
         }
 
         public async Task<Dictionary<string, double>> GetMarketsAsync(string name)
         {
-            var response = await _httpClient.GetFromJsonAsync<MarketListResponse>($"{_baseUrl}{name}/markets");
-            if (response?.Data == null) throw new Exception("No data received from markets endpoint.");
-
+            var response = await FetchDataAsync<MarketListResponse>($"{_baseUrl}{name}/markets");
             return FormatMarketsData(response.Data);
+        }
+
+        public async Task<CurrencyModel> SearchAsync(string name)
+        {
+            var response = await FetchDataAsync<CurrencyResponse>($"{_baseUrl}{name}/");
+            return await GetModel(response.Data);
+        }
+
+        public async Task<CurrencyDTO[]> GetTopCurrenciesAsync()
+        {
+            var response = await FetchDataAsync<CurrencyListResponse>(_baseUrl);
+            return FormatCurrenciesData(response.Data);
+        }
+
+        public async Task<Dictionary<string, double>> GetCurrenciesCoastsAsync()
+        {
+            var response = await FetchDataAsync<CurrencyListResponse>(_baseUrl);
+            return FormatCurrenciesCoast(response.Data);
+        }
+
+        private async Task<T> FetchDataAsync<T>(string url)
+        {
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<T>(url);
+                return response ?? throw new Exception($"No data received from {url}");
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error fetching data from {url}: {ex.Message}", ex);
+            }
+        }
+
+        private static Dictionary<DateTime, double> FormatHistoryData(DayDTO[] history)
+        {
+            return history.ToDictionary(
+                data => DateTimeOffset.FromUnixTimeMilliseconds(data.Time).DateTime,
+                data => Math.Round(double.Parse(data.PriceUsd, CultureInfo.InvariantCulture), 2)
+            );
         }
 
         private static Dictionary<string, double> FormatMarketsData(MarketDTO[] markets)
@@ -80,32 +97,15 @@ namespace CryptoClient
                 );
         }
 
-        public async Task<CurrencyModel> SearchAsync(string name)
+        private static CurrencyDTO[] FormatCurrenciesData(CurrencyDTO[] currencies)
         {
-            var response = await _httpClient.GetFromJsonAsync<CurrencyResponse>($"{_baseUrl}{name}/");
-
-            if (response?.Data == null) throw new Exception("Object not nound");
-
-            return await GetModel(response.Data);
+            return currencies
+                .OrderByDescending(currency => double.Parse(currency.PriceUsd, CultureInfo.InvariantCulture))
+                .Take(10)
+                .ToArray();
         }
 
-        public async Task<List<CurrencyDTO>> GetTopCurrenciesAsync()
-        {
-            var response = await _httpClient.GetFromJsonAsync<CurrencyListResponse>(_baseUrl);
-            if (response?.Data == null) throw new Exception("No data received from currencies endpoint.");
-
-            return FormatCurrenciesData(response.Data);
-        }
-
-        public async Task<Dictionary<string, double>> GetCurrenciesCoasts()
-        {
-            var response = await _httpClient.GetFromJsonAsync<CurrencyListResponse>(_baseUrl);
-            if (response?.Data == null) throw new Exception("No data received from currencies endpoint.");
-
-            return FormatCurrenciesCoast(response.Data);
-        }
-
-        private Dictionary<string, double> FormatCurrenciesCoast(CurrencyDTO[] currencies)
+        private static Dictionary<string, double> FormatCurrenciesCoast(CurrencyDTO[] currencies)
         {
             return currencies
                 .OrderByDescending(currency => double.Parse(currency.PriceUsd, CultureInfo.InvariantCulture))
@@ -113,14 +113,6 @@ namespace CryptoClient
                     currency => currency.Id,
                     currency => Math.Round(double.Parse(currency.PriceUsd, CultureInfo.InvariantCulture), 2)
                 );
-        }
-
-        private static List<CurrencyDTO> FormatCurrenciesData(CurrencyDTO[] currencies)
-        {
-            return currencies
-                .OrderByDescending(currency => double.Parse(currency.PriceUsd, CultureInfo.InvariantCulture))
-                .Take(10)
-                .ToList();
         }
 
         private async Task<CurrencyModel> GetModel(CurrencyDTO currencyDto)

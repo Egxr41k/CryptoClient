@@ -40,7 +40,7 @@ namespace CryptoClient.ViewModels
         private async Task CryptoListInitAsync()
         {
             var models = await _jsonService.GetFullCurrenciesInfoAsync();
-            models.ForEach(item => AddListItem(item));
+            foreach(var model in models) AddListItem(model);
         }
 
         public ListingViewModel(CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore, JsonService jsonService)
