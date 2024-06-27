@@ -15,12 +15,12 @@ using System.Xml.Linq;
 
 namespace CryptoClient.Services
 {
-    public class JsonService : IJsonService
+    public class CoinCapJsonService : IJsonService
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
 
-        public JsonService(HttpClient httpClient, string baseUrl = "https://api.coincap.io/v2/assets/")
+        public CoinCapJsonService(HttpClient httpClient, string baseUrl = "https://api.coincap.io/v2/assets/")
         {
             _httpClient = httpClient;
             _baseUrl = baseUrl;

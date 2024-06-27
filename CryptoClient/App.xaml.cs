@@ -27,7 +27,7 @@ namespace CryptoClient
         public App()
         {
             _httpClient = new HttpClient();
-            _jsonService = new JsonService(_httpClient);
+            _jsonService = new NbuJsonService(_httpClient);
             _cryptoClientStore = new CryptoClientStore();
             _selectedModelStore = new SelectedModelStore(
                 _cryptoClientStore);
