@@ -13,9 +13,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace CryptoClient
+namespace CryptoClient.Services
 {
-    public class JsonService
+    public class JsonService : IJsonService
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
@@ -30,7 +30,7 @@ namespace CryptoClient
         {
             var currencies = await GetTopCurrenciesAsync();
             var tasks = currencies.Select(GetModel);
-            return (await Task.WhenAll(tasks));
+            return await Task.WhenAll(tasks);
         }
 
         public async Task<Dictionary<DateTime, double>> GetHistoryAsync(string name)

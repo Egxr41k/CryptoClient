@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CryptoClient.Contracts;
 using CryptoClient.Models;
+using CryptoClient.Services;
 using CryptoClient.Stores;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace CryptoClient.ViewModels
     internal class DetailsViewModel : ObservableObject
     {
         private SelectedModelStore _selectedModelStore;
-        private JsonService _jsonService;
+        private IJsonService _jsonService;
         public ICommand SearchCommand { get; set; }
 
         private string title;
@@ -79,7 +80,9 @@ namespace CryptoClient.ViewModels
             new SolidColorBrush(Colors.Red) :
             new SolidColorBrush(Colors.Green);
 
-        public DetailsViewModel(SelectedModelStore selectedModelStore, JsonService jsonService)
+        public DetailsViewModel(
+            SelectedModelStore selectedModelStore, 
+            IJsonService jsonService)
         {
             _selectedModelStore = selectedModelStore;
             _jsonService = jsonService;

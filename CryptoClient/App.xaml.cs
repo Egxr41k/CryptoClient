@@ -1,4 +1,6 @@
-﻿using CryptoClient.Stores;
+﻿using CryptoClient.Models;
+using CryptoClient.Services;
+using CryptoClient.Stores;
 using CryptoClient.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,7 +21,7 @@ namespace CryptoClient
         private readonly SelectedModelStore _selectedModelStore;
         private readonly CryptoClientStore _cryptoClientStore;
         private readonly CryptoClientViewModel _cryptoClientViewModel;
-        private readonly JsonService _jsonService;
+        private readonly IJsonService _jsonService;
         private readonly HttpClient _httpClient;
 
         public App()
