@@ -1,0 +1,6 @@
+{
+  "usedApi": "CoinCap",
+  "availableCurrencyCount": 10,
+  "fetchingIntervalMin": 5,
+  "formatOfSaving": "JSON"
+}
