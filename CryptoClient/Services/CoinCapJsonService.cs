@@ -13,14 +13,14 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace CryptoClient
+namespace CryptoClient.Services
 {
-    public class JsonService
+    public class CoinCapJsonService : IJsonService
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
 
-        public JsonService(HttpClient httpClient, string baseUrl = "https://api.coincap.io/v2/assets/")
+        public CoinCapJsonService(HttpClient httpClient, string baseUrl = "https://api.coincap.io/v2/assets/")
         {
             _httpClient = httpClient;
             _baseUrl = baseUrl;
@@ -30,7 +30,7 @@ namespace CryptoClient
         {
             var currencies = await GetTopCurrenciesAsync();
             var tasks = currencies.Select(GetModel);
-            return (await Task.WhenAll(tasks));
+            return await Task.WhenAll(tasks);
         }
 
         public async Task<Dictionary<DateTime, double>> GetHistoryAsync(string name)

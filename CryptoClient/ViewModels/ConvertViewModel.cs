@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CryptoClient.Contracts;
 using CryptoClient.Models;
+using CryptoClient.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -54,7 +55,7 @@ namespace CryptoClient.ViewModels
 
         public Dictionary<string, double> AllowedCurrencies { get; set; }
 
-        public ConvertViewModel(JsonService jsonService)
+        public ConvertViewModel(IJsonService jsonService)
         {
             AllowedCurrencies = jsonService.GetCurrenciesCoastsAsync().GetAwaiter().GetResult();
 

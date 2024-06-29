@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using CryptoClient.Models;
+using CryptoClient.Services;
 
 namespace CryptoClient.ViewModels
 {
@@ -18,7 +19,7 @@ namespace CryptoClient.ViewModels
     {
         private CryptoClientStore _cryptoClientStore;
         private SelectedModelStore _selectedModelStore;
-        private JsonService _jsonService;
+        private IJsonService _jsonService;
 
         public RelayCommand DetailsViewCommand;
         public IEnumerable<ListingItemViewModel> CryptoList => cryptoList;
@@ -43,7 +44,10 @@ namespace CryptoClient.ViewModels
             foreach(var model in models) AddListItem(model);
         }
 
-        public ListingViewModel(CryptoClientStore cryptoClientStore, SelectedModelStore selectedModelStore, JsonService jsonService)
+        public ListingViewModel(
+            CryptoClientStore cryptoClientStore, 
+            SelectedModelStore selectedModelStore,
+            IJsonService jsonService)
         {
             _cryptoClientStore = cryptoClientStore;
             _selectedModelStore = selectedModelStore;
