@@ -444,6 +444,16 @@
             "related": ".xml"
           }
         }
+      },
+      "CryptoClient.Settings/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/CryptoClient.Settings.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CryptoClient.Settings.dll": {}
+        }
       }
     }
   },
@@ -1085,11 +1095,17 @@
         "syncfusion_logo.png",
         "tools/VisualStudioToolsManifest.xml"
       ]
+    },
+    "CryptoClient.Settings/1.0.0": {
+      "type": "project",
+      "path": "../CryptoClient.Settings/CryptoClient.Settings.csproj",
+      "msbuildProject": "../CryptoClient.Settings/CryptoClient.Settings.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0-windows7.0": [
       "CommunityToolkit.Mvvm >= 8.2.1",
+      "CryptoClient.Settings >= 1.0.0",
       "ModernWpfUI >= 0.9.6",
       "Syncfusion.SfChart.WPF >= 22.1.39"
     ]
@@ -1126,7 +1142,11 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Egxr41k\\Desktop\\CryptoClient\\CryptoClient.Settings\\CryptoClient.Settings.csproj": {
+              "projectPath": "C:\\Users\\Egxr41k\\Desktop\\CryptoClient\\CryptoClient.Settings\\CryptoClient.Settings.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

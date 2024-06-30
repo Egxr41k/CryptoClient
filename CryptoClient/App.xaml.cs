@@ -2,6 +2,7 @@
 using CryptoClient.Services;
 using CryptoClient.Stores;
 using CryptoClient.ViewModels;
+using CryptoClient.Settings;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,13 +22,24 @@ namespace CryptoClient
         private readonly SelectedModelStore _selectedModelStore;
         private readonly CryptoClientStore _cryptoClientStore;
         private readonly CryptoClientViewModel _cryptoClientViewModel;
+        private readonly SettingsService _settingsService;
         private readonly IJsonService _jsonService;
         private readonly HttpClient _httpClient;
 
         public App()
         {
+            _settingsService = new SettingsService();
             _httpClient = new HttpClient();
-            _jsonService = new NbuJsonService(_httpClient);
+
+            if (_settingsService.Settings.UsedApi == "CoinCap")
+            {
+                _jsonService = new CoinCapJsonService(_httpClient);
+            }
+            else
+            {
+                _jsonService = new NbuJsonService(_httpClient);
+            }
+            
             _cryptoClientStore = new CryptoClientStore();
             _selectedModelStore = new SelectedModelStore(
                 _cryptoClientStore);
@@ -38,8 +50,10 @@ namespace CryptoClient
             _cryptoClientViewModel = new CryptoClientViewModel(
                 _cryptoClientStore, 
                 _selectedModelStore, 
-                _jsonService);
+                _jsonService,
+                _settingsService);
         }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             MainWindow = new MainWindow()

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CryptoClient.Models;
 using CryptoClient.Services;
+using CryptoClient.Settings;
 using CryptoClient.Stores;
 using System;
 using System.Collections.Generic;
@@ -35,11 +36,12 @@ namespace CryptoClient.ViewModels
         public CryptoClientViewModel(
             CryptoClientStore cryptoClientStore, 
             SelectedModelStore selectedModelStore,
-            IJsonService jsonService)
+            IJsonService jsonService,
+            SettingsService _settingsService)
         {
             ListingVM = new ListingViewModel(cryptoClientStore, selectedModelStore, jsonService);
             DetailsVM = new DetailsViewModel(selectedModelStore, jsonService);
-            HomeVM = new HomeViewModel();
+            HomeVM = new HomeViewModel(_settingsService);
 
             ConvertVM = new ConvertViewModel(jsonService);
 

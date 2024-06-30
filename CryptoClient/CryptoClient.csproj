@@ -20,4 +20,8 @@
       <PackageReference Include="Syncfusion.SfChart.WPF" Version="22.1.39" />
 </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CryptoClient.Settings\CryptoClient.Settings.csproj" />
+  </ItemGroup>
+
 </Project>

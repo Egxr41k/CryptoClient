@@ -9,6 +9,7 @@
       "CryptoClient/1.0.0": {
         "dependencies": {
           "CommunityToolkit.Mvvm": "8.2.1",
+          "CryptoClient.Settings": "1.0.0",
           "ModernWpfUI": "0.9.6",
           "Syncfusion.SfChart.WPF": "22.1.39"
         },
@@ -434,6 +435,11 @@
             "fileVersion": "22.1.39.0"
           }
         }
+      },
+      "CryptoClient.Settings/1.0.0": {
+        "runtime": {
+          "CryptoClient.Settings.dll": {}
+        }
       }
     }
   },
@@ -470,6 +476,11 @@
       "sha512": "sha512-/gAKpV7pI0e3NgyFExieChSaQLG2N09LQqq3P+asUx3iY89+JhELyhiI3QbYigHkFcg7T4pf63eeKzLikvvUBA==",
       "path": "syncfusion.sfchart.wpf/22.1.39",
       "hashPath": "syncfusion.sfchart.wpf.22.1.39.nupkg.sha512"
+    },
+    "CryptoClient.Settings/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }
