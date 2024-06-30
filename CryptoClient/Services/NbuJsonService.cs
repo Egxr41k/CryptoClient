@@ -16,7 +16,7 @@ namespace CryptoClient.Services
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
 
-        public NbuJsonService(HttpClient httpClient, string baseUrl = "https://bank.gov.ua/NBUStatService/v1/statdirectory/")
+        public NbuJsonService(HttpClient httpClient, string baseUrl = "https://bank.gov.ua/NBU_Exchange/exchange_site")
         {
             _httpClient = httpClient;
             _baseUrl = baseUrl;
@@ -24,21 +24,18 @@ namespace CryptoClient.Services
 
         public async Task<List<NbuCurrencyDTO>> GetTopCurrenciesAsync()
         {
-            var response = await FetchDataAsync<NbuCurrencyDTO[]>($"{_baseUrl}exchange?json");
+            var response = await FetchDataAsync<NbuCurrencyDTO[]>($"{_baseUrl}?json");
             return FormatCurrenciesData(response);
         }
 
         public async Task<Dictionary<DateTime, double>> GetHistoryAsync(string currencyCode)
         {
-            var tasks = new List<Task<NbuCurrencyDTO>>();
-            for (var date = DateTime.UtcNow.AddMonths(-1); date <= DateTime.Now; date = date.AddDays(1))
-            {
-                var formattedDate = date.ToString("yyyyMMdd");
-                tasks.Add(FetchDataAsync<NbuCurrencyDTO>($"{_baseUrl}exchange?valcode={currencyCode}&date={formattedDate}&json"));
-            }
+            var start = DateTime.UtcNow.AddYears(-1).ToString("yyyyMMdd");
+            var end = DateTime.UtcNow.ToString("yyyyMMdd");
+            var url = $"{_baseUrl}?start={start}&end={end}&valcode={currencyCode}&sort=exchangedate&order=desc&json";
+            var response = await FetchDataAsync<NbuCurrencyDTO[]>(url);
 
-            var histories = await Task.WhenAll(tasks);
-            return FormatHistoryData(histories);
+            return FormatHistoryData(response);
         }
 
         private async Task<T> FetchDataAsync<T>(string url) where T : class
@@ -67,7 +64,7 @@ namespace CryptoClient.Services
         {
             return currencies
                 .OrderByDescending(currency => currency.Rate)
-                .Take(5)
+                .Take(10)
                 .ToList();
         }
 
@@ -103,15 +100,19 @@ namespace CryptoClient.Services
 
         private async Task<CurrencyModel> GetModel(NbuCurrencyDTO currencyDto)
         {
+            var history = await GetHistoryAsync(currencyDto.Cc);
+            var yesterday = DateTime.Today.AddDays(-1);
+            var changePercent = history[DateTime.Today] / history[yesterday];
+
             return new CurrencyModel()
             {
                 Id = currencyDto.R030.ToString(),
                 Symbol = currencyDto.Cc,
                 Name = currencyDto.Txt,
                 Price = currencyDto.Rate,
-                ChangePercent = 0.0,
                 Link = "",
-                History = await GetHistoryAsync(currencyDto.Cc),
+                History = history,
+                ChangePercent = Math.Round(changePercent, 2)
             };
         }
     }
