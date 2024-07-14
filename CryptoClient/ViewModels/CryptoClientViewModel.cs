@@ -37,11 +37,11 @@ namespace CryptoClient.ViewModels
             CryptoClientStore cryptoClientStore, 
             SelectedModelStore selectedModelStore,
             IJsonService jsonService,
-            SettingsService _settingsService)
+            SettingsService settingsService)
         {
-            ListingVM = new ListingViewModel(cryptoClientStore, selectedModelStore, jsonService);
+            ListingVM = new ListingViewModel(cryptoClientStore, selectedModelStore, jsonService, settingsService);
             DetailsVM = new DetailsViewModel(selectedModelStore, jsonService);
-            HomeVM = new HomeViewModel(_settingsService);
+            HomeVM = new HomeViewModel(settingsService);
 
             ConvertVM = new ConvertViewModel(jsonService);
 

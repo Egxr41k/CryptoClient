@@ -1,17 +1,15 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CryptoClient.Stores;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using CryptoClient.Contracts;
-using System.Globalization;
-using System.Text.Json;
-using System.Windows.Input;
+using System.Windows.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CryptoClient.Models;
+using CryptoClient.Stores;
 using CryptoClient.Services;
+using CryptoClient.Settings;
 
 namespace CryptoClient.ViewModels
 {
@@ -20,6 +18,8 @@ namespace CryptoClient.ViewModels
         private CryptoClientStore _cryptoClientStore;
         private SelectedModelStore _selectedModelStore;
         private IJsonService _jsonService;
+        private DispatcherTimer _refreshTimer;
+
 
         public RelayCommand DetailsViewCommand;
         public IEnumerable<ListingItemViewModel> CryptoList => cryptoList;
@@ -40,6 +40,7 @@ namespace CryptoClient.ViewModels
 
         private async Task CryptoListInitAsync()
         {
+            cryptoList.Clear();
             var models = await _jsonService.GetFullCurrenciesInfoAsync();
             foreach(var model in models) AddListItem(model);
         }
@@ -47,7 +48,8 @@ namespace CryptoClient.ViewModels
         public ListingViewModel(
             CryptoClientStore cryptoClientStore, 
             SelectedModelStore selectedModelStore,
-            IJsonService jsonService)
+            IJsonService jsonService,
+            SettingsService settingsService)
         {
             _cryptoClientStore = cryptoClientStore;
             _selectedModelStore = selectedModelStore;
@@ -61,6 +63,15 @@ namespace CryptoClient.ViewModels
              CryptoClientStore_CurrencyAdded;
 
             CryptoListInitAsync().GetAwaiter().GetResult();
+
+            int interval = settingsService.Settings.FetchingIntervalMin;
+
+            _refreshTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMinutes(interval)
+            };
+            _refreshTimer.Tick += async (sender, e) => await CryptoListInitAsync();
+            _refreshTimer.Start();
         }
 
         private void CryptoClientStore_CurrencyUpdated(CurrencyModel model)

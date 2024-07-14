@@ -31,14 +31,9 @@ namespace CryptoClient
             _settingsService = new SettingsService();
             _httpClient = new HttpClient();
 
-            if (_settingsService.Settings.UsedApi == "CoinCap")
-            {
-                _jsonService = new CoinCapJsonService(_httpClient);
-            }
-            else
-            {
-                _jsonService = new NbuJsonService(_httpClient);
-            }
+            _jsonService = _settingsService.Settings.UsedApi == "CoinCap" ? 
+                new CoinCapJsonService(_httpClient) : 
+                new NbuJsonService(_httpClient);
             
             _cryptoClientStore = new CryptoClientStore();
             _selectedModelStore = new SelectedModelStore(
