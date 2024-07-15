@@ -10,6 +10,7 @@ using CryptoClient.Models;
 using CryptoClient.Stores;
 using CryptoClient.Settings;
 using CryptoClient.Data.Services;
+using CryptoClient.Data.Storages;
 
 namespace CryptoClient.ViewModels
 {
@@ -17,9 +18,8 @@ namespace CryptoClient.ViewModels
     {
         private CryptoClientStore _cryptoClientStore;
         private SelectedModelStore _selectedModelStore;
-        private IJsonService _jsonService;
         private DispatcherTimer _refreshTimer;
-
+        private IStorageService _strorageService;
 
         public RelayCommand DetailsViewCommand;
         public IEnumerable<ListingItemViewModel> CryptoList => cryptoList;
@@ -41,19 +41,19 @@ namespace CryptoClient.ViewModels
         private async Task CryptoListInitAsync()
         {
             cryptoList.Clear();
-            var models = await _jsonService.GetFullCurrenciesInfoAsync();
+            var models = _strorageService.Read();
             foreach(var model in models) AddListItem(model);
         }
 
         public ListingViewModel(
             CryptoClientStore cryptoClientStore, 
             SelectedModelStore selectedModelStore,
-            IJsonService jsonService,
+            IStorageService strorageService,
             SettingsService settingsService)
         {
             _cryptoClientStore = cryptoClientStore;
             _selectedModelStore = selectedModelStore;
-            _jsonService = jsonService;
+            _strorageService = strorageService;
 
             cryptoList = new ObservableCollection<ListingItemViewModel>();
 
@@ -65,10 +65,9 @@ namespace CryptoClient.ViewModels
             CryptoListInitAsync().GetAwaiter().GetResult();
 
             int interval = settingsService.Settings.FetchingIntervalMin;
-
             _refreshTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMinutes(interval)
+                Interval = TimeSpan.FromMinutes(interval) // Set your refresh interval here
             };
             _refreshTimer.Tick += async (sender, e) => await CryptoListInitAsync();
             _refreshTimer.Start();

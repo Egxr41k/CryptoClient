@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CryptoClient.Data.Services;
+using CryptoClient.Data.Storages;
 using CryptoClient.Models;
 using CryptoClient.Settings;
 using CryptoClient.Stores;
@@ -36,14 +37,14 @@ namespace CryptoClient.ViewModels
         public CryptoClientViewModel(
             CryptoClientStore cryptoClientStore, 
             SelectedModelStore selectedModelStore,
-            IJsonService jsonService,
+            IStorageService storageService,
             SettingsService settingsService)
         {
-            ListingVM = new ListingViewModel(cryptoClientStore, selectedModelStore, jsonService, settingsService);
-            DetailsVM = new DetailsViewModel(selectedModelStore, jsonService);
+            ListingVM = new ListingViewModel(cryptoClientStore, selectedModelStore, storageService, settingsService);
+            DetailsVM = new DetailsViewModel(selectedModelStore, storageService);
             HomeVM = new HomeViewModel(settingsService);
 
-            ConvertVM = new ConvertViewModel(jsonService);
+            //ConvertVM = new ConvertViewModel(jsonService);
 
             ListingVM.DetailsViewCommand = new RelayCommand(() =>
             {

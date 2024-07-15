@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CryptoClient.Data.Contracts;
 using CryptoClient.Data.Services;
+using CryptoClient.Data.Storages;
 using CryptoClient.Models;
 using CryptoClient.Stores;
 using System;
@@ -17,7 +18,7 @@ namespace CryptoClient.ViewModels
     internal class DetailsViewModel : ObservableObject
     {
         private SelectedModelStore _selectedModelStore;
-        private IJsonService _jsonService;
+        //private IJsonService _jsonService;
         public ICommand SearchCommand { get; set; }
 
         private string title;
@@ -81,26 +82,17 @@ namespace CryptoClient.ViewModels
             new SolidColorBrush(Colors.Green);
 
         public DetailsViewModel(
-            SelectedModelStore selectedModelStore, 
-            IJsonService jsonService)
+            SelectedModelStore selectedModelStore,
+            IStorageService storageService)
         {
             _selectedModelStore = selectedModelStore;
-            _jsonService = jsonService;
 
             selectedModelStore.SelectedModelChanged +=
             SelectedModelStore_SelectedModelChanged;
 
             SearchCommand = new RelayCommand(async () =>
             {
-                try
-                {
-                    CurrencyModel model =  await jsonService.SearchAsync(TextBoxContent);
-                    selectedModelStore.SelectedModel = model;
-                }
-                catch
-                {
-                    ErrorMsg = "no results found";
-                }
+
             });
         }
 

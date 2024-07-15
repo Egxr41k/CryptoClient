@@ -1,5 +1,4 @@
 ﻿using CryptoClient.Models;
-using CryptoClient.Services;
 using CryptoClient.Stores;
 using CryptoClient.ViewModels;
 using CryptoClient.Settings;
@@ -12,6 +11,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using CryptoClient.Data.Services;
+using CryptoClient.Data.Storages;
+using System.Windows.Threading;
 
 namespace CryptoClient
 {
@@ -26,16 +27,27 @@ namespace CryptoClient
         private readonly SettingsService _settingsService;
         private readonly IJsonService _jsonService;
         private readonly HttpClient _httpClient;
+        private readonly IStorageService _storageService;
 
         public App()
         {
             _settingsService = new SettingsService();
             _httpClient = new HttpClient();
 
-            _jsonService = _settingsService.Settings.UsedApi == "CoinCap" ? 
-                new CoinCapJsonService(_httpClient) : 
+            _jsonService = _settingsService.Settings.UsedApi == "CoinCap" ?
+                new CoinCapJsonService(_httpClient) :
                 new NbuJsonService(_httpClient);
-            
+
+            switch (_settingsService.Settings.FormatOfSaving)
+            {
+                case "JSON":
+                    _storageService = new JsonStorageService(_jsonService);
+                    break;
+                default:
+                    _storageService = new JsonStorageService(_jsonService);
+                    break;
+            }
+
             _cryptoClientStore = new CryptoClientStore();
             _selectedModelStore = new SelectedModelStore(
                 _cryptoClientStore);
@@ -45,8 +57,8 @@ namespace CryptoClient
 
             _cryptoClientViewModel = new CryptoClientViewModel(
                 _cryptoClientStore, 
-                _selectedModelStore, 
-                _jsonService,
+                _selectedModelStore,
+                _storageService,
                 _settingsService);
         }
 
