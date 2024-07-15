@@ -8,8 +8,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CryptoClient.Models;
 using CryptoClient.Stores;
-using CryptoClient.Services;
 using CryptoClient.Settings;
+using CryptoClient.Data.Services;
 
 namespace CryptoClient.ViewModels
 {

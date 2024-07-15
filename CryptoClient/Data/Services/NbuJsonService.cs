@@ -1,4 +1,4 @@
-﻿using CryptoClient.Contracts;
+﻿using CryptoClient.Data.Contracts;
 using CryptoClient.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace CryptoClient.Services
+namespace CryptoClient.Data.Services
 {
     internal class NbuJsonService : IJsonService
     {

@@ -5,13 +5,13 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoClient.Contracts
+namespace CryptoClient.Data.Contracts
 {
     [DataContract]
     public class DayDTO
     {
-        [DataMember(Name="priceUsd")]
-        public string PriceUsd {  get; set; }
+        [DataMember(Name = "priceUsd")]
+        public string PriceUsd { get; set; }
 
         [DataMember(Name = "time")]
         public long Time { get; set; }

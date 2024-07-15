@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace CryptoClient.Contracts
+namespace CryptoClient.Data.Contracts
 {
     [DataContract]
     public class CurrencyDTO

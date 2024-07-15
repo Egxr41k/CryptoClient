@@ -1,4 +1,4 @@
-﻿using CryptoClient.Contracts;
+﻿using CryptoClient.Data.Contracts;
 using CryptoClient.Models;
 using ModernWpf.Controls;
 using System;
@@ -13,7 +13,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace CryptoClient.Services
+namespace CryptoClient.Data.Services
 {
     public class CoinCapJsonService : IJsonService
     {

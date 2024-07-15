@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CryptoClient.Contracts;
+using CryptoClient.Data.Services;
 using CryptoClient.Models;
-using CryptoClient.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

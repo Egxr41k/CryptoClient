@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoClient.Contracts
+namespace CryptoClient.Data.Contracts
 {
     [DataContract]
     public class NbuCurrencyDTO
