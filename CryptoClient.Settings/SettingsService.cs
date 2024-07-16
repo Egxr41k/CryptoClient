@@ -15,7 +15,10 @@ namespace CryptoClient.Settings
 
         public SettingsService(string settingsFilePath = "last-settings.json")
         {
-            _settingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, settingsFilePath);
+            _settingsFilePath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory, 
+                settingsFilePath);
+
             Settings = LoadSettings();
         }
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
@@ -15,8 +16,6 @@ namespace CryptoClient.Data.Storages
     {
         private readonly string _storageFilePath;
         private readonly IJsonService _jsonService;
-
-        private CurrencyModel[] CurrencyModels;
 
         public JsonStorageService(
             IJsonService jsonService,
@@ -29,25 +28,63 @@ namespace CryptoClient.Data.Storages
                 storageFilePath);
         }
 
-        public void Init()
+        public async Task<CurrencyModel[]> Read()
         {
-            throw new NotImplementedException();
-        }
+            if (!File.Exists(_storageFilePath))
+            {
+                return await Update();
+            }
 
-        public CurrencyModel[] Read()
-        {
-            throw new NotImplementedException();
+            try
+            {
+                string jsonString = File.ReadAllText(_storageFilePath);
+                var jsonOptions = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var currencyModels = JsonSerializer.Deserialize<CurrencyModel[]>(jsonString, jsonOptions);
+                return currencyModels ?? await Update();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while reading data: {ex.Message}");
+                return await Update();
+            }
         }
 
         public void Save(CurrencyModel[] currencyModels)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var jsonOptions = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
+
+                string jsonString = JsonSerializer.Serialize(currencyModels, jsonOptions);
+                File.WriteAllText(_storageFilePath, jsonString);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while saving data: {ex.Message}");
+            }
         }
 
-        public void Update()
+        public async Task<CurrencyModel[]> Update()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var currencyModels = await _jsonService.GetFullCurrenciesInfoAsync();
+                Save(currencyModels);
+                return currencyModels;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while saving data: {ex.Message}");
+                throw;
+            }
+            
         }
     }
-
 }

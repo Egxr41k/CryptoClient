@@ -38,10 +38,9 @@ namespace CryptoClient.ViewModels
             }
         }
 
-        private async Task CryptoListInitAsync()
+        private void OverwriteCryptoList(CurrencyModel[] models)
         {
             cryptoList.Clear();
-            var models = _strorageService.Read();
             foreach(var model in models) AddListItem(model);
         }
 
@@ -62,14 +61,22 @@ namespace CryptoClient.ViewModels
             _cryptoClientStore.CurrencyAdded +=
              CryptoClientStore_CurrencyAdded;
 
-            CryptoListInitAsync().GetAwaiter().GetResult();
+            var models = _strorageService.Read().GetAwaiter().GetResult();
+
+            OverwriteCryptoList(models);
 
             int interval = settingsService.Settings.FetchingIntervalMin;
             _refreshTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMinutes(interval) // Set your refresh interval here
             };
-            _refreshTimer.Tick += async (sender, e) => await CryptoListInitAsync();
+
+            _refreshTimer.Tick += async (sender, e) =>
+            {
+                var models = await _strorageService.Update();
+                OverwriteCryptoList(models);
+            };
+
             _refreshTimer.Start();
         }
 

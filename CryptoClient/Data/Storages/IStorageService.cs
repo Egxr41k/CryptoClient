@@ -11,9 +11,8 @@ namespace CryptoClient.Data.Storages
 {
     internal interface IStorageService
     {
-        void Init();
-        void Update();
-        CurrencyModel[] Read();
+        Task<CurrencyModel[]> Update();
+        Task<CurrencyModel[]> Read();
         void Save(CurrencyModel[] currencyModels);
     }
 }
