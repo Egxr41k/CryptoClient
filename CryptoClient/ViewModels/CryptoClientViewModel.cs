@@ -44,7 +44,7 @@ namespace CryptoClient.ViewModels
             DetailsVM = new DetailsViewModel(selectedModelStore, storageService);
             HomeVM = new HomeViewModel(settingsService);
 
-            //ConvertVM = new ConvertViewModel(jsonService);
+            //ConvertVM = new ConvertViewModel(_apiService);
 
             ListingVM.DetailsViewCommand = new RelayCommand(() =>
             {

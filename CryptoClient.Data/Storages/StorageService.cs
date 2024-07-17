@@ -1,7 +1,6 @@
 ﻿using CryptoClient.Data.Serializers;
 using CryptoClient.Data.Services;
 using CryptoClient.Models;
-using CryptoClient.Settings;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,21 +8,22 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace CryptoClient.Data.Storages
 {
     public class StorageService : IStorageService
     {
         private readonly ISerializer _serializer;
+        private readonly IApiService _apiService;
         private readonly string _storageFilePath;
 
         public StorageService(
             ISerializer serializer, 
-            IJsonService jsonService, 
+            IApiService apiService, 
             string storageFilePath)
         {
             _serializer = serializer;
+            _apiService = apiService;
             _storageFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, storageFilePath);
         }
 
@@ -36,7 +36,7 @@ namespace CryptoClient.Data.Storages
 
             try
             {
-                return await _serializer.DeserializeAsync<CurrencyModel>(_storageFilePath);
+                return await _serializer.DeserializeAsync(_storageFilePath);
             }
             catch (Exception ex)
             {

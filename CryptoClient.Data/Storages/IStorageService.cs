@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CryptoClient.Data.Storages
 {
-    internal interface IStorageService
+    public interface IStorageService
     {
         Task<CurrencyModel[]> UpdateAsync();
         Task<CurrencyModel[]> ReadAsync();

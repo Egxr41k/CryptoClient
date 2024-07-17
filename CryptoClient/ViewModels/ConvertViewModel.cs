@@ -54,9 +54,9 @@ namespace CryptoClient.ViewModels
 
         public Dictionary<string, double> AllowedCurrencies { get; set; }
 
-        public ConvertViewModel(IJsonService jsonService)
+        public ConvertViewModel(IApiService apiService)
         {
-            AllowedCurrencies = jsonService.GetCurrenciesCoastsAsync().GetAwaiter().GetResult();
+            AllowedCurrencies = apiService.GetCurrenciesCoastsAsync().GetAwaiter().GetResult();
 
             ConvertCommand = new RelayCommand(() =>
             {

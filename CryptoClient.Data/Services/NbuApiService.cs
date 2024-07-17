@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace CryptoClient.Data.Services
 {
-    internal class NbuJsonService : IJsonService
+    public class NbuApiService : IApiService
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
 
-        public NbuJsonService(HttpClient httpClient, string baseUrl = "https://bank.gov.ua/NBU_Exchange/exchange_site")
+        public NbuApiService(HttpClient httpClient, string baseUrl = "https://bank.gov.ua/NBU_Exchange/exchange_site")
         {
             _httpClient = httpClient;
             _baseUrl = baseUrl;
