@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CryptoClient.Contracts;
 using CryptoClient.Models;
 using CryptoClient.Stores;
 using System;

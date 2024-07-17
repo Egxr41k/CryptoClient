@@ -54,7 +54,7 @@ namespace CryptoClient.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/CryptoClient;V1.0.0.0;component/views/cryptoclientview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/CryptoClient;component/views/cryptoclientview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\CryptoClientView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

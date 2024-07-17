@@ -13,6 +13,7 @@ using System.Windows;
 using CryptoClient.Data.Services;
 using CryptoClient.Data.Storages;
 using System.Windows.Threading;
+using CryptoClient.Data.Serializers;
 
 namespace CryptoClient
 {
@@ -28,6 +29,7 @@ namespace CryptoClient
         private readonly IJsonService _jsonService;
         private readonly HttpClient _httpClient;
         private readonly IStorageService _storageService;
+        private readonly ISerializer _serializer;
 
         public App()
         {
@@ -38,15 +40,32 @@ namespace CryptoClient
                 new CoinCapJsonService(_httpClient) :
                 new NbuJsonService(_httpClient);
 
+            string storageName;
+
             switch (_settingsService.Settings.FormatOfSaving)
             {
                 case "JSON":
-                    _storageService = new JsonStorageService(_jsonService);
+                    _serializer = new JsonSerializer();
+                    storageName = "storage.json";
+                    break;
+                case "XML":
+                    _serializer = new XmlSerializer();
+                    storageName = "storage.xml";
+                    break;
+                case "CSV":
+                    _serializer = new CsvSerializer();
+                    storageName = "storage.csv";
                     break;
                 default:
-                    _storageService = new JsonStorageService(_jsonService);
+                    _serializer = new JsonSerializer();
+                    storageName = "storage.json";
                     break;
             }
+
+            _storageService = new StorageService(
+                _serializer, 
+                _jsonService, 
+                storageName);
 
             _cryptoClientStore = new CryptoClientStore();
             _selectedModelStore = new SelectedModelStore(

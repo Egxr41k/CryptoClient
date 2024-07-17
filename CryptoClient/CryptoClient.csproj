@@ -24,4 +24,8 @@
     <ProjectReference Include="..\CryptoClient.Settings\CryptoClient.Settings.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Storages\Serializers\" />
+  </ItemGroup>
+
 </Project>

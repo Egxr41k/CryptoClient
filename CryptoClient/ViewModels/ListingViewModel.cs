@@ -61,19 +61,20 @@ namespace CryptoClient.ViewModels
             _cryptoClientStore.CurrencyAdded +=
              CryptoClientStore_CurrencyAdded;
 
-            var models = _strorageService.Read().GetAwaiter().GetResult();
+            var models = _strorageService.ReadAsync().GetAwaiter().GetResult();
 
             OverwriteCryptoList(models);
 
             int interval = settingsService.Settings.FetchingIntervalMin;
             _refreshTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMinutes(interval) // Set your refresh interval here
+                //Interval = TimeSpan.FromMinutes(interval)
+                Interval = TimeSpan.FromSeconds(10) 
             };
 
             _refreshTimer.Tick += async (sender, e) =>
             {
-                var models = await _strorageService.Update();
+                var models = await _strorageService.UpdateAsync();
                 OverwriteCryptoList(models);
             };
 
