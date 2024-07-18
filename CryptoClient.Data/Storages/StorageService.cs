@@ -24,7 +24,10 @@ namespace CryptoClient.Data.Storages
         {
             _serializer = serializer;
             _apiService = apiService;
-            _storageFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, storageFilePath);
+
+            _storageFilePath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory, 
+                storageFilePath);
         }
 
         public async Task<CurrencyModel[]> ReadAsync()
@@ -62,7 +65,7 @@ namespace CryptoClient.Data.Storages
             try
             {
                 // Replace this with actual logic to fetch new data
-                CurrencyModel[] newData = await Task.FromResult(Array.Empty<CurrencyModel>());
+                CurrencyModel[] newData = await _apiService.GetFullCurrenciesInfoAsync();
                 await SaveAsync(newData);
                 return newData;
             }

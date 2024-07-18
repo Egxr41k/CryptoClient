@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace CryptoClient.Data.Serializers
 {
@@ -13,16 +15,36 @@ namespace CryptoClient.Data.Serializers
         public async Task<CurrencyModel[]> DeserializeAsync(string path)
         {
             if (!File.Exists(path)) return Array.Empty<CurrencyModel>();
-            using var stream = File.OpenRead(path);
-            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(CurrencyModel[]));
-            return (CurrencyModel[])serializer.Deserialize(stream) ?? Array.Empty<CurrencyModel>();
+
+            try
+            {
+                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(CurrencyModel[]));
+
+                using var stream = new FileStream(path, FileMode.OpenOrCreate);
+
+                var currencyModels = serializer.Deserialize(stream) as CurrencyModel[];
+
+                return currencyModels;
+            }
+            catch (Exception ex)
+            {
+                return Array.Empty<CurrencyModel>();
+            }
         }
 
         public async Task SerializeAsync(CurrencyModel[] data, string path)
         {
-            using var stream = File.Create(path);
-            var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T[]));
-            serializer.Serialize(stream, data);
+            try
+            {
+                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(CurrencyModel[]));
+
+                using var stream = new FileStream(path, FileMode.OpenOrCreate);
+                serializer.Serialize(stream, data);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

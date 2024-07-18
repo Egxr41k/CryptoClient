@@ -1,6 +1,5 @@
 ﻿using CryptoClient.Data.Contracts;
 using CryptoClient.Models;
-using ModernWpf.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
