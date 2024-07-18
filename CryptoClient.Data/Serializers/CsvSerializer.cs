@@ -19,6 +19,30 @@ namespace CryptoClient.Data.Serializers
             {
                 var columns = line.Split(',');
 
+                var history = columns[6]
+                    .Split(';', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(item =>
+                    {
+                        var parts = item.Split(':');
+                        return new KeyValuePair<DateTime, double>(
+                            DateTime.Parse(parts[0], null, DateTimeStyles.RoundtripKind),
+                            double.Parse(parts[1], CultureInfo.InvariantCulture)
+                        );
+                    })
+                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+                var markets = columns[7]
+                    .Split(';', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(item =>
+                    {
+                        var parts = item.Split(':');
+                        return new KeyValuePair<string, double>(
+                            parts[0],
+                            double.Parse(parts[1], CultureInfo.InvariantCulture)
+                        );
+                    })
+                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
                 return new CurrencyModel
                 {
                     Id = columns[0],
@@ -27,7 +51,8 @@ namespace CryptoClient.Data.Serializers
                     Price = double.Parse(columns[3], CultureInfo.InvariantCulture),
                     ChangePercent = double.Parse(columns[4], CultureInfo.InvariantCulture),
                     Link = columns[5],
-                    // Handling History and Markets fields if necessary
+                    History = history,
+                    Markets = markets
                 };
             }).ToArray();
         }
@@ -35,21 +60,17 @@ namespace CryptoClient.Data.Serializers
         public async Task SerializeAsync(CurrencyModel[] data, string path)
         {
             var lines = new List<string> { "Id,Symbol,Name,Price,ChangePercent,Link,History,Markets" };
-            lines.AddRange(data.Select(item =>
+            lines.AddRange(data.Select(model =>
             {
-                if (item is CurrencyModel model)
-                {
-                    var historyString = model.History != null
-                        ? string.Join(";", model.History.Select(kv => $"{kv.Key:o}:{kv.Value}"))
-                        : string.Empty;
+                var historyString = model.History != null
+                    ? string.Join(";", model.History.Select(kv => $"{kv.Key:o}:{kv.Value}"))
+                    : string.Empty;
 
-                    var marketsString = model.Markets != null
-                        ? string.Join(";", model.Markets.Select(kv => $"{kv.Key}:{kv.Value}"))
-                        : string.Empty;
+                var marketsString = model.Markets != null
+                    ? string.Join(";", model.Markets.Select(kv => $"{kv.Key}:{kv.Value}"))
+                    : string.Empty;
 
-                    return $"{model.Id},{model.Symbol},{model.Name},{model.Price.ToString(CultureInfo.InvariantCulture)},{model.ChangePercent.ToString(CultureInfo.InvariantCulture)},{model.Link},{historyString},{marketsString}";
-                }
-                return string.Empty; // Add conversion logic for other types
+                return $"{model.Id},{model.Symbol},{model.Name},{model.Price.ToString(CultureInfo.InvariantCulture)},{model.ChangePercent.ToString(CultureInfo.InvariantCulture)},{model.Link},{historyString},{marketsString}";
             }));
             await File.WriteAllLinesAsync(path, lines);
         }

@@ -1,6 +1,5 @@
 ﻿using CryptoClient.Data.Contracts;
 using CryptoClient.Models;
-using ModernWpf.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,14 +14,14 @@ using System.Xml.Linq;
 
 namespace CryptoClient.Data.Services
 {
-    public class CoinCapApiService : IApiService
+    public class CoinCapClient : IApiClient
     {
-        private readonly HttpClient _httpClient;
+        private readonly IFetchService _fetchService;
         private readonly string _baseUrl;
 
-        public CoinCapApiService(HttpClient httpClient, string baseUrl = "https://api.coincap.io/v2/assets/")
+        public CoinCapClient(JsonService jsonService, string baseUrl = "https://api.coincap.io/v2/assets/")
         {
-            _httpClient = httpClient;
+            _fetchService = jsonService;
             _baseUrl = baseUrl;
         }
 
@@ -35,45 +34,32 @@ namespace CryptoClient.Data.Services
 
         public async Task<Dictionary<DateTime, double>> GetHistoryAsync(string name)
         {
-            var response = await FetchDataAsync<HistoryResponse>($"{_baseUrl}{name}/history?interval=d1");
+            var response = await _fetchService.FetchDataAsync<HistoryResponse>($"{_baseUrl}{name}/history?interval=d1");
             return FormatHistoryData(response.Data);
         }
 
         public async Task<Dictionary<string, double>> GetMarketsAsync(string name)
         {
-            var response = await FetchDataAsync<MarketListResponse>($"{_baseUrl}{name}/markets");
+            var response = await _fetchService.FetchDataAsync<MarketListResponse>($"{_baseUrl}{name}/markets");
             return FormatMarketsData(response.Data);
         }
 
         public async Task<CurrencyModel> SearchAsync(string name)
         {
-            var response = await FetchDataAsync<CurrencyResponse>($"{_baseUrl}{name}/");
+            var response = await _fetchService.FetchDataAsync<CurrencyResponse>($"{_baseUrl}{name}/");
             return await GetModel(response.Data);
         }
 
         public async Task<CurrencyDTO[]> GetTopCurrenciesAsync()
         {
-            var response = await FetchDataAsync<CurrencyListResponse>(_baseUrl);
+            var response = await _fetchService.FetchDataAsync<CurrencyListResponse>(_baseUrl);
             return FormatCurrenciesData(response.Data);
         }
 
         public async Task<Dictionary<string, double>> GetCurrenciesCoastsAsync()
         {
-            var response = await FetchDataAsync<CurrencyListResponse>(_baseUrl);
+            var response = await _fetchService.FetchDataAsync<CurrencyListResponse>(_baseUrl);
             return FormatCurrenciesCoast(response.Data);
-        }
-
-        private async Task<T> FetchDataAsync<T>(string url)
-        {
-            try
-            {
-                var response = await _httpClient.GetFromJsonAsync<T>(url);
-                return response ?? throw new Exception($"No data received from {url}");
-            }
-            catch (HttpRequestException ex)
-            {
-                throw new Exception($"Error fetching data from {url}: {ex.Message}", ex);
-            }
         }
 
         private static Dictionary<DateTime, double> FormatHistoryData(DayDTO[] history)

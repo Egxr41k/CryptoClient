@@ -26,7 +26,8 @@ namespace CryptoClient
         private readonly CryptoClientStore _cryptoClientStore;
         private readonly CryptoClientViewModel _cryptoClientViewModel;
         private readonly SettingsService _settingsService;
-        private readonly IApiService _apiService;
+        private readonly IApiClient _apiService;
+        private readonly IFetchService _fetchService;
         private readonly HttpClient _httpClient;
         private readonly IStorageService _storageService;
         private readonly ISerializer _serializer;
@@ -36,10 +37,6 @@ namespace CryptoClient
             _settingsService = new SettingsService();
             _httpClient = new HttpClient();
 
-            _apiService = _settingsService.Settings.UsedApi == "CoinCap" ?
-                new CoinCapApiService(_httpClient) :
-                new NbuApiService(_httpClient);
-
             string storageName;
 
             switch (_settingsService.Settings.FormatOfSaving)
@@ -47,25 +44,58 @@ namespace CryptoClient
                 case "JSON":
                     _serializer = new JsonSerializer();
                     storageName = "storage.json";
+
+                    _storageService = new StorageService(
+                        _serializer,
+                        storageName);
+
+                    _fetchService = new JsonService(
+                        _httpClient, 
+                        _storageService);
+
                     break;
+
                 case "XML":
                     _serializer = new XmlSerializer();
                     storageName = "storage.xml";
+
+                    _storageService = new StorageService(
+                        _serializer,
+                        storageName);
+
+                    _fetchService = new XmlService(
+                        _httpClient,
+                        _storageService);
+
                     break;
-                case "CSV":
-                    _serializer = new CsvSerializer();
-                    storageName = "storage.csv";
-                    break;
+
                 default:
+
                     _serializer = new JsonSerializer();
                     storageName = "storage.json";
+
+                    _storageService = new StorageService(
+                        _serializer,
+                        storageName);
+
+                    _fetchService = new JsonService(
+                        _httpClient,
+                        _storageService);
+
                     break;
             }
 
             _storageService = new StorageService(
                 _serializer, 
-                _apiService, 
                 storageName);
+
+            _httpClient = new HttpClient();
+
+            _fetchService = new JsonService()
+
+            _apiService = _settingsService.Settings.UsedApi == "CoinCap" ?
+                new CoinCapClient() :
+                new NbuClient(_httpClient);
 
             _cryptoClientStore = new CryptoClientStore();
             _selectedModelStore = new SelectedModelStore(

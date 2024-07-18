@@ -14,17 +14,17 @@ namespace CryptoClient.Data.Storages
     public class StorageService : IStorageService
     {
         private readonly ISerializer _serializer;
-        private readonly IApiService _apiService;
         private readonly string _storageFilePath;
 
         public StorageService(
             ISerializer serializer, 
-            IApiService apiService, 
             string storageFilePath)
         {
             _serializer = serializer;
-            _apiService = apiService;
-            _storageFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, storageFilePath);
+
+            _storageFilePath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory, 
+                storageFilePath);
         }
 
         public async Task<CurrencyModel[]> ReadAsync()

@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace CryptoClient.Data.Services
 {
-    public class NbuApiService : IApiService
+    public class NbuClient : IApiClient
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
 
-        public NbuApiService(HttpClient httpClient, string baseUrl = "https://bank.gov.ua/NBU_Exchange/exchange_site")
+        public NbuClient(HttpClient httpClient, string baseUrl = "https://bank.gov.ua/NBU_Exchange/exchange_site")
         {
             _httpClient = httpClient;
             _baseUrl = baseUrl;
@@ -44,14 +44,14 @@ namespace CryptoClient.Data.Services
             {
                 var data = await _httpClient.GetFromJsonAsync<T>(url);
 
-                Console.WriteLine("data deserelized succesfully:" + data.ToString());
+                Console.WriteLine("data deserelized succesfully:" + data?.ToString());
 
                 return data ?? throw new Exception($"No data received from {url}");
             }
             catch (JsonException ex)
             {
                 var data = await _httpClient.GetFromJsonAsync<T[]>(url);
-                return data.First() ?? throw new Exception($"No data received from {url}");
+                return data?.First() ?? throw new Exception($"No data received from {url}");
             }
             catch (HttpRequestException ex)
             {
