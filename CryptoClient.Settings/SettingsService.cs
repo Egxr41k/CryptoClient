@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CryptoClient.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,10 +12,13 @@ namespace CryptoClient.Settings
     public class SettingsService
     {
         private readonly string _settingsFilePath;
+        private readonly LoggingService _loggingService;
         public SettingsDTO Settings { get; private set; }
 
-        public SettingsService(string settingsFilePath = "last-settings.json")
+        public SettingsService(LoggingService loggingService, string settingsFilePath = "last-settings.json")
         {
+            _loggingService = loggingService;
+
             _settingsFilePath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, 
                 settingsFilePath);
@@ -72,7 +76,7 @@ namespace CryptoClient.Settings
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while saving settings: {ex.Message}");
+                _loggingService.WriteLine($"An error occurred while saving settings: {ex.Message}");
             }
         }
     }

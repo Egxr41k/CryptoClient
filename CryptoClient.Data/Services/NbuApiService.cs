@@ -1,4 +1,5 @@
 ﻿using CryptoClient.Data.Contracts;
+using CryptoClient.Logging;
 using CryptoClient.Models;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,16 @@ namespace CryptoClient.Data.Services
     public class NbuApiService : IApiService
     {
         private readonly HttpClient _httpClient;
+        private readonly LoggingService _loggingService;
         private readonly string _baseUrl;
 
-        public NbuApiService(HttpClient httpClient, string baseUrl = "https://bank.gov.ua/NBU_Exchange/exchange_site")
+        public NbuApiService(
+            HttpClient httpClient, 
+            LoggingService loggingService,
+            string baseUrl = "https://bank.gov.ua/NBU_Exchange/exchange_site")
         {
             _httpClient = httpClient;
+            _loggingService = loggingService;
             _baseUrl = baseUrl;
         }
 
@@ -42,21 +48,26 @@ namespace CryptoClient.Data.Services
         {
             try
             {
-                var data = await _httpClient.GetFromJsonAsync<T>(url);
-
-                Console.WriteLine("data deserelized succesfully:" + data.ToString());
-
-                return data ?? throw new Exception($"No data received from {url}");
+                var response = await _httpClient.GetFromJsonAsync<T>(url);
+                if (response == null)
+                {
+                    var message = $"No data received from {url}";
+                    _loggingService.WriteLine(message);
+                    throw new Exception(message);
+                }
+                _loggingService.WriteLine("Data fetched successfully");
+                return response;
             }
             catch (JsonException ex)
             {
-                var data = await _httpClient.GetFromJsonAsync<T[]>(url);
-                return data.First() ?? throw new Exception($"No data received from {url}");
+                var response = await _httpClient.GetFromJsonAsync<T[]>(url);
+                return response?.First() ?? throw new Exception($"No data received from {url}");
             }
             catch (HttpRequestException ex)
             {
-                // Log error as needed
-                throw new Exception($"Error fetching data from {url}: {ex.Message}", ex);
+                var message = $"Error fetching data from {url}: {ex.Message}";
+                _loggingService.WriteLine(message);
+                throw new Exception(message, ex);
             }
         }
 

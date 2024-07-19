@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoClient", "CryptoClien
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoClient.Settings", "CryptoClient.Settings\CryptoClient.Settings.csproj", "{A2BD6269-5E66-4FF0-92F0-80CAD28A512F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoClient.Data", "CryptoClient.Data\CryptoClient.Data.csproj", "{72192A84-6188-4DD7-812F-A44C741E6ABB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoClient.Data", "CryptoClient.Data\CryptoClient.Data.csproj", "{72192A84-6188-4DD7-812F-A44C741E6ABB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoClient.Logging", "CryptoClient.Logging\CryptoClient.Logging.csproj", "{51056C33-19FD-455A-B34F-F7882DF974D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{72192A84-6188-4DD7-812F-A44C741E6ABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72192A84-6188-4DD7-812F-A44C741E6ABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72192A84-6188-4DD7-812F-A44C741E6ABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51056C33-19FD-455A-B34F-F7882DF974D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51056C33-19FD-455A-B34F-F7882DF974D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51056C33-19FD-455A-B34F-F7882DF974D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51056C33-19FD-455A-B34F-F7882DF974D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

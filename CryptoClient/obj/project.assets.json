@@ -746,6 +746,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "CryptoClient.Logging": "1.0.0",
           "System.Xml.ReaderWriter": "4.3.1"
         },
         "compile": {
@@ -755,9 +756,22 @@
           "bin/placeholder/CryptoClient.Data.dll": {}
         }
       },
+      "CryptoClient.Logging/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/CryptoClient.Logging.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CryptoClient.Logging.dll": {}
+        }
+      },
       "CryptoClient.Settings/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "CryptoClient.Logging": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/CryptoClient.Settings.dll": {}
         },
@@ -2679,6 +2693,11 @@
       "path": "../CryptoClient.Data/CryptoClient.Data.csproj",
       "msbuildProject": "../CryptoClient.Data/CryptoClient.Data.csproj"
     },
+    "CryptoClient.Logging/1.0.0": {
+      "type": "project",
+      "path": "../CryptoClient.Logging/CryptoClient.Logging.csproj",
+      "msbuildProject": "../CryptoClient.Logging/CryptoClient.Logging.csproj"
+    },
     "CryptoClient.Settings/1.0.0": {
       "type": "project",
       "path": "../CryptoClient.Settings/CryptoClient.Settings.csproj",
@@ -2689,6 +2708,7 @@
     "net6.0-windows7.0": [
       "CommunityToolkit.Mvvm >= 8.2.1",
       "CryptoClient.Data >= 1.0.0",
+      "CryptoClient.Logging >= 1.0.0",
       "CryptoClient.Settings >= 1.0.0",
       "ModernWpfUI >= 0.9.6",
       "Syncfusion.SfChart.WPF >= 22.1.39"
@@ -2729,6 +2749,9 @@
           "projectReferences": {
             "C:\\Users\\Egxr41k\\Desktop\\CryptoClient\\CryptoClient.Data\\CryptoClient.Data.csproj": {
               "projectPath": "C:\\Users\\Egxr41k\\Desktop\\CryptoClient\\CryptoClient.Data\\CryptoClient.Data.csproj"
+            },
+            "C:\\Users\\Egxr41k\\Desktop\\CryptoClient\\CryptoClient.Logging\\CryptoClient.Logging.csproj": {
+              "projectPath": "C:\\Users\\Egxr41k\\Desktop\\CryptoClient\\CryptoClient.Logging\\CryptoClient.Logging.csproj"
             },
             "C:\\Users\\Egxr41k\\Desktop\\CryptoClient\\CryptoClient.Settings\\CryptoClient.Settings.csproj": {
               "projectPath": "C:\\Users\\Egxr41k\\Desktop\\CryptoClient\\CryptoClient.Settings\\CryptoClient.Settings.csproj"
@@ -2786,5 +2809,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json."
+    }
+  ]
 }

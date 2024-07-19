@@ -1,4 +1,5 @@
 ﻿using CryptoClient.Data.Contracts;
+using CryptoClient.Logging;
 using CryptoClient.Models;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,16 @@ namespace CryptoClient.Data.Services
     public class CoinCapApiService : IApiService
     {
         private readonly HttpClient _httpClient;
+        private readonly LoggingService _loggingService;
         private readonly string _baseUrl;
 
-        public CoinCapApiService(HttpClient httpClient, string baseUrl = "https://api.coincap.io/v2/assets/")
+        public CoinCapApiService(
+            HttpClient httpClient, 
+            LoggingService loggingService, 
+            string baseUrl = "https://api.coincap.io/v2/assets/")
         {
             _httpClient = httpClient;
+            _loggingService = loggingService;
             _baseUrl = baseUrl;
         }
 
@@ -67,11 +73,20 @@ namespace CryptoClient.Data.Services
             try
             {
                 var response = await _httpClient.GetFromJsonAsync<T>(url);
-                return response ?? throw new Exception($"No data received from {url}");
+                if(response == null)
+                {
+                    var message = $"No data received from {url}";
+                    _loggingService.WriteLine(message);
+                    throw new Exception(message);
+                }
+                _loggingService.WriteLine("Data fetched successfully");
+                return response;
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error fetching data from {url}: {ex.Message}", ex);
+                var message = $"Error fetching data from {url}: {ex.Message}";
+                _loggingService.WriteLine(message);
+                throw new Exception(message, ex);
             }
         }
 

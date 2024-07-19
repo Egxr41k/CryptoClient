@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CryptoClient.Data\CryptoClient.Data.csproj" />
+    <ProjectReference Include="..\CryptoClient.Logging\CryptoClient.Logging.csproj" />
     <ProjectReference Include="..\CryptoClient.Settings\CryptoClient.Settings.csproj" />
   </ItemGroup>
 

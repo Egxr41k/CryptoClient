@@ -1,5 +1,6 @@
 ﻿using CryptoClient.Data.Serializers;
 using CryptoClient.Data.Services;
+using CryptoClient.Logging;
 using CryptoClient.Models;
 using System;
 using System.Collections.Generic;
@@ -15,15 +16,18 @@ namespace CryptoClient.Data.Storages
     {
         private readonly ISerializer _serializer;
         private readonly IApiService _apiService;
+        private readonly LoggingService _loggingService;
         private readonly string _storageFilePath;
 
         public StorageService(
             ISerializer serializer, 
-            IApiService apiService, 
+            IApiService apiService,
+            LoggingService loggingService,
             string storageFilePath)
         {
             _serializer = serializer;
             _apiService = apiService;
+            _loggingService = loggingService;
 
             _storageFilePath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, 
@@ -43,7 +47,7 @@ namespace CryptoClient.Data.Storages
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while reading data: {ex.Message}");
+                _loggingService.WriteLine($"An error occurred while reading data: {ex.Message}");
                 return await UpdateAsync();
             }
         }
@@ -56,7 +60,7 @@ namespace CryptoClient.Data.Storages
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while saving data: {ex.Message}");
+                _loggingService.WriteLine($"An error occurred while saving data: {ex.Message}");
             }
         }
 
@@ -71,7 +75,7 @@ namespace CryptoClient.Data.Storages
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while updating data: {ex.Message}");
+                _loggingService.WriteLine($"An error occurred while updating data: {ex.Message}");
                 throw;
             }
         }

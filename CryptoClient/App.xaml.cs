@@ -14,6 +14,7 @@ using CryptoClient.Data.Services;
 using CryptoClient.Data.Storages;
 using System.Windows.Threading;
 using CryptoClient.Data.Serializers;
+using CryptoClient.Logging;
 
 namespace CryptoClient
 {
@@ -30,15 +31,17 @@ namespace CryptoClient
         private readonly HttpClient _httpClient;
         private readonly IStorageService _storageService;
         private readonly ISerializer _serializer;
+        private readonly LoggingService _loggingService;
 
         public App()
         {
-            _settingsService = new SettingsService();
+            _loggingService = new LoggingService();
+            _settingsService = new SettingsService(_loggingService);
             _httpClient = new HttpClient();
 
             _apiService = _settingsService.Settings.UsedApi == "CoinCap" ?
-                new CoinCapApiService(_httpClient) :
-                new NbuApiService(_httpClient);
+                new CoinCapApiService(_httpClient, _loggingService) :
+                new NbuApiService(_httpClient, _loggingService);
 
             string storageName;
 
@@ -64,7 +67,8 @@ namespace CryptoClient
 
             _storageService = new StorageService(
                 _serializer, 
-                _apiService, 
+                _apiService,
+                _loggingService,
                 storageName);
 
             _cryptoClientStore = new CryptoClientStore();

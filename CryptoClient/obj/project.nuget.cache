@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "bMZBKokoLdw=",
+  "dgSpecHash": "gEA5OWpfB/o=",
   "success": true,
   "projectFilePath": "C:\\Users\\Egxr41k\\Desktop\\CryptoClient\\CryptoClient\\CryptoClient.csproj",
   "expectedPackageFiles": [
@@ -30,5 +30,12 @@
     "C:\\Users\\Egxr41k\\.nuget\\packages\\system.threading.tasks.extensions\\4.3.0\\system.threading.tasks.extensions.4.3.0.nupkg.sha512",
     "C:\\Users\\Egxr41k\\.nuget\\packages\\system.xml.readerwriter\\4.3.1\\system.xml.readerwriter.4.3.1.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json."
+    }
+  ]
 }
