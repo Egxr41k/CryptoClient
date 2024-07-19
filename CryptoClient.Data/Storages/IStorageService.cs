@@ -1,11 +1,4 @@
-﻿using CryptoClient.Data.Services;
-using CryptoClient.Models;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CryptoClient.Data.Models;
 
 namespace CryptoClient.Data.Storages
 {

@@ -1,12 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CryptoClient.Models;
+﻿using System.Windows.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CryptoClient.Data.Models;
 using CryptoClient.Stores;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
 
 namespace CryptoClient.ViewModels
 {

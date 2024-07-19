@@ -1,14 +1,7 @@
 ﻿using CryptoClient.Data.Serializers;
 using CryptoClient.Data.Services;
 using CryptoClient.Logging;
-using CryptoClient.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+using CryptoClient.Data.Models;
 
 namespace CryptoClient.Data.Storages
 {

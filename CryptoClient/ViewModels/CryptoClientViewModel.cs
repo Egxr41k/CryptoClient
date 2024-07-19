@@ -1,17 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CryptoClient.Data.Services;
 using CryptoClient.Data.Storages;
-using CryptoClient.Models;
 using CryptoClient.Settings;
 using CryptoClient.Stores;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 
 namespace CryptoClient.ViewModels
 {

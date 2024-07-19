@@ -1,9 +1,5 @@
-﻿using CryptoClient.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using CryptoClient.Data.Models;
 
 namespace CryptoClient.Stores
 {
@@ -12,7 +8,6 @@ namespace CryptoClient.Stores
         private readonly CryptoClientStore _cryptoClientStore;
 
         public Action SelectedModelChanged;
-
 
         private CurrencyModel _selectedModel;
         public CurrencyModel SelectedModel
@@ -39,6 +34,5 @@ namespace CryptoClient.Stores
                 SelectedModel = model;
             }
         }
-
     }
 }

@@ -1,11 +1,5 @@
-﻿using CryptoClient.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using CryptoClient.Data.Models;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace CryptoClient.Data.Serializers
 {

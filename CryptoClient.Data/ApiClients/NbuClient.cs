@@ -1,14 +1,6 @@
-﻿using CryptoClient.Data.Contracts;
-using CryptoClient.Logging;
-using CryptoClient.Models;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Globalization;
+using CryptoClient.Data.Contracts;
+using CryptoClient.Data.Models;
 
 namespace CryptoClient.Data.Services
 {

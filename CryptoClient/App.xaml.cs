@@ -1,18 +1,10 @@
-﻿using CryptoClient.Models;
+﻿using System.Net.Http;
+using System.Windows;
 using CryptoClient.Stores;
 using CryptoClient.ViewModels;
 using CryptoClient.Settings;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows;
 using CryptoClient.Data.Services;
 using CryptoClient.Data.Storages;
-using System.Windows.Threading;
 using CryptoClient.Data.Serializers;
 using CryptoClient.Logging;
 

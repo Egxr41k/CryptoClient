@@ -1,7 +1,4 @@
-﻿using CryptoClient.Models;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using CryptoClient.Data.Models;
 
 namespace CryptoClient.Data.Services
 {

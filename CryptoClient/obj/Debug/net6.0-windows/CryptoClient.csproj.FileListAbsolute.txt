@@ -498,3 +498,5 @@ C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\Cryp
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Settings.pdb
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Data.dll
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Data.pdb
+C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Logging.dll
+C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Logging.pdb
