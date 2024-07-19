@@ -7,16 +7,13 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Views\ConvertView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\CryptoClientView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\DetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\HomeView.xaml.cs">
+    <Compile Update="Views\SettingsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ListingView.xaml.cs">
@@ -27,16 +24,13 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\ConvertView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\CryptoClientView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\DetailsView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\HomeView.xaml">
+    <Page Update="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ListingView.xaml">

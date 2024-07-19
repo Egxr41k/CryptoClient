@@ -9,7 +9,7 @@ using CryptoClient.Settings;
 
 namespace CryptoClient.ViewModels
 {
-    public class HomeViewModel : ObservableObject
+    public class SettingsViewModel : ObservableObject
     {
         public string Text { get; set; } = "HomeView";
 
@@ -68,7 +68,7 @@ namespace CryptoClient.ViewModels
             }
         }
 
-        public HomeViewModel(SettingsService settingsService)
+        public SettingsViewModel(SettingsService settingsService)
         {
             _settingsService = settingsService;
 

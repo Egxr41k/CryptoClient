@@ -13,20 +13,5 @@
             </ResourceDictionary.MergedDictionaries>
              Other app resources here 
         </ResourceDictionary>-->
-        <ResourceDictionary>
-
-            <DataTemplate DataType="{x:Type vm:HomeViewModel}">
-                <v:HomeView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type vm:ConvertViewModel}">
-                <v:ConvertView/>
-            </DataTemplate>
-            
-            <DataTemplate DataType="{x:Type vm:DetailsViewModel}">
-                <v:DetailsView/>
-            </DataTemplate>
-
-        </ResourceDictionary>
     </Application.Resources>
 </Application>

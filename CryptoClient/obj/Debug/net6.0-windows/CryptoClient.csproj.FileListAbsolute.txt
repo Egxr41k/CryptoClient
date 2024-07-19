@@ -466,21 +466,16 @@ C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\vi-V
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\vi-VN\ModernWpf.resources.dll
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\CryptoClient.csproj.AssemblyReference.cache
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\MainWindow.g.cs
-C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\ConvertView.g.cs
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\CryptoClientView.g.cs
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\DetailsView.g.cs
-C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\HomeView.g.cs
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\ListingView.g.cs
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\App.g.cs
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\CryptoClient_MarkupCompile.cache
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\CryptoClient_MarkupCompile.lref
-C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\App.baml
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\MainWindow.baml
-C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\ConvertView.baml
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\CryptoClientView.baml
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\DetailsView.baml
-C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\HomeView.baml
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\ListingView.baml
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\CryptoClient.g.resources
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\CryptoClient.GeneratedMSBuildEditorConfig.editorconfig
@@ -500,3 +495,5 @@ C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\Cryp
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Data.pdb
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Logging.dll
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Logging.pdb
+C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\SettingsView.g.cs
+C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\SettingsView.baml

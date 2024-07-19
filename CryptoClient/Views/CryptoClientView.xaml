@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:CryptoClient"
              xmlns:v="clr-namespace:CryptoClient.Views"
+             xmlns:vm="clr-namespace:CryptoClient.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -33,7 +34,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -44,7 +45,7 @@
 
         <StackPanel Background="LightGray" >
             <TextBlock
-                Text="{Binding AppName}"
+                Text="CryptoClient"
                 Margin="5"
                 FontSize="20"
                 HorizontalAlignment="Center"
@@ -57,27 +58,27 @@
         </StackPanel>
 
         <StackPanel Background="LightGray" Grid.Row="1">
-            <Button Content="Home" Command="{Binding HomeViewCommand}"/>
-            <Button Content="Convert" Command="{Binding ConvertViewCommand}"/>
+            <Button Content="Settings" Command="{Binding SettingsViewCommand}"/>
         </StackPanel>
-        
-        <!--<ScrollViewer
-            Grid.Row="2"
-            CanContentScroll="True">
-            <v:ListingView Grid.Row="2" DataContext="{Binding ListingViewModel}"/>
-        </ScrollViewer>-->
-
 
         <v:ListingView Grid.Row="2" DataContext="{Binding ListingVM}"/>
-        
+
         <ContentControl
             Grid.Column="1"
             Grid.RowSpan="3"
             Margin="10"
-            Content="{Binding CurrentView}"/>
-        <!--<v:DetailsView
-            DataContext="{Binding DetailsViewModel}"
-            Grid.Column="1"
-            Grid.RowSpan="3"/>-->
+            Content="{Binding CurrentView}">
+            
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+                    <v:HomeView/>
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type vm:DetailsViewModel}">
+                    <v:DetailsView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+
+        </ContentControl>
     </Grid>
 </UserControl>

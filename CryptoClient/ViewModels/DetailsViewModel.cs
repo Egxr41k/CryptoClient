@@ -12,8 +12,6 @@ namespace CryptoClient.ViewModels
     internal class DetailsViewModel : ObservableObject
     {
         private SelectedModelStore _selectedModelStore;
-        //private IJsonService _jsonService;
-        public ICommand SearchCommand { get; set; }
 
         private string title;
         public string Title
@@ -22,33 +20,19 @@ namespace CryptoClient.ViewModels
             set => SetProperty(ref title, value);
         }
 
+        private Dictionary<DateTime, double> chartData;
         public Dictionary<DateTime, double> ChartData
         {
             get => chartData;
             set => SetProperty(ref chartData, value);
         }
-        private Dictionary<DateTime, double> chartData;
+
         private Dictionary<string, double> markets;
         public Dictionary<string, double> Markets
         {
             get => markets;
             set => SetProperty(ref markets, value);
         }
-
-        private string errorMsg;
-        public string ErrorMsg
-        {
-            get => errorMsg;
-            set => SetProperty(ref errorMsg, value);
-        }
-
-        public string TextBoxContent
-        {
-            get => _textBoxContent;
-            set => SetProperty(ref _textBoxContent, value);
-        }
-
-        private string _textBoxContent;
 
         private string price;
         public string Price
@@ -83,11 +67,6 @@ namespace CryptoClient.ViewModels
 
             selectedModelStore.SelectedModelChanged +=
             SelectedModelStore_SelectedModelChanged;
-
-            SearchCommand = new RelayCommand(async () =>
-            {
-
-            });
         }
 
         private void SelectedModelStore_SelectedModelChanged()

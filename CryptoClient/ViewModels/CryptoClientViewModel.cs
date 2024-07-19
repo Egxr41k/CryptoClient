@@ -8,14 +8,10 @@ using CryptoClient.Stores;
 namespace CryptoClient.ViewModels
 {
     internal class CryptoClientViewModel : ObservableObject
-    {
-        public string AppName { get; set; } = "CryptoClient";
+    {        
+        public ICommand SettingsViewCommand { get; private set; }
         
-        public ICommand HomeViewCommand { get; private set; }
-        public ICommand ConvertViewCommand { get; private set; }
-        
-        public HomeViewModel HomeVM { get; }
-        public ConvertViewModel ConvertVM { get; }
+        public SettingsViewModel SettingsVM { get; }
         public ListingViewModel ListingVM { get; }
         public DetailsViewModel DetailsVM { get; }
 
@@ -32,28 +28,29 @@ namespace CryptoClient.ViewModels
             IStorageService storageService,
             SettingsService settingsService)
         {
-            ListingVM = new ListingViewModel(cryptoClientStore, selectedModelStore, storageService, settingsService);
-            DetailsVM = new DetailsViewModel(selectedModelStore, storageService);
-            HomeVM = new HomeViewModel(settingsService);
+            ListingVM = new ListingViewModel(
+                cryptoClientStore, 
+                selectedModelStore, 
+                storageService, 
+                settingsService);
 
-            //ConvertVM = new ConvertViewModel(_apiService);
+            DetailsVM = new DetailsViewModel(
+                selectedModelStore, 
+                storageService);
+
+            SettingsVM = new SettingsViewModel(settingsService);
 
             ListingVM.DetailsViewCommand = new RelayCommand(() =>
             {
                 CurrentView = DetailsVM;
             });
 
-            HomeViewCommand = new RelayCommand(() =>
+            SettingsViewCommand = new RelayCommand(() =>
             {
-                CurrentView = HomeVM;
+                CurrentView = SettingsVM;
             });
 
-            ConvertViewCommand = new RelayCommand(() =>
-            {
-                CurrentView = ConvertVM;
-            });
-
-            CurrentView = HomeVM;
+            CurrentView = SettingsVM;
         }
     }
 }
