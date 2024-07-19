@@ -439,6 +439,7 @@
           }
         }
       },
+<<<<<<< HEAD
       "System.Collections/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0",
@@ -598,6 +599,9 @@
         "dependencies": {
           "System.Xml.ReaderWriter": "4.3.1"
         },
+=======
+      "CryptoClient.Data/1.0.0": {
+>>>>>>> different-data-services
         "runtime": {
           "CryptoClient.Data.dll": {}
         }
@@ -657,6 +661,7 @@
       "path": "syncfusion.sfchart.wpf/22.1.39",
       "hashPath": "syncfusion.sfchart.wpf.22.1.39.nupkg.sha512"
     },
+<<<<<<< HEAD
     "System.Collections/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -790,6 +795,8 @@
       "path": "system.xml.readerwriter/4.3.1",
       "hashPath": "system.xml.readerwriter.4.3.1.nupkg.sha512"
     },
+=======
+>>>>>>> different-data-services
     "CryptoClient.Data/1.0.0": {
       "type": "project",
       "serviceable": false,

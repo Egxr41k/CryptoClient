@@ -12,25 +12,20 @@ using System.Threading.Tasks;
 
 namespace CryptoClient.Data.Services
 {
-    public class NbuApiService : IApiService
+    public class NbuClient : IApiClient
     {
-        private readonly HttpClient _httpClient;
-        private readonly LoggingService _loggingService;
+        private readonly IFetchService _fetchService;
         private readonly string _baseUrl;
 
-        public NbuApiService(
-            HttpClient httpClient, 
-            LoggingService loggingService,
-            string baseUrl = "https://bank.gov.ua/NBU_Exchange/exchange_site")
+        public NbuClient(IFetchService fetchService, string baseUrl = "https://bank.gov.ua/NBU_Exchange/exchange_site")
         {
-            _httpClient = httpClient;
-            _loggingService = loggingService;
+            _fetchService = fetchService;
             _baseUrl = baseUrl;
         }
 
         public async Task<List<NbuCurrencyDTO>> GetTopCurrenciesAsync()
         {
-            var response = await FetchDataAsync<NbuCurrencyDTO[]>($"{_baseUrl}?json");
+            var response = await _fetchService.FetchDataAsync<NbuCurrencyDTO[]>($"{_baseUrl}?json");
             return FormatCurrenciesData(response);
         }
 
@@ -39,36 +34,9 @@ namespace CryptoClient.Data.Services
             var start = DateTime.UtcNow.AddYears(-1).ToString("yyyyMMdd");
             var end = DateTime.UtcNow.ToString("yyyyMMdd");
             var url = $"{_baseUrl}?start={start}&end={end}&valcode={currencyCode}&sort=exchangedate&order=desc&json";
-            var response = await FetchDataAsync<NbuCurrencyDTO[]>(url);
+            var response = await _fetchService.FetchDataAsync<NbuCurrencyDTO[]>(url);
 
             return FormatHistoryData(response);
-        }
-
-        private async Task<T> FetchDataAsync<T>(string url) where T : class
-        {
-            try
-            {
-                var response = await _httpClient.GetFromJsonAsync<T>(url);
-                if (response == null)
-                {
-                    var message = $"No data received from {url}";
-                    _loggingService.WriteLine(message);
-                    throw new Exception(message);
-                }
-                _loggingService.WriteLine("Data fetched successfully");
-                return response;
-            }
-            catch (JsonException ex)
-            {
-                var response = await _httpClient.GetFromJsonAsync<T[]>(url);
-                return response?.First() ?? throw new Exception($"No data received from {url}");
-            }
-            catch (HttpRequestException ex)
-            {
-                var message = $"Error fetching data from {url}: {ex.Message}";
-                _loggingService.WriteLine(message);
-                throw new Exception(message, ex);
-            }
         }
 
         private static List<NbuCurrencyDTO> FormatCurrenciesData(NbuCurrencyDTO[] currencies)

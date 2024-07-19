@@ -15,13 +15,13 @@ namespace CryptoClient.Data.Storages
     public class StorageService : IStorageService
     {
         private readonly ISerializer _serializer;
-        private readonly IApiService _apiService;
+        private readonly IApiClient _apiService;
         private readonly LoggingService _loggingService;
         private readonly string _storageFilePath;
 
         public StorageService(
-            ISerializer serializer, 
-            IApiService apiService,
+            ISerializer serializer,
+            IApiClient apiService,
             LoggingService loggingService,
             string storageFilePath)
         {

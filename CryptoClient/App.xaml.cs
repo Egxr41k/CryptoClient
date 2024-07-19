@@ -27,7 +27,8 @@ namespace CryptoClient
         private readonly CryptoClientStore _cryptoClientStore;
         private readonly CryptoClientViewModel _cryptoClientViewModel;
         private readonly SettingsService _settingsService;
-        private readonly IApiService _apiService;
+        private readonly IApiClient _apiService;
+        private readonly IFetchService _fetchService;
         private readonly HttpClient _httpClient;
         private readonly IStorageService _storageService;
         private readonly ISerializer _serializer;
@@ -39,9 +40,13 @@ namespace CryptoClient
             _settingsService = new SettingsService(_loggingService);
             _httpClient = new HttpClient();
 
+            _fetchService = new JsonService(
+                _httpClient,
+                _loggingService);
+
             _apiService = _settingsService.Settings.UsedApi == "CoinCap" ?
-                new CoinCapApiService(_httpClient, _loggingService) :
-                new NbuApiService(_httpClient, _loggingService);
+                new CoinCapClient(_fetchService) :
+                new NbuClient(_fetchService);
 
             string storageName;
 

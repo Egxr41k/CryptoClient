@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CryptoClient.Data.Services
 {
-    public interface IApiService
+    public interface IApiClient
     {
         Task<Dictionary<string, double>> GetCurrenciesCoastsAsync();
         Task<CurrencyModel[]> GetFullCurrenciesInfoAsync();
