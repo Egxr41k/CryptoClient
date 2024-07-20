@@ -79,7 +79,8 @@ namespace CryptoClient
                 _cryptoClientStore, 
                 _selectedModelStore,
                 _storageService,
-                _settingsService);
+                _settingsService,
+                _loggingService);
         }
 
         protected override void OnStartup(StartupEventArgs e)

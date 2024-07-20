@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CryptoClient.Data.Storages;
+using CryptoClient.Logging;
 using CryptoClient.Settings;
 using CryptoClient.Stores;
 
@@ -26,7 +27,8 @@ namespace CryptoClient.ViewModels
             CryptoClientStore cryptoClientStore, 
             SelectedModelStore selectedModelStore,
             IStorageService storageService,
-            SettingsService settingsService)
+            SettingsService settingsService,
+            LoggingService loggingService)
         {
             ListingVM = new ListingViewModel(
                 cryptoClientStore, 
@@ -38,7 +40,9 @@ namespace CryptoClient.ViewModels
                 selectedModelStore, 
                 storageService);
 
-            SettingsVM = new SettingsViewModel(settingsService);
+            SettingsVM = new SettingsViewModel(
+                settingsService,
+                loggingService);
 
             ListingVM.DetailsViewCommand = new RelayCommand(() =>
             {

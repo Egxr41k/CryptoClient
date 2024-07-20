@@ -5,20 +5,21 @@ using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CryptoClient.Data.Storages;
+using CryptoClient.Logging;
 using CryptoClient.Settings;
 
 namespace CryptoClient.ViewModels
 {
     public class SettingsViewModel : ObservableObject
     {
-        public string Text { get; set; } = "HomeView";
-
-        private SettingsService _settingsService;
-
-        public ICommand RestartCommand { get; set; }
+        private readonly SettingsService _settingsService;
+        private readonly LoggingService _loggingService;
+        private readonly StorageService _storageService;
+        public ICommand ApplyChangesCommand { get; set; }
         public List<string> UsedApis { get; }
 
-        public string selectedUsedApi;
+        private string selectedUsedApi;
         public string SelectedUsedApi
         {
             get => selectedUsedApi;
@@ -68,9 +69,15 @@ namespace CryptoClient.ViewModels
             }
         }
 
-        public SettingsViewModel(SettingsService settingsService)
+        public string Logs { get; set; }
+        public string UnserializedData { get; set; }
+
+        public SettingsViewModel(
+            SettingsService settingsService, 
+            LoggingService loggingService)
         {
             _settingsService = settingsService;
+            _loggingService = loggingService;
 
             UsedApis = new List<string>() { "CoinCap", "NBU_Exchacnge"};
 
@@ -86,12 +93,13 @@ namespace CryptoClient.ViewModels
             selectedFormatOfSaving = _settingsService.Settings.FormatOfSaving;
 
 
-            RestartCommand = new RelayCommand(() =>
+            ApplyChangesCommand = new RelayCommand(() =>
             {
                 _settingsService.SaveSettings();
                 RestartApplication();
             });
         }
+
         private async void RestartApplication()
         {
             var currentProcess = System.Diagnostics.Process.GetCurrentProcess();
