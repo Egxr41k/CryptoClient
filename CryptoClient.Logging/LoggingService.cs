@@ -3,6 +3,8 @@
     public class LoggingService
     {
         private readonly string _logFilePath;
+
+        public Action ContentChanged;
         public LoggingService(string logFilePath = "log.txt")
         {
             _logFilePath = Path.Combine(
@@ -10,12 +12,18 @@
                 logFilePath);
         }
 
-        public string GetLogs()
+        public void ClearLog()
+        {
+            File.WriteAllText(_logFilePath, "");
+            ContentChanged.Invoke();
+        }
+
+        public string GetLog()
         {
             return File.ReadAllText(_logFilePath);
         }
 
-        public void WriteLine(string message)
+        public void WriteToLog(string message)
         {
             string format = "[{0:dd.MM.yy HH:mm:ss.fff}] | Thread: {1} | {2}\r\n";
             int threadId = Environment.CurrentManagedThreadId;
@@ -23,6 +31,8 @@
             string fullText = string.Format(format, DateTime.Now, threadId, message);
 
             File.AppendAllText(_logFilePath, fullText);
+
+            ContentChanged.Invoke();
         }
     }
 }

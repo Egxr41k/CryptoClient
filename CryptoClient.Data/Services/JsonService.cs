@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using System.Text.Json;
 using CryptoClient.Logging;
 
 namespace CryptoClient.Data.Services
@@ -22,16 +23,21 @@ namespace CryptoClient.Data.Services
                 if (response == null)
                 {
                     var message = $"No data received from {url}";
-                    _loggingService.WriteLine(message);
+                    _loggingService.WriteToLog(message);
                     throw new Exception(message);
                 }
-                _loggingService.WriteLine("Data fetched successfully");
+                _loggingService.WriteToLog("Data fetched successfully");
                 return response;
+            }
+            catch (JsonException ex)
+            {
+                var response = await _httpClient.GetFromJsonAsync<T[]>(url);
+                return response.First() ?? throw new Exception($"No data received from {url}");
             }
             catch (HttpRequestException ex)
             {
                 var message = $"Error fetching data from {url}: {ex.Message}";
-                _loggingService.WriteLine(message);
+                _loggingService.WriteToLog(message);
                 throw new Exception(message, ex);
             }
         }

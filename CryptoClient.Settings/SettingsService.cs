@@ -70,7 +70,7 @@ namespace CryptoClient.Settings
             }
             catch (Exception ex)
             {
-                _loggingService.WriteLine($"An error occurred while saving settings: {ex.Message}");
+                _loggingService.WriteToLog($"An error occurred while saving settings: {ex.Message}");
             }
         }
     }

@@ -29,6 +29,7 @@ namespace CryptoClient.ViewModels
             get { return _selectedListingItemViewModel; }
             set
             {
+                if (value == null) return;
                 SetProperty(ref _selectedListingItemViewModel, value);
                 _selectedModelStore.SelectedModel = 
                     SelectedListingItemViewModel?.CurrencyModel;

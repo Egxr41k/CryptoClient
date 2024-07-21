@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,6 +18,8 @@ namespace CryptoClient.ViewModels
         private readonly LoggingService _loggingService;
         private readonly StorageService _storageService;
         public ICommand ApplyChangesCommand { get; set; }
+        public ICommand ClearStorageCommand { get; set; }
+        public ICommand ClearLogsCommand { get; set; }
         public List<string> UsedApis { get; }
 
         private string selectedUsedApi;
@@ -69,12 +72,27 @@ namespace CryptoClient.ViewModels
             }
         }
 
-        public string Logs => 
-            _loggingService.GetLogs();
+        public string log;
+        public string Log
+        {
+            get => log;
+            set => SetProperty(ref log, value);
+        }
 
-        public string UnserializedData => 
-            _storageService.GetUnserializedData();
-        
+        private string unserializedData;
+        public string UnserializedData
+        {
+            get => unserializedData;
+            set => SetProperty(ref unserializedData, value);
+        }
+
+        private ScrollViewer logScrollViewer;
+        public ScrollViewer LogScrollViewer
+        {
+            get => logScrollViewer;
+            set => SetProperty(ref logScrollViewer, value);
+        }
+
 
         public SettingsViewModel(
             SettingsService settingsService,
@@ -85,6 +103,12 @@ namespace CryptoClient.ViewModels
             _storageService = storageService;
             _loggingService = loggingService;
 
+            storageService.ContentChanged +=
+                storageService_ContentChanged;
+
+            loggingService.ContentChanged +=
+            loggingService_ContentChanged;
+
             UsedApis = new List<string>() { "CoinCap", "NBU_Exchacnge"};
 
             AvailableCurrencyCounts = new List<int>() { 5, 10 };
@@ -93,17 +117,35 @@ namespace CryptoClient.ViewModels
 
             FormatsOfSaving = new List<string>() { "JSON", "CSV", "XML" };
 
+            LogScrollViewer = new ScrollViewer();
+
             selectedUsedApi = _settingsService.Settings.UsedApi;
             selectedAvailableCurrencyCount = _settingsService.Settings.AvailableCurrencyCount;
             selectedFetchingIntervalMin = _settingsService.Settings.FetchingIntervalMin;
             selectedFormatOfSaving = _settingsService.Settings.FormatOfSaving;
 
+            ClearStorageCommand = new RelayCommand(() => 
+                _storageService.ClearStorage());
+
+            ClearLogsCommand = new RelayCommand(() =>
+                _loggingService.ClearLog());
 
             ApplyChangesCommand = new RelayCommand(() =>
             {
                 _settingsService.SaveSettings();
                 RestartApplication();
             });
+        }
+
+        private void storageService_ContentChanged()
+        {
+            UnserializedData = _storageService.GetUnserializedData();
+        }
+
+        private void loggingService_ContentChanged()
+        {
+            Log = _loggingService.GetLog();
+            LogScrollViewer.ScrollToBottom();
         }
 
         private async void RestartApplication()
