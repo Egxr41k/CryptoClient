@@ -69,14 +69,20 @@ namespace CryptoClient.ViewModels
             }
         }
 
-        public string Logs { get; set; }
-        public string UnserializedData { get; set; }
+        public string Logs => 
+            _loggingService.GetLogs();
+
+        public string UnserializedData => 
+            _storageService.GetUnserializedData();
+        
 
         public SettingsViewModel(
-            SettingsService settingsService, 
+            SettingsService settingsService,
+            StorageService storageService,
             LoggingService loggingService)
         {
             _settingsService = settingsService;
+            _storageService = storageService;
             _loggingService = loggingService;
 
             UsedApis = new List<string>() { "CoinCap", "NBU_Exchacnge"};

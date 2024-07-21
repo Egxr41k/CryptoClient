@@ -22,7 +22,7 @@ namespace CryptoClient
         private readonly IApiClient _apiService;
         private readonly IFetchService _fetchService;
         private readonly HttpClient _httpClient;
-        private readonly IStorageService _storageService;
+        private readonly StorageService _storageService;
         private readonly ISerializer _serializer;
         private readonly LoggingService _loggingService;
 

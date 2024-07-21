@@ -10,6 +10,11 @@
                 logFilePath);
         }
 
+        public string GetLogs()
+        {
+            return File.ReadAllText(_logFilePath);
+        }
+
         public void WriteLine(string message)
         {
             string format = "[{0:dd.MM.yy HH:mm:ss.fff}] | Thread: {1} | {2}\r\n";
@@ -17,7 +22,7 @@
 
             string fullText = string.Format(format, DateTime.Now, threadId, message);
 
-            File.WriteAllText(_logFilePath, fullText);
+            File.AppendAllText(_logFilePath, fullText);
         }
     }
 }

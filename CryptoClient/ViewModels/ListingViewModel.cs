@@ -17,7 +17,7 @@ namespace CryptoClient.ViewModels
         private CryptoClientStore _cryptoClientStore;
         private SelectedModelStore _selectedModelStore;
         private DispatcherTimer _refreshTimer;
-        private IStorageService _strorageService;
+        private StorageService _strorageService;
 
         public RelayCommand DetailsViewCommand;
         public IEnumerable<ListingItemViewModel> CryptoList => cryptoList;
@@ -45,7 +45,7 @@ namespace CryptoClient.ViewModels
         public ListingViewModel(
             CryptoClientStore cryptoClientStore, 
             SelectedModelStore selectedModelStore,
-            IStorageService strorageService,
+            StorageService strorageService,
             SettingsService settingsService)
         {
             _cryptoClientStore = cryptoClientStore;

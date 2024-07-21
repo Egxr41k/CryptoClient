@@ -92,13 +92,13 @@
               Grid.Column="1"
               HorizontalScrollBarVisibility="Visible" 
               VerticalScrollBarVisibility="Visible">
-            <TextBox IsEnabled="False" Text="{Binding UnserializedData}"/>
+            <TextBox IsEnabled="False" Text="{Binding UnserializedData, Mode=OneWay}"/>
         </ScrollViewer>
         <ScrollViewer Grid.Row="1"
                       Grid.Column="1"
                       HorizontalScrollBarVisibility="Visible" 
                       VerticalScrollBarVisibility="Visible">
-            <TextBox IsEnabled="False" Text="{Binding Logs}"/>
+            <TextBox IsEnabled="False" Text="{Binding Logs, Mode=OneWay}"/>
         </ScrollViewer>
     </Grid>
 </UserControl>

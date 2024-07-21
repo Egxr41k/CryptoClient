@@ -26,7 +26,7 @@ namespace CryptoClient.ViewModels
         public CryptoClientViewModel(
             CryptoClientStore cryptoClientStore, 
             SelectedModelStore selectedModelStore,
-            IStorageService storageService,
+            StorageService storageService,
             SettingsService settingsService,
             LoggingService loggingService)
         {
@@ -42,6 +42,7 @@ namespace CryptoClient.ViewModels
 
             SettingsVM = new SettingsViewModel(
                 settingsService,
+                storageService,
                 loggingService);
 
             ListingVM.DetailsViewCommand = new RelayCommand(() =>

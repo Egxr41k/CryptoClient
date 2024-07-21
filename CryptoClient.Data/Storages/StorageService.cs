@@ -5,7 +5,7 @@ using CryptoClient.Data.Models;
 
 namespace CryptoClient.Data.Storages
 {
-    public class StorageService : IStorageService
+    public class StorageService
     {
         private readonly ISerializer _serializer;
         private readonly IApiClient _apiService;
@@ -25,6 +25,11 @@ namespace CryptoClient.Data.Storages
             _storageFilePath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, 
                 storageFilePath);
+        }
+
+        public string GetUnserializedData()
+        {
+            return File.ReadAllText(_storageFilePath);
         }
 
         public async Task<CurrencyModel[]> ReadAsync()

@@ -61,7 +61,7 @@ namespace CryptoClient.ViewModels
 
         public DetailsViewModel(
             SelectedModelStore selectedModelStore,
-            IStorageService storageService)
+            StorageService storageService)
         {
             _selectedModelStore = selectedModelStore;
 
