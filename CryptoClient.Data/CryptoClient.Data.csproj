@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CryptoClient.Logging\CryptoClient.Logging.csproj" />
-  </ItemGroup>
-
 </Project>

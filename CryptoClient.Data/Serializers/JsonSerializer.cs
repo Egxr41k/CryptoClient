@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace CryptoClient.Data.Serializers
 {
-    public class JsonSerializer : ISerializer
+    public class JsonSerializer<T> : ISerializer<T>
     {
         private readonly JsonSerializerOptions _options;
 
@@ -16,16 +16,16 @@ namespace CryptoClient.Data.Serializers
             };
         }
 
-        public async Task<CurrencyModel[]> DeserializeAsync(string path)
+        public async Task<T> DeserializeAsync(string path)
         {
-            if (!File.Exists(path)) return Array.Empty<CurrencyModel>();
-            var json = await File.ReadAllTextAsync(path);
-            return System.Text.Json.JsonSerializer.Deserialize<CurrencyModel[]>(json, _options) ?? Array.Empty<CurrencyModel>();
+            if (!File.Exists(path)) return default;
+            string json = await File.ReadAllTextAsync(path);
+            return JsonSerializer.Deserialize<T>(json, _options);
         }
 
-        public async Task SerializeAsync(CurrencyModel[] data, string path)
+        public async Task SerializeAsync(T data, string path)
         {
-            var json = System.Text.Json.JsonSerializer.Serialize(data, _options);
+            string json = JsonSerializer.Serialize(data, _options);
             await File.WriteAllTextAsync(path, json);
         }
     }

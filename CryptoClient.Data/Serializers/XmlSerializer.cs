@@ -1,34 +1,32 @@
-﻿using CryptoClient.Data.Models;
-
-namespace CryptoClient.Data.Serializers
+﻿namespace CryptoClient.Data.Serializers
 {
-    public class XmlSerializer : ISerializer
+    public class XmlSerializer<T> : ISerializer<T>
     {
-        public async Task<CurrencyModel[]> DeserializeAsync(string path)
+        public async Task<T> DeserializeAsync(string path)
         {
-            if (!File.Exists(path)) return Array.Empty<CurrencyModel>();
+            if (!File.Exists(path)) return default;
 
             try
             {
-                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(CurrencyModel[]));
+                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
 
                 using var stream = new FileStream(path, FileMode.OpenOrCreate);
 
-                var currencyModels = serializer.Deserialize(stream) as CurrencyModel[];
+                var currencyModels = (T)serializer.Deserialize(stream);
 
                 return currencyModels;
             }
             catch (Exception ex)
             {
-                return Array.Empty<CurrencyModel>();
+                return default;
             }
         }
 
-        public async Task SerializeAsync(CurrencyModel[] data, string path)
+        public async Task SerializeAsync(T data, string path)
         {
             try
             {
-                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(CurrencyModel[]));
+                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
 
                 using var stream = new FileStream(path, FileMode.OpenOrCreate);
                 serializer.Serialize(stream, data);

@@ -11,18 +11,18 @@ namespace CryptoClient.Data.Contracts
     public class NbuCurrencyDTO
     {
         [DataMember(Name = "r030")]
-        public int R030 { get; set; }  // Code of the currency
+        public int R030 { get; set; }
 
         [DataMember(Name = "txt")]
-        public string Txt { get; set; }   // Full name of the currency
+        public string Txt { get; set; }
 
         [DataMember(Name = "rate")]
-        public double Rate { get; set; }  // Exchange rate
+        public double Rate { get; set; }
 
         [DataMember(Name = "cc")]
-        public string Cc { get; set; }    // Currency abbreviation
+        public string Cc { get; set; }
 
         [DataMember(Name = "exchangedate")]
-        public string Exchangedate { get; set; }  // Date of the exchange rate
+        public string Exchangedate { get; set; }
     }
 }

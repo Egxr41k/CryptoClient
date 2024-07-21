@@ -59,9 +59,7 @@ namespace CryptoClient.ViewModels
             new SolidColorBrush(Colors.Red) :
             new SolidColorBrush(Colors.Green);
 
-        public DetailsViewModel(
-            SelectedModelStore selectedModelStore,
-            StorageService storageService)
+        public DetailsViewModel(SelectedModelStore selectedModelStore)
         {
             _selectedModelStore = selectedModelStore;
 

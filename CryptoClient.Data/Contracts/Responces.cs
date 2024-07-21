@@ -46,5 +46,4 @@ namespace CryptoClient.Data.Contracts
         [DataMember(Name = "timestamp")]
         public long Timestamp { get; set; }
     }
-
 }

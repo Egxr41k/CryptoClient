@@ -489,11 +489,7 @@ C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\refi
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\CryptoClient.pdb
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\CryptoClient.genruntimeconfig.cache
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\ref\CryptoClient.dll
-C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Settings.dll
-C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Settings.pdb
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Data.dll
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Data.pdb
-C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Logging.dll
-C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Logging.pdb
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\SettingsView.g.cs
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\SettingsView.baml

@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CryptoClient.Data.Models;
 using CryptoClient.Data.Storages;
 using CryptoClient.Logging;
 using CryptoClient.Settings;
@@ -26,8 +27,8 @@ namespace CryptoClient.ViewModels
         public CryptoClientViewModel(
             CryptoClientStore cryptoClientStore, 
             SelectedModelStore selectedModelStore,
-            StorageService storageService,
-            SettingsService settingsService,
+            CurrencyStorage storageService,
+            SettingsStorage settingsService,
             LoggingService loggingService)
         {
             ListingVM = new ListingViewModel(
@@ -37,8 +38,7 @@ namespace CryptoClient.ViewModels
                 settingsService);
 
             DetailsVM = new DetailsViewModel(
-                selectedModelStore, 
-                storageService);
+                selectedModelStore);
 
             SettingsVM = new SettingsViewModel(
                 settingsService,

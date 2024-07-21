@@ -17,7 +17,7 @@ namespace CryptoClient.ViewModels
         private CryptoClientStore _cryptoClientStore;
         private SelectedModelStore _selectedModelStore;
         private DispatcherTimer _refreshTimer;
-        private StorageService _strorageService;
+        private CurrencyStorage _strorageService;
 
         public RelayCommand DetailsViewCommand;
         public IEnumerable<ListingItemViewModel> CryptoList => cryptoList;
@@ -39,6 +39,8 @@ namespace CryptoClient.ViewModels
 
         private void OverwriteCryptoList(CurrencyModel[] models)
         {
+            if (models == null) return;
+
             cryptoList.Clear();
             foreach(var model in models) AddListItem(model);
         }
@@ -46,8 +48,8 @@ namespace CryptoClient.ViewModels
         public ListingViewModel(
             CryptoClientStore cryptoClientStore, 
             SelectedModelStore selectedModelStore,
-            StorageService strorageService,
-            SettingsService settingsService)
+            CurrencyStorage strorageService,
+            SettingsStorage settingsService)
         {
             _cryptoClientStore = cryptoClientStore;
             _selectedModelStore = selectedModelStore;
@@ -64,7 +66,7 @@ namespace CryptoClient.ViewModels
 
             OverwriteCryptoList(models);
 
-            int interval = settingsService.Settings.FetchingIntervalMin;
+            int interval = settingsService.Content.FetchingIntervalMin;
             _refreshTimer = new DispatcherTimer
             {
                 //Interval = TimeSpan.FromMinutes(interval)

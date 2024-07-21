@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace CryptoClient.Data.Serializers
 {
-    public class CsvSerializer : ISerializer
+    public class CsvSerializer : ISerializer<CurrencyModel[]>
     {
         public async Task<CurrencyModel[]> DeserializeAsync(string path)
         {

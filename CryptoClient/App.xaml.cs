@@ -7,6 +7,7 @@ using CryptoClient.Data.Services;
 using CryptoClient.Data.Storages;
 using CryptoClient.Data.Serializers;
 using CryptoClient.Logging;
+using CryptoClient.Data.Models;
 
 namespace CryptoClient
 {
@@ -18,38 +19,45 @@ namespace CryptoClient
         private readonly SelectedModelStore _selectedModelStore;
         private readonly CryptoClientStore _cryptoClientStore;
         private readonly CryptoClientViewModel _cryptoClientViewModel;
-        private readonly SettingsService _settingsService;
+        private readonly SettingsStorage _settingsService;
         private readonly IApiClient _apiService;
         private readonly IFetchService _fetchService;
         private readonly HttpClient _httpClient;
-        private readonly StorageService _storageService;
-        private readonly ISerializer _serializer;
+        private readonly CurrencyStorage _storageService;
+        private readonly ISerializer<CurrencyModel[]> _serializer;
+        private readonly ISerializer<SettingsDTO> _settingsSerializer;
         private readonly LoggingService _loggingService;
 
         public App()
         {
             _loggingService = new LoggingService();
-            _settingsService = new SettingsService(_loggingService);
+            _settingsSerializer = new JsonSerializer<SettingsDTO>();
+            
+            _settingsService = new SettingsStorage(
+                _settingsSerializer,
+                _loggingService,
+                "settings.json");
+
             _httpClient = new HttpClient();
 
             _fetchService = new JsonService(
                 _httpClient,
                 _loggingService);
 
-            _apiService = _settingsService.Settings.UsedApi == "CoinCap" ?
+            _apiService = _settingsService.Content.UsedApi == "CoinCap" ?
                 new CoinCapClient(_fetchService) :
                 new NbuClient(_fetchService);
 
             string storageName;
 
-            switch (_settingsService.Settings.FormatOfSaving)
+            switch (_settingsService.Content.FormatOfSaving)
             {
                 case "JSON":
-                    _serializer = new JsonSerializer();
+                    _serializer = new JsonSerializer<CurrencyModel[]>();
                     storageName = "storage.json";
                     break;
                 case "XML":
-                    _serializer = new XmlSerializer();
+                    _serializer = new XmlSerializer<CurrencyModel[]>();
                     storageName = "storage.xml";
                     break;
                 case "CSV":
@@ -57,12 +65,12 @@ namespace CryptoClient
                     storageName = "storage.csv";
                     break;
                 default:
-                    _serializer = new JsonSerializer();
+                    _serializer = new JsonSerializer<CurrencyModel[]>();
                     storageName = "storage.json";
                     break;
             }
 
-            _storageService = new StorageService(
+            _storageService = new CurrencyStorage(
                 _serializer, 
                 _apiService,
                 _loggingService,

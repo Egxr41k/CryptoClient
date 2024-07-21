@@ -1,26 +1,24 @@
 ﻿using CryptoClient.Data.Serializers;
 using CryptoClient.Data.Services;
 using CryptoClient.Logging;
-using CryptoClient.Data.Models;
 
 namespace CryptoClient.Data.Storages
 {
-    public class StorageService
+    public abstract class Storage<T>
     {
-        private readonly ISerializer _serializer;
-        private readonly IApiClient _apiService;
+        private readonly ISerializer<T> _serializer;
         private readonly LoggingService _loggingService;
         private readonly string _storageFilePath;
 
+        public T Content { get; protected set; }
         public Action ContentChanged;
-        public StorageService(
-            ISerializer serializer,
-            IApiClient apiService,
+
+        public Storage(
+            ISerializer<T> serializer,
             LoggingService loggingService,
             string storageFilePath)
         {
             _serializer = serializer;
-            _apiService = apiService;
             _loggingService = loggingService;
 
             _storageFilePath = Path.Combine(
@@ -31,6 +29,7 @@ namespace CryptoClient.Data.Storages
         public void ClearStorage()
         {
             File.WriteAllText(_storageFilePath, "");
+            _loggingService.WriteToLog("Storage cleared succesfully");
             ContentChanged.Invoke();
         }
 
@@ -39,11 +38,11 @@ namespace CryptoClient.Data.Storages
             return File.ReadAllText(_storageFilePath);
         }
 
-        public async Task<CurrencyModel[]> ReadAsync()
+        public async Task<T?> ReadAsync()
         {
             if (!File.Exists(_storageFilePath))
             {
-                return await UpdateAsync();
+                return default;
             }
 
             try
@@ -52,37 +51,22 @@ namespace CryptoClient.Data.Storages
             }
             catch (Exception ex)
             {
-                _loggingService.WriteToLog($"An error occurred while reading data: {ex.Message}");
-                return await UpdateAsync();
+                _loggingService.WriteToLog($"An error occurred while Deserialing data: {ex.Message}");
+                return default;
             }
         }
 
-        public async Task SaveAsync(CurrencyModel[] data)
+        public async Task SaveAsync(T data)
         {
             try
             {
                 await _serializer.SerializeAsync(data, _storageFilePath);
+                _loggingService.WriteToLog("Data succesfully serialized");
                 ContentChanged.Invoke();
             }
             catch (Exception ex)
             {
                 _loggingService.WriteToLog($"An error occurred while saving data: {ex.Message}");
-            }
-        }
-
-        public async Task<CurrencyModel[]> UpdateAsync()
-        {
-            try
-            {
-                // Replace this with actual logic to fetch new data
-                CurrencyModel[] newData = await _apiService.GetFullCurrenciesInfoAsync();
-                await SaveAsync(newData);
-                return newData;
-            }
-            catch (Exception ex)
-            {
-                _loggingService.WriteToLog($"An error occurred while updating data: {ex.Message}");
-                throw;
             }
         }
     }

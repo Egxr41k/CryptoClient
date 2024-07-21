@@ -2,9 +2,9 @@
 
 namespace CryptoClient.Data.Serializers
 {
-    public interface ISerializer
+    public interface ISerializer<T>
     {
-        Task<CurrencyModel[]> DeserializeAsync(string path);
-        Task SerializeAsync(CurrencyModel[] data, string path);
+        Task<T> DeserializeAsync(string path);
+        Task SerializeAsync(T data, string path);
     }
 }
