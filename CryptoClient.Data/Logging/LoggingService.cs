@@ -33,7 +33,7 @@
 
             File.AppendAllText(_logFilePath, fullText);
 
-            ContentChanged.Invoke();
+            ContentChanged?.Invoke();
         }
     }
 }

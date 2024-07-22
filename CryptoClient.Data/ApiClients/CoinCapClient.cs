@@ -43,7 +43,9 @@ namespace CryptoClient.Data.Services
         public async Task<CurrencyDTO[]> GetTopCurrenciesAsync()
         {
             var response = await _fetchService.FetchDataAsync<CurrencyListResponse>(_baseUrl);
-            return FormatCurrenciesData(response.Data);
+            return response != null ? 
+                FormatCurrenciesData(response.Data) : 
+                Array.Empty<CurrencyDTO>();
         }
 
         public async Task<Dictionary<string, double>> GetCurrenciesCoastsAsync()
@@ -93,7 +95,7 @@ namespace CryptoClient.Data.Services
 
         private async Task<CurrencyModel> GetModel(CurrencyDTO currencyDto)
         {
-            return new CurrencyModel()
+            return currencyDto != null ? new CurrencyModel()
             {
                 Id = currencyDto.Id,
                 Symbol = currencyDto.Symbol,
@@ -103,7 +105,7 @@ namespace CryptoClient.Data.Services
                 Link = currencyDto.Explorer,
                 History = await GetHistoryAsync(currencyDto.Id),
                 Markets = await GetMarketsAsync(currencyDto.Id),
-            };
+            } : new CurrencyModel();
         }
     }
 }

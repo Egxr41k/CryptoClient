@@ -1,4 +1,5 @@
-﻿using CryptoClient.Data.Models;
+﻿using CryptoClient.Data.Contracts;
+using CryptoClient.Data.Models;
 using CryptoClient.Data.Serializers;
 using CryptoClient.Data.Services;
 using CryptoClient.Logging;
@@ -26,6 +27,8 @@ namespace CryptoClient.Data.Storages
             try
             {
                 var newData = await _apiService.GetFullCurrenciesInfoAsync();
+                if (newData == null || newData.Length == 0) return Array.Empty<CurrencyModel>();
+
                 await SaveAsync(newData);
                 return newData;
             }

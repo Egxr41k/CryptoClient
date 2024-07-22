@@ -15,10 +15,12 @@ namespace CryptoClient.Data.Services
             _baseUrl = baseUrl;
         }
 
-        public async Task<List<NbuCurrencyDTO>> GetTopCurrenciesAsync()
+        public async Task<NbuCurrencyDTO[]> GetTopCurrenciesAsync()
         {
             var response = await _fetchService.FetchDataAsync<NbuCurrencyDTO[]>($"{_baseUrl}?json");
-            return FormatCurrenciesData(response);
+            return response != null ?
+                FormatCurrenciesData(response) :
+                Array.Empty<NbuCurrencyDTO>();
         }
 
         public async Task<Dictionary<DateTime, double>> GetHistoryAsync(string currencyCode)
@@ -31,12 +33,12 @@ namespace CryptoClient.Data.Services
             return FormatHistoryData(response);
         }
 
-        private static List<NbuCurrencyDTO> FormatCurrenciesData(NbuCurrencyDTO[] currencies)
+        private static NbuCurrencyDTO[] FormatCurrenciesData(NbuCurrencyDTO[] currencies)
         {
             return currencies
                 .OrderByDescending(currency => currency.Rate)
                 .Take(10)
-                .ToList();
+                .ToArray();
         }
 
         private static Dictionary<DateTime, double> FormatHistoryData(NbuCurrencyDTO[] history)

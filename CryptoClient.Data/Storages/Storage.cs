@@ -10,6 +10,7 @@ namespace CryptoClient.Data.Storages
         private readonly LoggingService _loggingService;
         private readonly string _storageFilePath;
 
+        public string StorageFileName { get; private set; }
         public T Content { get; protected set; }
         public Action ContentChanged;
 
@@ -18,6 +19,7 @@ namespace CryptoClient.Data.Storages
             LoggingService loggingService,
             string storageFilePath)
         {
+            StorageFileName = storageFilePath;
             _serializer = serializer;
             _loggingService = loggingService;
 
@@ -47,11 +49,21 @@ namespace CryptoClient.Data.Storages
 
             try
             {
-                return await _serializer.DeserializeAsync(_storageFilePath);
+                var data = await _serializer.DeserializeAsync(_storageFilePath);
+                if (data == null)
+                {
+                    _loggingService.WriteToLog($"No data read from {StorageFileName}");
+                    return default;
+                }
+                else
+                {
+                    _loggingService.WriteToLog($"Data read successfully from {StorageFileName}");
+                    return data;
+                }
             }
             catch (Exception ex)
             {
-                _loggingService.WriteToLog($"An error occurred while Deserialing data: {ex.Message}");
+                _loggingService.WriteToLog($"Error fetching data from {StorageFileName}: {ex.Message}");
                 return default;
             }
         }
@@ -61,8 +73,8 @@ namespace CryptoClient.Data.Storages
             try
             {
                 await _serializer.SerializeAsync(data, _storageFilePath);
-                _loggingService.WriteToLog("Data succesfully serialized");
-                ContentChanged.Invoke();
+                _loggingService.WriteToLog($"Data saved succesfully to {StorageFileName}");
+                ContentChanged?.Invoke();
             }
             catch (Exception ex)
             {

@@ -28,7 +28,8 @@ namespace CryptoClient.Settings
             string storageFilePath) : 
             base(serializer, loggingService, storageFilePath)
         {
-            Content = new SettingsDTO();
+            Content = ReadAsync().GetAwaiter().GetResult() ?? 
+                new SettingsDTO();
         }
     }
 }

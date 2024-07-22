@@ -39,7 +39,7 @@ namespace CryptoClient.ViewModels
 
         private void OverwriteCryptoList(CurrencyModel[] models)
         {
-            if (models == null) return;
+            if (models == null || models.Length == 0) return;
 
             cryptoList.Clear();
             foreach(var model in models) AddListItem(model);

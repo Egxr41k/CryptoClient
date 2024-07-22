@@ -9,36 +9,47 @@ namespace CryptoClient.Data.Services
         private readonly HttpClient _httpClient;
         private readonly LoggingService _loggingService;
 
-        public JsonService(HttpClient httpClient, LoggingService loggingService)
+        public JsonService(
+            HttpClient httpClient,
+            LoggingService loggingService)
         {
             _httpClient = httpClient;
             _loggingService = loggingService;
         }
 
-        public async Task<T> FetchDataAsync<T>(string url)
+        public async Task<T?> FetchDataAsync<T>(string url)
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<T>(url);
-                if (response == null)
-                {
-                    var message = $"No data received from {url}";
-                    _loggingService.WriteToLog(message);
-                    throw new Exception(message);
-                }
-                _loggingService.WriteToLog("Data fetched successfully");
+                var response = await FetchAsync<T>(url);
                 return response;
             }
             catch (JsonException ex)
             {
-                var response = await _httpClient.GetFromJsonAsync<T[]>(url);
-                return response.First() ?? throw new Exception($"No data received from {url}");
+                var responce = await FetchAsync<T[]>(url) ?? Array.Empty<T>();
+                return responce.First();
             }
             catch (HttpRequestException ex)
             {
-                var message = $"Error fetching data from {url}: {ex.Message}";
-                _loggingService.WriteToLog(message);
-                throw new Exception(message, ex);
+                _loggingService.WriteToLog($"Error fetching data from {url}: {ex.Message}");
+                //throw new Exception($"Error fetching data from {url}: {ex.Message}");
+                return default;
+            }
+        }
+
+        private async Task<T?> FetchAsync<T>(string url)
+        {
+            var response = await _httpClient.GetFromJsonAsync<T>(url);
+            if (response == null)
+            {
+                _loggingService.WriteToLog($"No data received from {url}");
+                //throw new Exception($"No data received from {url}");
+                return default;
+            }
+            else
+            {
+                _loggingService.WriteToLog($"Data fetched successfully from {url}");
+                return response;
             }
         }
     }
