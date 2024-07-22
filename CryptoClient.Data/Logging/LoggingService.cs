@@ -30,6 +30,7 @@
 
             string fullText = string.Format(format, DateTime.Now, threadId, message);
 
+
             File.AppendAllText(_logFilePath, fullText);
 
             ContentChanged.Invoke();

@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows.Controls;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CryptoClient.Data.Models;
@@ -40,10 +41,12 @@ namespace CryptoClient.ViewModels
             DetailsVM = new DetailsViewModel(
                 selectedModelStore);
 
+            var infoViewModel = new InfoViewModel(storageService, loggingService);
+
             SettingsVM = new SettingsViewModel(
                 settingsService,
-                storageService,
-                loggingService);
+                infoViewModel);
+
 
             ListingVM.DetailsViewCommand = new RelayCommand(() =>
             {

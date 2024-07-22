@@ -493,3 +493,5 @@ C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\Cryp
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\bin\Debug\net6.0-windows\CryptoClient.Data.pdb
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\SettingsView.g.cs
 C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\SettingsView.baml
+C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\InfoView.g.cs
+C:\Users\Egxr41k\Desktop\CryptoClient\CryptoClient\obj\Debug\net6.0-windows\Views\InfoView.baml
