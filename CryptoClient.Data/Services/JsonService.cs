@@ -31,7 +31,7 @@ namespace CryptoClient.Data.Services
             }
             catch (HttpRequestException ex)
             {
-                _loggingService.WriteToLog($"Error fetching data from {url}: {ex.Message}");
+                _loggingService.WriteToLogAsync($"Error fetching data from {url}: {ex.Message}");
                 //throw new Exception($"Error fetching data from {url}: {ex.Message}");
                 return default;
             }
@@ -42,13 +42,13 @@ namespace CryptoClient.Data.Services
             var response = await _httpClient.GetFromJsonAsync<T>(url);
             if (response == null)
             {
-                _loggingService.WriteToLog($"No data received from {url}");
+                _loggingService.WriteToLogAsync($"No data received from {url}");
                 //throw new Exception($"No data received from {url}");
                 return default;
             }
             else
             {
-                _loggingService.WriteToLog($"Data fetched successfully from {url}");
+                _loggingService.WriteToLogAsync($"Data fetched successfully from {url}");
                 return response;
             }
         }

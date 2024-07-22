@@ -9,6 +9,7 @@ using CryptoClient.Stores;
 using CryptoClient.Settings;
 using CryptoClient.Data.Storages;
 using CryptoClient.Data.Models;
+using System.Threading.Tasks;
 
 namespace CryptoClient.ViewModels
 {
@@ -16,7 +17,6 @@ namespace CryptoClient.ViewModels
     {
         private CryptoClientStore _cryptoClientStore;
         private SelectedModelStore _selectedModelStore;
-        private DispatcherTimer _refreshTimer;
         private CurrencyStorage _strorageService;
 
         public RelayCommand DetailsViewCommand;
@@ -40,9 +40,8 @@ namespace CryptoClient.ViewModels
         private void OverwriteCryptoList(CurrencyModel[] models)
         {
             if (models == null || models.Length == 0) return;
-
             cryptoList.Clear();
-            foreach(var model in models) AddListItem(model);
+            foreach (var model in models) AddListItem(model);
         }
 
         public ListingViewModel(
@@ -62,24 +61,30 @@ namespace CryptoClient.ViewModels
             _cryptoClientStore.CurrencyAdded +=
              CryptoClientStore_CurrencyAdded;
 
-            var models = _strorageService.ReadAsync().GetAwaiter().GetResult();
+            int intervalMin = settingsService.Content.FetchingIntervalMin;
+            int intervalSec = 10; //intervalMin * 60;
+            int intervalMillisec = intervalSec * 1000;
 
-            OverwriteCryptoList(models);
+            RefreshingLoop(intervalMillisec);
+        }
 
-            int interval = settingsService.Content.FetchingIntervalMin;
-            _refreshTimer = new DispatcherTimer
+        private void RefreshingLoop(int intervalMillisec)
+        {
+            Task.Run(async () =>
             {
-                //Interval = TimeSpan.FromMinutes(interval)
-                Interval = TimeSpan.FromSeconds(10) 
-            };
+                while (true)
+                {
+                    var models = cryptoList.Count == 0 ?
+                        await _strorageService.ReadAsync() :
+                        await _strorageService.UpdateAsync();
 
-            _refreshTimer.Tick += async (sender, e) =>
-            {
-                var models = await _strorageService.UpdateAsync();
-                OverwriteCryptoList(models);
-            };
+                    if (models == null || models.Length == 0) return;
+                    cryptoList.Clear();
+                    foreach (var model in models) AddListItem(model);
 
-            _refreshTimer.Start();
+                    await Task.Delay(intervalMillisec);
+                }
+            });
         }
 
         private void CryptoClientStore_CurrencyUpdated(CurrencyModel model)

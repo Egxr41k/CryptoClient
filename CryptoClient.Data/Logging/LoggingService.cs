@@ -23,7 +23,7 @@
             return File.ReadAllText(_logFilePath);
         }
 
-        public void WriteToLog(string message)
+        public async Task WriteToLogAsync(string message)
         {
             string format = "[{0:dd.MM.yy HH:mm:ss.fff}] | Thread: {1} | {2}\r\n";
             int threadId = Environment.CurrentManagedThreadId;
@@ -31,7 +31,7 @@
             string fullText = string.Format(format, DateTime.Now, threadId, message);
 
 
-            File.AppendAllText(_logFilePath, fullText);
+            await File.AppendAllTextAsync(_logFilePath, fullText);
 
             ContentChanged?.Invoke();
         }

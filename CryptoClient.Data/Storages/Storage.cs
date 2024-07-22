@@ -31,7 +31,7 @@ namespace CryptoClient.Data.Storages
         public void ClearStorage()
         {
             File.WriteAllText(_storageFilePath, "");
-            _loggingService.WriteToLog("Storage cleared succesfully");
+            _loggingService.WriteToLogAsync("Storage cleared succesfully");
             ContentChanged.Invoke();
         }
 
@@ -52,18 +52,18 @@ namespace CryptoClient.Data.Storages
                 var data = await _serializer.DeserializeAsync(_storageFilePath);
                 if (data == null)
                 {
-                    _loggingService.WriteToLog($"No data read from {StorageFileName}");
+                    _loggingService.WriteToLogAsync($"No data read from {StorageFileName}");
                     return default;
                 }
                 else
                 {
-                    _loggingService.WriteToLog($"Data read successfully from {StorageFileName}");
+                    _loggingService.WriteToLogAsync($"Data read successfully from {StorageFileName}");
                     return data;
                 }
             }
             catch (Exception ex)
             {
-                _loggingService.WriteToLog($"Error fetching data from {StorageFileName}: {ex.Message}");
+                _loggingService.WriteToLogAsync($"Error fetching data from {StorageFileName}: {ex.Message}");
                 return default;
             }
         }
@@ -73,12 +73,12 @@ namespace CryptoClient.Data.Storages
             try
             {
                 await _serializer.SerializeAsync(data, _storageFilePath);
-                _loggingService.WriteToLog($"Data saved succesfully to {StorageFileName}");
+                _loggingService.WriteToLogAsync($"Data saved succesfully to {StorageFileName}");
                 ContentChanged?.Invoke();
             }
             catch (Exception ex)
             {
-                _loggingService.WriteToLog($"An error occurred while saving data: {ex.Message}");
+                _loggingService.WriteToLogAsync($"An error occurred while saving data: {ex.Message}");
             }
         }
     }
