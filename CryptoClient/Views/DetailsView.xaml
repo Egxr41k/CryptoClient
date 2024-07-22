@@ -8,22 +8,23 @@
              xmlns:syncfusion="clr-namespace:Syncfusion.UI.Xaml.Charts;assembly=Syncfusion.SfChart.WPF"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Text="{Binding Title}" FontSize="36" />
-
-        <StackPanel Grid.Row="1">
-            <TextBlock FontSize="24" Text="{Binding Price}" Margin="10"/>
-            <TextBlock FontSize="24" Text="{Binding ChangePercent}" Margin="10" Foreground="{Binding Color}"/>
-            <TextBlock FontSize="12" Text="{Binding Link}" Margin="10"/>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   HorizontalAlignment="Center"
+                   FontSize="36" 
+                   Text="{Binding Title}"/>
+        <TextBlock Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   FontSize="24" 
+                   Text="{Binding Price}" Margin="10"/>
 
         <syncfusion:SfChart
-            Header="Coast increase per year"
-            Grid.Column="1"
-            Grid.ColumnSpan="2">
+            Grid.Row="2"
+            Header="Coast increase per year">
             <!--Initialize the horizontal axis for SfChart-->
             <syncfusion:SfChart.PrimaryAxis>
                 <syncfusion:CategoryAxis Header="time" FontSize="14"/>
