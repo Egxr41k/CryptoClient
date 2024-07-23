@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceClient", "FinanceClient\FinanceClient.csproj", "{ACBCE1ED-CEBF-4561-83F2-B19E17F856F2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceClient.Data", "FinanceClient.Data\FinanceClient.Data.csproj", "{72192A84-6188-4DD7-812F-A44C741E6ABB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACBCE1ED-CEBF-4561-83F2-B19E17F856F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACBCE1ED-CEBF-4561-83F2-B19E17F856F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACBCE1ED-CEBF-4561-83F2-B19E17F856F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACBCE1ED-CEBF-4561-83F2-B19E17F856F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72192A84-6188-4DD7-812F-A44C741E6ABB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72192A84-6188-4DD7-812F-A44C741E6ABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72192A84-6188-4DD7-812F-A44C741E6ABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72192A84-6188-4DD7-812F-A44C741E6ABB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {02A4B2C3-2710-4E87-9705-5F08728EA0F0}
+	EndGlobalSection
+EndGlobal
