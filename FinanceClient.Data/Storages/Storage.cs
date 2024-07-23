@@ -47,6 +47,7 @@ namespace FinanceClient.Data.Storages
             try
             {
                 var data = await _serializer.DeserializeAsync(_storageFilePath);
+                ContentChanged?.Invoke();
                 if (data == null)
                 {
                     _loggingService.WriteToLogAsync($"No data read from {StorageFileName}");

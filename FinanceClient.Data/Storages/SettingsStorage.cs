@@ -28,8 +28,15 @@ namespace FinanceClient.Settings
             string storageFilePath) : 
             base(serializer, loggingService, storageFilePath)
         {
-            Content = ReadAsync().GetAwaiter().GetResult() ?? 
-                new SettingsDTO();
+
+            var settings = ReadAsync().GetAwaiter().GetResult();
+
+            if (settings == null)
+            {
+                settings = new SettingsDTO();
+                SaveAsync(settings).RunSynchronously();
+            }
+            Content = settings;
         }
     }
 }
