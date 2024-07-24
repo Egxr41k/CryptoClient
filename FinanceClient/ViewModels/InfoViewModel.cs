@@ -13,6 +13,10 @@ namespace FinanceClient.ViewModels
 
         public ICommand ClearStorageCommand { get; set; }
         public ICommand ClearLogsCommand { get; set; }
+        public ICommand OpenStorageCommand { get; set; }
+        public ICommand OpenLogsCommand { get; set; }
+
+        public string LogFileName { get; }
 
         public string log;
         public string Log
@@ -20,6 +24,8 @@ namespace FinanceClient.ViewModels
             get => log;
             set => SetProperty(ref log, value);
         }
+
+        public string StorageFileName { get; }
 
         private string unserializedData;
         public string UnserializedData
@@ -35,6 +41,9 @@ namespace FinanceClient.ViewModels
             _storageService = storageService;
             _loggingService = loggingService;
 
+            StorageFileName = _storageService.StorageFileName;
+            LogFileName = _loggingService.LogFileName;
+
             storageService.ContentChanged +=
                 storageService_ContentChanged;
 
@@ -42,10 +51,16 @@ namespace FinanceClient.ViewModels
             loggingService_ContentChanged;
 
             ClearStorageCommand = new RelayCommand(() =>
-            _storageService.ClearStorage());
+                _storageService.ClearStorage());
+
+            OpenStorageCommand = new RelayCommand(() =>
+                _storageService.OpenInFileExplorer());
 
             ClearLogsCommand = new RelayCommand(() =>
                 _loggingService.ClearLog());
+
+            OpenLogsCommand = new RelayCommand(() =>
+                _loggingService.OpenInFileExplorer());
         }
 
         private void storageService_ContentChanged()

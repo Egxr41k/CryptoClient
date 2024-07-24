@@ -1,6 +1,7 @@
 ﻿using FinanceClient.Data.Serializers;
 using FinanceClient.Data.Services;
 using FinanceClient.Logging;
+using System.Diagnostics;
 
 namespace FinanceClient.Data.Storages
 {
@@ -28,6 +29,41 @@ namespace FinanceClient.Data.Storages
                 storageFilePath);
 
             if (!File.Exists(_storageFilePath)) File.Create(_storageFilePath);
+        }
+
+        public void OpenInFileExplorer()
+        {
+            // Ensure the file path is not null or empty
+            if (string.IsNullOrEmpty(_storageFilePath))
+            {
+                throw new ArgumentException("File path cannot be null or empty.", nameof(_storageFilePath));
+            }
+
+            // Use Process.Start to open the file explorer at the specified path
+            try
+            {
+                ProcessStartInfo processStartInfo = new ProcessStartInfo
+                {
+                    FileName = "explorer.exe",
+                    Arguments = $"/select,\"{_storageFilePath}\"",
+                    UseShellExecute = true,
+                    RedirectStandardOutput = false,
+                    RedirectStandardError = false,
+                    CreateNoWindow = true
+                };
+
+                Process process = new Process
+                {
+                    StartInfo = processStartInfo
+                };
+
+                process.Start();
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that may occur
+                Console.WriteLine($"An error occurred while trying to open the file explorer: {ex.Message}");
+            }
         }
 
         public void ClearStorage()
