@@ -134,3 +134,15 @@ public readonly Dictionary<string, SettingsDTO> CustomControlCodes = new()
 Ensure you have the following installed:
 - [.NET Core SDK](https://dotnet.microsoft.com/download)
 - A code editor such as [Visual Studio](https://visualstudio.microsoft.com/)
+
+## Installation and Running 
+```
+https://github.com/Egxr41k/CryptoClient.git
+cd CryptoClient
+dotnet run
+```
+## Uninstallation
+```powershell
+Remove-Item -Recurse -Force .\FinanceClient\
+```
+
