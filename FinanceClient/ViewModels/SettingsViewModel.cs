@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -45,7 +46,7 @@ namespace FinanceClient.ViewModels
             get => selectedFetchingIntervalMin;
             set
             {
-                SetProperty(ref selectedAvailableCurrencyCount, value);
+                SetProperty(ref selectedFetchingIntervalMin, value);
                 _settingsService.Content.FetchingIntervalMin = value;
             }
         }
@@ -63,6 +64,18 @@ namespace FinanceClient.ViewModels
         }
         public List<string> FormatOfSavingList { get; }
 
+        private string customCode;
+        public string CustomCode
+        {
+            get => customCode;
+            set
+            {
+                SetProperty(ref customCode, value);
+                _settingsService.SetCustomControlCode(value);
+            }
+        }
+        public List<string> CustomCodeList { get; }
+
         public SettingsViewModel(
             SettingsStorage settingsService,
             InfoViewModel infoViewModel)
@@ -70,24 +83,32 @@ namespace FinanceClient.ViewModels
             _settingsService = settingsService;
             InfoViewModel = infoViewModel;
 
-            UsedApiList = new List<string>() { "CoinCap", "NBU_Exchacnge" };
+            UsedApiList = settingsService.UsedApiList;
 
-            AvailableCurrencyCountList = new List<int>() { 5, 10 };
+            AvailableCurrencyCountList = settingsService.AvailableCurrencyCountOptions;
 
-            FetchingIntervalMinList = new List<int>() { 1, 3, 5, 10 };
+            FetchingIntervalMinList = settingsService.FetchingIntervalMinOptions;
 
-            FormatOfSavingList = new List<string>() { "JSON", "CSV", "XML" };
+            FormatOfSavingList = settingsService.FormatOfSavingOptions;
 
-            selectedUsedApi = _settingsService.Content.UsedApi;
-            selectedAvailableCurrencyCount = _settingsService.Content.AvailableCurrencyCount;
-            selectedFetchingIntervalMin = _settingsService.Content.FetchingIntervalMin;
-            selectedFormatOfSaving = _settingsService.Content.FormatOfSaving;
+            CustomCodeList = settingsService.CustomControlCodes.Keys.ToList();
+            _settingsService_ContentChanged();
+
+            settingsService.ContentChanged += _settingsService_ContentChanged;
 
             ApplyChangesCommand = new RelayCommand(async () =>
             {
                 await _settingsService.SaveAsync(_settingsService.Content);
                 RestartApplication();
             });
+        }
+
+        private void _settingsService_ContentChanged()
+        {
+            SelectedUsedApi = _settingsService.Content.UsedApi;
+            SelectedAvailableCurrencyCount = _settingsService.Content.AvailableCurrencyCount;
+            SelectedFetchingIntervalMin = _settingsService.Content.FetchingIntervalMin;
+            SelectedFormatOfSaving = _settingsService.Content.FormatOfSaving;
         }
 
         private async void RestartApplication()
