@@ -1,6 +1,8 @@
 # FinanceClient
 
 FinanceClient is a powerful WPF application designed to track and manage currency data. It uses Syncfusion for data visualization and the CommunityToolkit for MVVM support. The application features a clean architecture with well-defined services, view models, and data management components.
+![first-preview](https://github.com/Egxr41k/FinanceClient/blob/master/FinanceClient/Assets/first-preview.jpg?raw=true)
+![second-preview](https://github.com/Egxr41k/FinanceClient/blob/master/FinanceClient/Assets/second-preview.jpg?raw=true)
 
 ## Features
 
@@ -28,7 +30,45 @@ FinanceClient is a powerful WPF application designed to track and manage currenc
   "FormatOfSaving": "JSON"
 }
 ```
-
+### 7. Custom Control Codes: 
+```csharp
+public readonly Dictionary<string, SettingsDTO> CustomControlCodes = new()
+{
+    { "DEFAULT", new SettingsDTO() },
+    { "FAST_FETCH", new SettingsDTO 
+        { 
+            UsedApi = "CoinCap", 
+            AvailableCurrencyCount = 5, 
+            FetchingIntervalMin = 1, 
+            FormatOfSaving = "JSON" 
+        } 
+    },
+    { "CSV_STORAGE", new SettingsDTO 
+        { 
+            UsedApi = "NBU_Exchacnge", 
+            AvailableCurrencyCount = 10, 
+            FetchingIntervalMin = 5, 
+            FormatOfSaving = "CSV" 
+        } 
+    },
+    { "XML_STORAGE", new SettingsDTO 
+        { 
+            UsedApi = "NBU_Exchacnge", 
+            AvailableCurrencyCount = 10, 
+            FetchingIntervalMin = 3, 
+            FormatOfSaving = "XML" 
+        } 
+    },
+    { "EXTENDED_FETCH", new SettingsDTO 
+        { 
+            UsedApi = "CoinCap", 
+            AvailableCurrencyCount = 10, 
+            FetchingIntervalMin = 10, 
+            FormatOfSaving = "JSON" 
+        } 
+    }
+};
+```
 ## Folder Structure
 
 ### FinanceClient
